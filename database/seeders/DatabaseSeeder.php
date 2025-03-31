@@ -25,6 +25,10 @@ class DatabaseSeeder extends Seeder
             RegencySeeder::class,
             FasyankesSeeder::class,
             UserSeeder::class,
+            SkdrSeeder::class,
+            Form1Seeder::class,
+            Form2Seeder::class,
+            Form3Seeder::class,
         ]);
 
     }
