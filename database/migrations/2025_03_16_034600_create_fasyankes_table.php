@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('type');
             $table->string('regency_id');
-            $table->string('longitude');
-            $table->string('latitude');
+            $table->string('longitude')->nullable();
+            $table->string('latitude')->nullable();
             $table->timestamps();
 
             $table->foreign('regency_id')->references('regency_id')->on('regencies')->cascadeOnUpdate()->cascadeOnDelete();
