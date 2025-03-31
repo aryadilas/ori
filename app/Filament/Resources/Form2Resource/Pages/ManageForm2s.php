@@ -10,9 +10,11 @@ class ManageForm2s extends ManageRecords
 {
     protected static string $resource = Form2Resource::class;
 
-    protected function handleRecordCreation(array $data): Model
-    {
-        dd($data);
+    protected ?string $subheading = 'Halaman untuk mengelola data form luas wilayah.';
+
+    // protected function handleRecordCreation(array $data): Model
+    // {
+        // dd($data);
         // $userIds = $data["user_id"];
         // unset($data["user_id"]);
 
@@ -25,7 +27,7 @@ class ManageForm2s extends ManageRecords
         // }
 
         // return $models[0];
-    }
+    // }
 
     protected function getHeaderActions(): array
     {
@@ -40,48 +42,46 @@ class ManageForm2s extends ManageRecords
 
                     $data['kode_fasyankes'] = auth()->user()->kode_fasyankes;
                     $data['year'] = now()->format('Y');
-
-                    // dd($data);
-
-                    // foreach ($data['Anggota Keluarga'] as $key => $value) {
-                        
-                        
-
-                    // }
                     
                     return $data;
                 
                 })
                 ->action(function ($data){
 
-                    $records = [];
-                    $lastHouseId = static::getModel()::max('house_id') + 1;
+                    // $records = [];
+                    
 
-                    foreach ($data['Anggota Keluarga'] as $anggota) {
+                    // foreach ($data['Anggota Keluarga'] as $anggota) {
 
-
-                        $records[] = static::getModel()::create([
-                            'house_id' => $lastHouseId,
-                            'kode_fasyankes' => $data['kode_fasyankes'],
-                            'year' => $data['year'],
-                            'parent_name' => $anggota['parent_name'],
-                            'child_name' => $anggota['child_name'],
-                            'birthdate' => $anggota['birthdate'],
-                            'gender' => $anggota['gender'],
-                            'q1' => $anggota['q1'],
-                            'q2' => $anggota['q2'],
-                            'q3' => $anggota['q3'],
-                            'q4' => $anggota['q4'],
-                            'q5' => $anggota['q5'],
-                            'q6' => $anggota['q6'],
-                            'q7' => $anggota['q7'],
-                            'q8' => $anggota['q8'],
-                            'q9' => $anggota['q9'],
-                        ]);
-
+                    if ($data['house_id'] == 'new') {
+                        $houseId = static::getModel()::where('kode_fasyankes', auth()->user()->kode_fasyankes)->max('house_id') + 1;
+                    } else {
+                        $houseId = $data['house_id'];
                     }
 
-                    return $records[0];
+
+                    return static::getModel()::create([
+                        'house_id' => $houseId,
+                        'kode_fasyankes' => $data['kode_fasyankes'],
+                        'year' => $data['year'],
+                        'parent_name' => $data['parent_name'],
+                        'child_name' => $data['child_name'],
+                        'birthdate' => $data['birthdate'],
+                        'gender' => $data['gender'],
+                        'q1' => $data['q1'],
+                        'q2' => $data['q2'],
+                        'q3' => $data['q3'],
+                        'q4' => $data['q4'],
+                        'q5' => $data['q5'],
+                        'q6' => $data['q6'],
+                        'q7' => $data['q7'],
+                        'q8' => $data['q8'],
+                        'q9' => $data['q9'],
+                    ]);
+
+                    // }
+
+                    // return $records[0];
                     
                 }),
         ];
