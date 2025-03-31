@@ -29,6 +29,15 @@ class Form1Resource extends Resource
 
     protected static ?string $navigationGroup = 'DATA';
 
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->hasRole('Puskesmas')) {
+            return parent::getEloquentQuery()->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+        } else {
+            return parent::getEloquentQuery();
+        }
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -121,10 +130,103 @@ class Form1Resource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make("fasyankes.name")
+                    ->placeholder('-')
+                    ->hidden(auth()->user()->hasRole('Puskesmas'))
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Puskesmas"),
+                Tables\Columns\TextColumn::make("year")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Tahun"),
                 Tables\Columns\TextColumn::make("village_name")
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label("Desa/Kelurahan"),
+                Tables\Columns\TextColumn::make("q1")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->formatStateUsing(fn ($state) => strtoupper($state))
+                    ->label("Sedang terjadi KLB campak/rubela/mix"),
+                Tables\Columns\TextColumn::make("q2")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->formatStateUsing(fn ($state) => strtoupper($state))
+                    ->label("Adanya mobilitas penduduk dari dan ke wilayah KLB"),
+
+                Tables\Columns\TextColumn::make("q3a")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Jumlah tahun arsip data tersedia (3 s/d 5 tahun terakhir) (Campak Rubela 1)"),
+                Tables\Columns\TextColumn::make("q3b")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Jumlah kumulatif cakupan imunisasi (%) (Campak Rubela 1)"),
+                Tables\Columns\TextColumn::make("q3average")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("% Rata-rata"),
+                Tables\Columns\TextColumn::make("q3average80")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->formatStateUsing(fn ($state) => strtoupper($state))
+                    ->label("Rata-rata <80%"),
+
+                Tables\Columns\TextColumn::make("q4a")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Jumlah tahun arsip data tersedia (3 s/d 5 tahun terakhir) (Campak Rubela 2)"),
+                Tables\Columns\TextColumn::make("q4b")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Jumlah kumulatif cakupan imunisasi (%) (Campak Rubela 2)"),
+                Tables\Columns\TextColumn::make("q4average")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("% Rata-rata"),
+                Tables\Columns\TextColumn::make("q4average80")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->formatStateUsing(fn ($state) => strtoupper($state))
+                    ->label("Rata-rata <80%"),
+
+                Tables\Columns\TextColumn::make("q5a")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Jumlah tahun arsip data tersedia (3 s/d 5 tahun terakhir) (Campak Rubela BIAS (Kelas 1 SD/Sederajat))"),
+                Tables\Columns\TextColumn::make("q5b")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Jumlah kumulatif cakupan imunisasi (%) (Campak Rubela BIAS (Kelas 1 SD/Sederajat))"),
+                Tables\Columns\TextColumn::make("q5average")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("% Rata-rata"),
+                Tables\Columns\TextColumn::make("q5average80")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->formatStateUsing(fn ($state) => strtoupper($state))
+                    ->label("Rata-rata <80%"),
+
+                Tables\Columns\TextColumn::make("q6a")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Berapa tahun arsip data tersedia? (Campak Rubela Tambahan (BIAN/kampanye/ORI))"),
+                Tables\Columns\TextColumn::make("q6b")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Jumlah kumulatif cakupan imunisasi (%) (Campak Rubela Tambahan (BIAN/kampanye/ORI))"),
+                Tables\Columns\TextColumn::make("q6average")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("% Rata-rata"),
+                Tables\Columns\TextColumn::make("q6average80")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->formatStateUsing(fn ($state) => strtoupper($state))
+                    ->label("Rata-rata <80%"),
+
+
                 Tables\Columns\TextColumn::make("summary")
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
@@ -137,6 +239,7 @@ class Form1Resource extends Resource
                 // Tables\Actions\EditAction::make(),
                 // Tables\Actions\DeleteAction::make(),
             ])
+            ->emptyStateHeading('Data Kosong')
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
                 //     Tables\Actions\DeleteBulkAction::make(),

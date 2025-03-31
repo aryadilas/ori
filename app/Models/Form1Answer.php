@@ -41,42 +41,42 @@ class Form1Answer extends Model
 
     public function getQ3averageAttribute()
     {
-        return (int) $this->q3b / (int) $this->q3a; 
+        return round( (int) $this->q3b / (int) $this->q3a, 2 ); 
     }
 
     public function getQ3average80Attribute()
     {
-        return (int) $this->getQ3averageAttribute() < 80 ? 'y' : 'N'; 
+        return (int) $this->getQ3averageAttribute() < 80 ? 'y' : 't'; 
     }
 
     public function getQ4averageAttribute()
     {
-        return (int) $this->q4b / (int) $this->q4a; 
+        return round( (int) $this->q4b / (int) $this->q4a, 2 ); 
     }
 
     public function getQ4average80Attribute()
     {
-        return (int) $this->getQ4averageAttribute() < 80 ? 'y' : 'N'; 
+        return (int) $this->getQ4averageAttribute() < 80 ? 'y' : 't'; 
     }
 
     public function getQ5averageAttribute()
     {
-        return (int) $this->q5b / (int) $this->q5a; 
+        return round( (int) $this->q5b / (int) $this->q5a, 2 ); 
     }
 
     public function getQ5average80Attribute()
     {
-        return (int) $this->getQ5averageAttribute() < 80 ? 'y' : 'N'; 
+        return (int) $this->getQ5averageAttribute() < 80 ? 'y' : 't'; 
     }
 
     public function getQ6averageAttribute()
     {
-        return (int) $this->q6b / (int) $this->q6a; 
+        return round( (int) $this->q6b / (int) $this->q6a, 2 ); 
     }
 
     public function getQ6average80Attribute()
     {
-        return (int) $this->getQ6averageAttribute() < 80 ? 'y' : 'N'; 
+        return (int) $this->getQ6averageAttribute() < 80 ? 'y' : 't'; 
     }
 
     public function getSummaryAttribute()
@@ -130,5 +130,10 @@ class Form1Answer extends Model
     public function getScore56Attribute()
     {
         return array_count_values([$this->getQ5average80Attribute(), $this->getQ6average80Attribute()])['y'] ?? 0;
+    }
+
+    public function fasyankes()
+    {
+        return $this->belongsTo(Fasyankes::class, 'kode_fasyankes', 'kode_fasyankes');
     }
 }
