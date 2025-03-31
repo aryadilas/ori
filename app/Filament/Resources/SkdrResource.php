@@ -19,13 +19,13 @@ class SkdrResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationLabel = 'Input TKDR';
+    protected static ?string $navigationLabel = 'Rekap SKDR';
 
-    protected static ?string $slug = 'input-skdr';
+    protected static ?string $slug = 'rekap-skdr';
 
-    protected static ?string $label = 'Input SKDR';
+    protected static ?string $label = 'Rekap SKDR';
 
-    protected static ?string $pluralModelLabel = 'Input SKDR';
+    protected static ?string $pluralModelLabel = 'Rekap SKDR';
 
     protected static ?string $navigationGroup = 'SKDR';
 
@@ -33,76 +33,78 @@ class SkdrResource extends Resource
     {
         return $form
             ->columns(1)
-            ->schema([
-                Forms\Components\TextInput::make('officer_name')
-                    ->label('Nama Petugas')
-                    ->inlineLabel()
-                    ->required(),
-                Forms\Components\Select::make('week')
-                    ->label('Minggu Ke')
-                    ->native(false)
-                    ->options(function (){
-                        $options = [];
-                        for ($i = 1; $i <= 52; $i++) { 
-                            $options[$i] = $i;
-                        }
-                        return $options;
-                    })
-                    ->inlineLabel()
-                    ->required(),
-                Forms\Components\Select::make('year')
-                    ->label('Tahun')
-                    ->native(false)
-                    ->options(function (){
-                        $options = [];
-                        for ($i = 2018; $i <= now()->format('Y')+5; $i++) { 
-                            $options[$i] = $i;
-                        }
-                        return $options;
-                    })
-                    ->default(now()->format('Y'))
-                    ->inlineLabel()
-                    ->required(),
-                Forms\Components\TextInput::make('case_count')
-                    ->label('Jumlah Kasus')
-                    ->inlineLabel()
-                    ->minValue(1)
-                    ->live()
-                    ->numeric()
-                    ->required(),
-                Forms\Components\Repeater::make('patient_names')
-                    ->label('Pasien')
-                    ->schema([
-                        Forms\Components\TextInput::make('name')->required(),
-                    ])
-                    ->columns(1)
-            ]);
+            ->schema([]);
     }
 
     public static function table(Table $table): Table
     {
+
+        $weekColumns = collect(range(1, 53))->map(function ($week) {
+            return Tables\Columns\TextColumn::make("M_{$week}")
+                ->placeholder('-')
+                ->formatStateUsing(fn($state) => $state == 0 || !$state ? '-' : $state)
+                ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                ->label("M-{$week}");
+        })->toArray();
+
+        if (auth()->user()->hasRole('Puskesmas')) {
+            $beforeColumns = [];
+            $afterColumns = [
+                Tables\Columns\TextColumn::make('total')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label('Total')
+            ];
+        } else {
+            $beforeColumns = [
+                Tables\Columns\TextColumn::make('fasyankes.name')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label('Fasyankes')
+            ];
+            $afterColumns = [
+                Tables\Columns\TextColumn::make('total')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label('Total')
+            ];
+        }
+
+        
+
+        $columns = array_merge($beforeColumns, $weekColumns, $afterColumns);
+
         return $table
             ->modifyQueryUsing(function (Builder $query) use ($table) {
                 $weeks = range(1, 53);
-                $selectRaw = 'id, officer_name';
+                $selectRaw = 'id, officer_name, kode_fasyankes';
 
                 foreach ($weeks as $week) {
                     $selectRaw .= ", MAX(CASE WHEN week = {$week} THEN case_count END) AS M_{$week}";
                 }
 
-                return $query
-                    ->selectRaw($selectRaw)
-                    ->where('year', now()->format('Y'))
-                    ->groupBy('officer_name');
+                $selectRaw .= ", (";
+                $selectRaw .= implode(' + ', array_map(function($week) {
+                    return "COALESCE(MAX(CASE WHEN week = {$week} THEN case_count END), 0)";
+                }, $weeks));
+                $selectRaw .= ") AS total";
+
+
+                if (auth()->user()->hasRole('Puskesmas')) {
+                    $query
+                        ->selectRaw($selectRaw)
+                        ->where('year', now()->format('Y'))
+                        ->where('kode_fasyankes', auth()->user()->kode_fasyankes)
+                        ->groupBy('kode_fasyankes');
+                } else {
+                    $query
+                        ->selectRaw($selectRaw)
+                        ->where('year', now()->format('Y'))
+                        ->groupBy('kode_fasyankes');
+                }
+                
+                return $query;
+                
             })
             ->columns(
-                collect(range(1, 53))->map(function ($week) {
-                    return Tables\Columns\TextColumn::make("M_{$week}")
-                        ->placeholder('-')
-                        ->formatStateUsing(fn($state) => $state == 0 || !$state ? '-' : $state)
-                        ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
-                        ->label("M-{$week}");
-                })->toArray()
+                $columns
             )
             ->filters([
                 //
@@ -111,6 +113,7 @@ class SkdrResource extends Resource
                 // Tables\Actions\EditAction::make(),
                 // Tables\Actions\DeleteAction::make(),
             ])
+            ->emptyStateHeading('Data Kosong')
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
                 //     Tables\Actions\DeleteBulkAction::make(),

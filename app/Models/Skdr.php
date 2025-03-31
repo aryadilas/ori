@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Fasyankes;
 
 class Skdr extends Model
 {
@@ -19,4 +20,10 @@ class Skdr extends Model
         'patient_names',
         'kode_fasyankes'
     ];
+
+    public function fasyankes()
+    {
+        return $this->belongsTo(Fasyankes::class, 'kode_fasyankes', 'kode_fasyankes');
+    }
+
 }
