@@ -16,8 +16,11 @@
                     <div class="absolute inset-0 rounded-md ring-4 ring-[#b00020b8] animate-pulse"></div>
                     <x-heroicon-o-arrow-trending-up class="w-5 fill-[#b00020b8] h-5 animate-pulse" />
                     <div class="flex flex-col">
-                        <span>Status KLB (≥5 kasus selama 4 minggu berturut-turut).</span>
-                        <span class="text-xs">Terdapat {{ $case['total_cases'] }} kasus pada minggu ke {{ $case['start_week'] }} sampai {{ $case['end_week'] }}.</span>
+                        <span class="text-sm font-semibold">{{ $case['fasyankes_name'] }}</span>
+                        <div class="flex flex-col">
+                            <span>Status KLB (≥5 kasus selama 4 minggu berturut-turut).</span>
+                            <span class="text-xs">Terdapat {{ $case['total_cases'] }} kasus pada minggu ke {{ $case['start_week'] }} sampai {{ $case['end_week'] }}.</span>
+                        </div>
                     </div>
                 </div>
             

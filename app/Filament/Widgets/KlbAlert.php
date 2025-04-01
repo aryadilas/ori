@@ -23,18 +23,22 @@ class KlbAlert extends Widget
         $tahun = now()->format('Y'); 
 
         $data = Skdr::where('year', $tahun)
-            ->where('kode_fasyankes', auth()->user()->kode_fasyankes)
             ->orderBy('kode_fasyankes')
-            ->orderBy('week')
-            ->get()
-            ->groupBy('kode_fasyankes');
+            ->with('fasyankes')
+            ->orderBy('week');
+        
+        if (auth()->user()->kode_fayankes) {
+            $data->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+        }
 
-
+        $data = $data->get()->groupBy('kode_fasyankes');
 
         $results = [];
 
         foreach ($data as $kodeFasyankes => $records) {
             $weeks = $records->pluck('case_count', 'week')->toArray(); 
+
+            $fasyankesName = $records->first()->fasyankes->name;
 
             $allWeeks = array_keys($weeks);
             sort($allWeeks);
@@ -56,6 +60,7 @@ class KlbAlert extends Widget
                 if ($totalCases >= 5) {
                     $results[] = [
                         'kode_fasyankes' => $kodeFasyankes,
+                        'fasyankes_name' => $fasyankesName,
                         'start_week' => $w1,
                         'end_week' => $w4,
                         'total_cases' => $totalCases
