@@ -19,6 +19,7 @@ class ManageForm3s extends ManageRecords
                 ->label('Tambah')
                 ->modalSubmitActionLabel('Tambah')
                 ->createAnother(false)
+                ->visible(auth()->user()->hasRole('Puskesmas'))
                 ->modalHeading('Isi Data Form Kelompok Usia')
                 ->successNotificationTitle('Berhasil tambah data.')
                 ->action(function ($data){

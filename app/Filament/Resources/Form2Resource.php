@@ -264,6 +264,7 @@ class Form2Resource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->visible(auth()->user()->hasRole('Puskesmas'))
                     ->form([
                         Forms\Components\Select::make('house_id')
                             ->label('Rumah')
@@ -390,7 +391,8 @@ class Form2Resource extends Resource
                         return $data;
                     
                     }),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(auth()->user()->hasRole('Puskesmas')),
             ])
             ->emptyStateHeading('Data Kosong')
             ->bulkActions([

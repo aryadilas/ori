@@ -36,6 +36,7 @@ class ManageForm2s extends ManageRecords
                 ->label('Tambah')
                 ->modalSubmitActionLabel('Tambah')
                 ->createAnother(false)
+                ->visible(auth()->user()->hasRole('Puskesmas'))
                 ->modalHeading('Isi Data Form Luas Wilayah')
                 ->successNotificationTitle('Berhasil tambah data.')
                 ->mutateFormDataUsing(function (array $data): array {

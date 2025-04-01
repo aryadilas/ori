@@ -185,7 +185,8 @@ class Form3Resource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(auth()->user()->hasRole('Puskesmas')),
                 // Tables\Actions\DeleteAction::make(),
             ])
             ->emptyStateHeading('Data Kosong')
