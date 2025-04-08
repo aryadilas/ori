@@ -27,7 +27,7 @@ class KlbAlert extends Widget
             ->with('fasyankes')
             ->orderBy('week');
         
-        if (auth()->user()->kode_fayankes) {
+        if (auth()->user()->hasRole('Puskesmas')) {
             $data->where('kode_fasyankes', auth()->user()->kode_fasyankes);
         }
 
