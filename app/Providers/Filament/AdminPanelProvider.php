@@ -55,6 +55,10 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->navigationGroups([
+                'SKDR',
+                'DATA',
+            ])
             ->defaultThemeMode(ThemeMode::Light)
             ->sidebarWidth('17rem')
             ->viteTheme('resources/css/filament/admin/theme.css');;
