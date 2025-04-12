@@ -62,7 +62,13 @@ class KlbAlert extends Widget
                         'kode_fasyankes' => $kodeFasyankes,
                         'fasyankes_name' => $fasyankesName,
                         'start_week' => $w1,
-                        'end_week' => $w4,
+                        'end_week' => $caseW4 
+                                        ? $w4 
+                                        : ($caseW3 
+                                            ? $w3 
+                                            : ($caseW2 
+                                                ? $w2 
+                                                : $w1)),
                         'total_cases' => $totalCases
                     ];
                 }
