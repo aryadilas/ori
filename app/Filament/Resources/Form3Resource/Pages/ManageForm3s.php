@@ -26,7 +26,7 @@ class ManageForm3s extends ManageRecords
 
                     $age9to18month = [
                         'kode_fasyankes' => auth()->user()->kode_fasyankes,
-                        'year' => now()->format('Y'),
+                        'year' => $data['year'],
                         'age_group' => '9 - <18 bulan',
                         'suspect' => $data['suspect_9to18month'],
                         'population' => $data['population_9to18month'],
@@ -35,7 +35,7 @@ class ManageForm3s extends ManageRecords
 
                     $age18to59month = [
                         'kode_fasyankes' => auth()->user()->kode_fasyankes,
-                        'year' => now()->format('Y'),
+                        'year' => $data['year'],
                         'age_group' => '18 - 59 bulan',
                         'suspect' => $data['suspect_18to59month'],
                         'population' => $data['population_18to59month'],
@@ -44,7 +44,7 @@ class ManageForm3s extends ManageRecords
 
                     $age5to7year = [
                         'kode_fasyankes' => auth()->user()->kode_fasyankes,
-                        'year' => now()->format('Y'),
+                        'year' => $data['year'],
                         'age_group' => '5 - <7 tahun',
                         'suspect' => $data['suspect_5to7year'],
                         'population' => $data['population_5to7year'],
@@ -53,7 +53,7 @@ class ManageForm3s extends ManageRecords
 
                     $age7to13year = [
                         'kode_fasyankes' => auth()->user()->kode_fasyankes,
-                        'year' => now()->format('Y'),
+                        'year' => $data['year'],
                         'age_group' => '7 - <13tahun',
                         'suspect' => $data['suspect_7to13year'],
                         'population' => $data['population_7to13year'],
@@ -62,7 +62,7 @@ class ManageForm3s extends ManageRecords
 
                     $age13to16year = [
                         'kode_fasyankes' => auth()->user()->kode_fasyankes,
-                        'year' => now()->format('Y'),
+                        'year' => $data['year'],
                         'age_group' => '13 - <16 tahun',
                         'suspect' => $data['suspect_13to16year'],
                         'population' => $data['population_13to16year'],
@@ -71,7 +71,7 @@ class ManageForm3s extends ManageRecords
 
                     $more16year = [
                         'kode_fasyankes' => auth()->user()->kode_fasyankes,
-                        'year' => now()->format('Y'),
+                        'year' => $data['year'],
                         'age_group' => '≥ 16 tahun',
                         'suspect' => $data['suspect_more16year'],
                         'population' => $data['population_more16year'],
