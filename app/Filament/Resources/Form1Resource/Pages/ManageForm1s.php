@@ -25,7 +25,7 @@ class ManageForm1s extends ManageRecords
                 ->mutateFormDataUsing(function (array $data): array {
 
                     $data['kode_fasyankes'] = auth()->user()->kode_fasyankes;
-                    $data['year'] = now()->format('Y');
+                    // $data['year'] = now()->format('Y');
 
                     // dd($data);
                     // if ( auth()->user()->hasRole('Admin') ) {

@@ -44,6 +44,27 @@ class Form1Resource extends Resource
             ->columns(1)
             ->schema([
                 
+                Forms\Components\Select::make('year')
+                    ->label('Tahun')
+                    ->live()
+                    ->default(now()->year)
+                    ->options(function () {
+                        $currentYear = now()->year;
+                        $startYear = $currentYear - 2;
+                        $endYear = $currentYear + 2;
+
+                        $options = [];
+                        for ($i = $startYear; $i <= $endYear; $i++) { 
+
+                            $options[$i] = $i;
+
+                        }
+
+                        return $options;
+
+                    })
+                    ->inlineLabel()
+                    ->required(),
                 Forms\Components\TextInput::make('village_name')
                     ->label('Desa/Kelurahan')
                     ->inlineLabel()
@@ -236,8 +257,10 @@ class Form1Resource extends Resource
                 //
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
-                // Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(auth()->user()->hasRole('Puskesmas')),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(auth()->user()->hasRole('Puskesmas')),
             ])
             ->emptyStateHeading('Data Kosong')
             ->bulkActions([
