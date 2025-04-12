@@ -52,124 +52,142 @@ class Form2Resource extends Resource
                 //     ->AddActionLabel('Tambah anggota keluarga')
                 //     ->collapsed()
                 //     ->schema([
-                
-                        Forms\Components\Select::make('house_id')
-                            ->label('Rumah')
-                            ->options(function () {
 
-                                $existingHouseId = Form2Answer::select('house_id')->distinct()->where('kode_fasyankes', auth()->user()->kode_fasyankes)->get()->pluck('house_id')->toArray();
-                                // dd($options);
-                                $options = [];
-                                $options['new'] = 'Tambah Rumah Baru';
-                                foreach ($existingHouseId as $value) {
-                                    $options[$value] = $value;
-                                }
+                Forms\Components\Select::make('year')
+                    ->label('Tahun')
+                    ->live()
+                    ->default(now()->year)
+                    ->options(function () {
+                        $currentYear = now()->year;
+                        $startYear = $currentYear - 2;
+                        $endYear = $currentYear + 2;
 
+                        $options = [];
+                        for ($i = $startYear; $i <= $endYear; $i++) { 
 
-                                return $options;
+                            $options[$i] = $i;
 
+                        }
 
-                            })
-                            ->inlineLabel()
-                            ->required(),
+                        return $options;
 
-                        Forms\Components\TextInput::make('parent_name')
-                            ->label('Nama Orang Tua')
-                            ->inlineLabel()
-                            ->required(),
-                        Forms\Components\TextInput::make('child_name')
-                            ->label('Nama Anak')
-                            ->inlineLabel()
-                            ->required(),
-                        Forms\Components\DatePicker::make('birthdate')
-                            ->label('Tanggal Lahir')
-                            ->inlineLabel()
-                            ->required(),
-                        Forms\Components\Radio::make('gender')
-                            ->label('Jenis Kelamin')
+                    })
+                    ->inlineLabel()
+                    ->required(),
+
+                Forms\Components\Select::make('house_id')
+                    ->label('Rumah')
+                    ->options(function ($get) {
+
+                        $existingHouseId = Form2Answer::select('house_id')->distinct()->where('year', $get('year'))->where('kode_fasyankes', auth()->user()->kode_fasyankes)->get()->pluck('house_id')->toArray();
+
+                        $options = [];
+                        $options['new'] = 'Tambah Rumah Baru';
+                        foreach ($existingHouseId as $value) {
+                            $options[$value] = $value;
+                        }
+
+                        return $options;
+
+                    })
+                    ->inlineLabel()
+                    ->required(),
+
+                Forms\Components\TextInput::make('parent_name')
+                    ->label('Nama Orang Tua')
+                    ->inlineLabel()
+                    ->required(),
+                Forms\Components\TextInput::make('child_name')
+                    ->label('Nama Anak')
+                    ->inlineLabel()
+                    ->required(),
+                Forms\Components\DatePicker::make('birthdate')
+                    ->label('Tanggal Lahir')
+                    ->inlineLabel()
+                    ->required(),
+                Forms\Components\Radio::make('gender')
+                    ->label('Jenis Kelamin')
+                    ->options([
+                        'l' => 'Laki - Laki',
+                        'p' => 'Perempuan',
+                    ])
+                    ->required(),
+
+                Forms\Components\Section::make('Status Imunisasi')
+                    ->schema([
+                        Forms\Components\Radio::make('q1')
+                            ->label('1. Campak Rubela 1')
                             ->options([
-                                'l' => 'Laki - Laki',
-                                'p' => 'Perempuan',
+                                'y' => 'Ya',
+                                't' => 'Tidak',
+                                'tt' => 'Tidak Tahu',
+                                'n/a' => 'Not Applicable',
                             ])
                             ->required(),
+                        Forms\Components\Radio::make('q2')
+                            ->label('2. Campak Rubela 2')
+                            ->options([
+                                'y' => 'Ya',
+                                't' => 'Tidak',
+                                'tt' => 'Tidak Tahu',
+                                'n/a' => 'Not Applicable',
+                            ])
+                            ->required(),
+                        Forms\Components\Radio::make('q3')
+                            ->label('3. Campak Rubela BIAS Kelas 1 SD/Sederajat')
+                            ->options([
+                                'y' => 'Ya',
+                                't' => 'Tidak',
+                                'tt' => 'Tidak Tahu',
+                                'n/a' => 'Not Applicable',
+                            ])
+                            ->required(),
+                        Forms\Components\Radio::make('q4')
+                            ->label(fn (): HtmlString => new HtmlString(
+                                '4. Imunisasi tambahan Campak Rubela<br> 
+                                &nbsp;&nbsp; 1)  Kampanye 2017-2018<br>
+                                &nbsp;&nbsp; 2) BIAN 2022<br>
+                                &nbsp;&nbsp; 3) ORI<br>
+                                &nbsp;&nbsp; 4) Lainnya'
+                            ))
+                            
+                            ->options([
+                                'y' => 'Ya',
+                                't' => 'Tidak',
+                                'tt' => 'Tidak Tahu',
+                                'n/a' => 'Not Applicable',
+                            ])
+                            ->required(),
+                    ]),
+                    Forms\Components\Section::make('Alasan Tidak Diimunisasi')
+                        ->schema([
+                            Forms\Components\Select::make('q5')
+                                ->label('5. Mengapa orang tua melewatkan satu atau lebih antigen, bahkan anak yang tidak mendapatkan imunisasi?')
+                                ->options(Form2ImunizedReason::class),
+                        ]),
 
-                        Forms\Components\Section::make('Status Imunisasi')
-                            ->schema([
-                                Forms\Components\Radio::make('q1')
-                                    ->label('1. Campak Rubela 1')
-                                    ->options([
-                                        'y' => 'Ya',
-                                        't' => 'Tidak',
-                                        'tt' => 'Tidak Tahu',
-                                        'n/a' => 'Not Applicable',
-                                    ])
-                                    ->required(),
-                                Forms\Components\Radio::make('q2')
-                                    ->label('2. Campak Rubela 2')
-                                    ->options([
-                                        'y' => 'Ya',
-                                        't' => 'Tidak',
-                                        'tt' => 'Tidak Tahu',
-                                        'n/a' => 'Not Applicable',
-                                    ])
-                                    ->required(),
-                                Forms\Components\Radio::make('q3')
-                                    ->label('3. Campak Rubela BIAS Kelas 1 SD/Sederajat')
-                                    ->options([
-                                        'y' => 'Ya',
-                                        't' => 'Tidak',
-                                        'tt' => 'Tidak Tahu',
-                                        'n/a' => 'Not Applicable',
-                                    ])
-                                    ->required(),
-                                Forms\Components\Radio::make('q4')
-                                    ->label(fn (): HtmlString => new HtmlString(
-                                        '4. Imunisasi tambahan Campak Rubela<br> 
-                                        &nbsp;&nbsp; 1)  Kampanye 2017-2018<br>
-                                        &nbsp;&nbsp; 2) BIAN 2022<br>
-                                        &nbsp;&nbsp; 3) ORI<br>
-                                        &nbsp;&nbsp; 4) Lainnya'
-                                    ))
-                                    
-                                    ->options([
-                                        'y' => 'Ya',
-                                        't' => 'Tidak',
-                                        'tt' => 'Tidak Tahu',
-                                        'n/a' => 'Not Applicable',
-                                    ])
-                                    ->required(),
-                            ]),
-                            Forms\Components\Section::make('Alasan Tidak Diimunisasi')
-                                ->schema([
-                                    Forms\Components\Select::make('q5')
-                                        ->label('5. Mengapa orang tua melewatkan satu atau lebih antigen, bahkan anak yang tidak mendapatkan imunisasi?')
-                                        ->options(Form2ImunizedReason::class)
-                                        ,
-                                ]),
+                    Forms\Components\Radio::make('q6')
+                        ->label('6. Apakah ayah mengizinkan anak untuk diimunisasi?')
+                        ->options([
+                            'y' => 'Ya',
+                            't' => 'Tidak',
+                        ])
+                        ->required(),
+                    Forms\Components\Select::make('q7')
+                        ->label('7. Darimana Anda mendapatkan informasi tentang imunisasi?')
+                        ->options(ImunizedInformationSource::class)
+                        ->required(),
+                    Forms\Components\Radio::make('q8')
+                        ->label('8. Pada 14 hari terakhir apakah Bapak/Ibu pernah melihat anak yang demam dan ruam (bintik kemerahan)?')
+                        ->options([
+                            'y' => 'Ya',
+                            't' => 'Tidak',
+                        ])
+                        ->required(),
+                    Forms\Components\TextInput::make('q9')
+                        ->label('9. Bila melihat anak dengan gejala tersebut mohon lengkapi dengan informasi nama dan alamat penderita.')
+                        ->inlineLabel(),
 
-                            Forms\Components\Radio::make('q6')
-                                ->label('6. Apakah ayah mengizinkan anak untuk diimunisasi?')
-                                ->options([
-                                    'y' => 'Ya',
-                                    't' => 'Tidak',
-                                ])
-                                ->required(),
-                            Forms\Components\Select::make('q7')
-                                ->label('7. Darimana Anda mendapatkan informasi tentang imunisasi?')
-                                ->options(ImunizedInformationSource::class)
-                                ->required(),
-                            Forms\Components\Radio::make('q8')
-                                ->label('8. Pada 14 hari terakhir apakah Bapak/Ibu pernah melihat anak yang demam dan ruam (bintik kemerahan)?')
-                                ->options([
-                                    'y' => 'Ya',
-                                    't' => 'Tidak',
-                                ])
-                                ->required(),
-                            Forms\Components\TextInput::make('q9')
-                                ->label('9. Bila melihat anak dengan gejala tersebut mohon lengkapi dengan informasi nama dan alamat penderita.')
-                                ->inlineLabel()
-                                ,
-                    // ])
             ]);
     }
 
@@ -268,9 +286,9 @@ class Form2Resource extends Resource
                     ->form([
                         Forms\Components\Select::make('house_id')
                             ->label('Rumah')
-                            ->options(function () {
+                            ->options(function ($record) {
 
-                                $existingHouseId = Form2Answer::select('house_id')->distinct()->where('kode_fasyankes', auth()->user()->kode_fasyankes)->get()->pluck('house_id')->toArray();
+                                $existingHouseId = Form2Answer::select('house_id')->distinct()->where('year', $record->year)->where('kode_fasyankes', auth()->user()->kode_fasyankes)->get()->pluck('house_id')->toArray();
                                 // dd($options);
                                 $options = [];
                                 foreach ($existingHouseId as $value) {
@@ -379,18 +397,17 @@ class Form2Resource extends Resource
                                 ->required(),
                             Forms\Components\TextInput::make('q9')
                                 ->label('9. Bila melihat anak dengan gejala tersebut mohon lengkapi dengan informasi nama dan alamat penderita.')
-                                ->inlineLabel()
-                                ,
-                    ])
-                    ->mutateFormDataUsing(function (array $data): array {
+                                ->inlineLabel(),
+                    ]),
+                    // ->mutateFormDataUsing(function (array $data): array {
 
-                        if ($data['house_id'] == 'new') {
-                            $data['house_id'] = parent::getModel()::where('kode_fasyankes', auth()->user()->kode_fasyankes)->max('house_id') + 1;
-                        } 
+                        // if ($data['house_id'] == 'new') {
+                        //     $data['house_id'] = parent::getModel()::where('year', $data['year'])->where('kode_fasyankes', auth()->user()->kode_fasyankes)->max('house_id') + 1;
+                        // } 
                         
-                        return $data;
+                        // return $data;
                     
-                    }),
+                    // }),
                 Tables\Actions\DeleteAction::make()
                     ->visible(auth()->user()->hasRole('Puskesmas')),
             ])

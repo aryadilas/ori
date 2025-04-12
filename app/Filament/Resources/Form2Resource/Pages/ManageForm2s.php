@@ -42,7 +42,7 @@ class ManageForm2s extends ManageRecords
                 ->mutateFormDataUsing(function (array $data): array {
 
                     $data['kode_fasyankes'] = auth()->user()->kode_fasyankes;
-                    $data['year'] = now()->format('Y');
+                    // $data['year'] = now()->format('Y');
                     
                     return $data;
                 
@@ -55,7 +55,7 @@ class ManageForm2s extends ManageRecords
                     // foreach ($data['Anggota Keluarga'] as $anggota) {
 
                     if ($data['house_id'] == 'new') {
-                        $houseId = static::getModel()::where('kode_fasyankes', auth()->user()->kode_fasyankes)->max('house_id') + 1;
+                        $houseId = static::getModel()::where('year', $data['year'])->where('kode_fasyankes', auth()->user()->kode_fasyankes)->max('house_id') + 1;
                     } else {
                         $houseId = $data['house_id'];
                     }
