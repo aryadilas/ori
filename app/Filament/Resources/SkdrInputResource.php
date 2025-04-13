@@ -84,11 +84,18 @@ class SkdrInputResource extends Resource
         return $table
             ->modifyQueryUsing(function (Builder $query) use ($table) {
 
+                // dump($table);
+
                 if (auth()->user()->hasRole('Puskesmas')) {
-                    $query->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+                    return $query->where('kode_fasyankes', auth()->user()->kode_fasyankes);
                 }
                 
-                return $query->orderBy('kode_fasyankes')->orderBy('week', 'desc');
+                // if (! $this->getTableSortColumn()) {
+                //     return $query->orderBy('kode_fasyankes')
+                //         ->orderBy('week', 'desc');
+                // }
+
+                return $query->orderBy('kode_fasyankes');
 
             })
             ->columns([
@@ -101,6 +108,7 @@ class SkdrInputResource extends Resource
                     ->label('Petugas'),
                 Tables\Columns\TextColumn::make('week')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->sortable()
                     ->label('Minggu Ke-'),
                 Tables\Columns\TextColumn::make('case_count')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
@@ -114,6 +122,7 @@ class SkdrInputResource extends Resource
                     )
                     ->label('Nama Pasien')
             ])
+            ->defaultSort('week', 'desc')
             ->paginated([30, 60, 100, 'all'])
             ->defaultPaginationPageOption(60)
             ->filters([
