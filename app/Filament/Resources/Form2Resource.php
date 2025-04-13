@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Enums\Form2ImunizedReason;
 use App\Enums\ImunizedInformationSource;
 use Illuminate\Support\HtmlString;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 
 class Form2Resource extends Resource
 {
@@ -278,8 +280,32 @@ class Form2Resource extends Resource
                     ->label("Bila melihat anak dengan gejala tersebut mohon lengkapi dengan informasi nama dan alamat penderita."),
             ])
             ->filters([
-                //
-            ])
+                
+                SelectFilter::make('year')
+                    ->label('Tahun')
+                    ->options(function () {
+                        
+                        $yearExists = static::getModel()::select('year')->where('kode_fasyankes', auth()->user()->kode_fasyankes)->distinct()->get()->pluck('year');
+                        
+                        $options = [];
+
+                        foreach ($yearExists as $value) {
+                            $options[$value] = $value;
+                        }
+
+                        if (!$yearExists) {
+                            $options[now()->year] = now()->year;
+                            return $options;
+                        }
+
+                        return $options;
+
+                    })
+                    ->default(now()->year)
+                    ->selectablePlaceholder(false)
+                    ->attribute('year')
+
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->visible(auth()->user()->hasRole('Puskesmas'))

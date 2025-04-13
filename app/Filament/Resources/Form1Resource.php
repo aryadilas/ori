@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 
 class Form1Resource extends Resource
 {
@@ -254,8 +256,36 @@ class Form1Resource extends Resource
                     ->label("Kesimpulan")
             ])
             ->filters([
-                //
-            ])
+                
+                SelectFilter::make('year')
+                    ->label('Tahun')
+                    ->options(function () {
+                        
+                        $yearExists = static::getModel()::select('year')->where('kode_fasyankes', auth()->user()->kode_fasyankes)->distinct()->get()->pluck('year');
+                        
+                        $options = [];
+
+                        foreach ($yearExists as $value) {
+                            $options[$value] = $value;
+                        }
+
+                        if (!$yearExists) {
+                            $options[now()->year] = now()->year;
+                            return $options;
+                        }
+
+                        return $options;
+
+                        // [
+                        // '2025' => '2025',
+                        // '2026' => '2026',
+                        // ]
+                    })
+                    ->default(now()->year)
+                    ->selectablePlaceholder(false)
+                    ->attribute('year')
+
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->visible(auth()->user()->hasRole('Puskesmas')),
