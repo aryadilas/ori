@@ -106,6 +106,7 @@ class SkdrResource extends Resource
             ->columns(
                 $columns
             )
+            ->paginated(false)
             ->filters([
                 //
             ])
