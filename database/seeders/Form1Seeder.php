@@ -14,7 +14,7 @@ class Form1Seeder extends Seeder
     public function run(): void
     {
         Form1Answer::create([
-            'kode_fasyankes' => '10270103',
+            'kode_fasyankes' => '32760200001',
             'village_name' => 'Dahlia',
             'year' => '2025',
             'q1' => 't',
@@ -30,7 +30,7 @@ class Form1Seeder extends Seeder
         ]);
         
         Form1Answer::create([
-            'kode_fasyankes' => '10270103',
+            'kode_fasyankes' => '32760200001',
             'village_name' => 'Mawar',
             'year' => '2025',
             'q1' => 'y',
@@ -46,7 +46,7 @@ class Form1Seeder extends Seeder
         ]);
 
         Form1Answer::create([
-            'kode_fasyankes' => '10270103',
+            'kode_fasyankes' => '32760200001',
             'village_name' => 'Melati',
             'year' => '2025',
             'q1' => 't',
