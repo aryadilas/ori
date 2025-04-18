@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             Form1Seeder::class,
             Form2Seeder::class,
             Form3Seeder::class,
+            VaccineSeeder::class,
         ]);
 
     }
