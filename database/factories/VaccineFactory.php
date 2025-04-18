@@ -51,27 +51,32 @@ class VaccineFactory extends Factory
             ->where('category', 'pengurangan')
             ->sum('amount');
 
-        // Tentukan jumlah yang akan ditambahkan atau dikurangi
-        $amount = $this->faker->numberBetween(25, 80);
+        // Menghasilkan tanggal acak dan memeriksa duplikasi
+        do {
+            $date = $this->faker->dateTimeBetween('2025-01-01', '2025-12-31')->format('Y-m-d');
+        } while (Vaccine::where('kode_fasyankes', $kode_fasyankes)->where('date', $date)->exists());
 
-        // Pastikan stok tidak menjadi negatif
-        if ($currentStock < $amount && $this->faker->boolean(50)) {
-            // Jika stok tidak cukup, set kategori ke 'penambahan' dan amount ke 0
-            return [
-                'date' => $this->faker->dateTimeBetween('2025-01-01', '2025-12-31')->format('Y-m-d'),
-                'category' => 'penambahan',
-                'amount' => 0, // Tidak menambah stok
-                'kode_fasyankes' => $kode_fasyankes,
-            ];
-        }
-
-        // Pilih kategori secara acak
+        // Tentukan kategori secara acak
         $category = $this->faker->randomElement(['penambahan', 'pengurangan']);
 
+        // Tentukan amount
+        if ($category === 'penambahan') {
+            // Jika kategori 'penambahan', amount bisa antara 25 hingga 80
+            $amount = $this->faker->numberBetween(25, 80);
+        } else {
+            // Jika kategori 'pengurangan', pastikan amount tidak lebih dari stok yang ada
+            $amount = $this->faker->numberBetween(25, min(80, $currentStock));
+            // Jika stok tidak cukup untuk mengurangi, set kategori ke 'penambahan'
+            if ($currentStock < 25) {
+                $category = 'penambahan';
+                $amount = $this->faker->numberBetween(25, 80); // Tetap menghasilkan amount yang valid
+            }
+        }
+
         return [
-            'date' => $this->faker->dateTimeBetween('2025-01-01', '2025-12-31')->format('Y-m-d'),
+            'date' => $date,
             'category' => $category,
-            'amount' => $category === 'penambahan' ? $amount : min($amount, $currentStock), // Pastikan tidak lebih dari stok yang ada
+            'amount' => $amount,
             'kode_fasyankes' => $kode_fasyankes,
         ];
     }
