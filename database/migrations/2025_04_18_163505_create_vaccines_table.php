@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('form3_answers', function (Blueprint $table) {
+        Schema::create('vaccines', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->enum('category', ['penambahan', 'pengurangan']);
+            $table->integer('amount');
             $table->string('kode_fasyankes');
-            $table->year('year');
-
-            $table->string('age_group');
-            $table->integer('suspect');
-            $table->integer('population');
 
             $table->timestamps();
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('form3_answers');
+        Schema::dropIfExists('vaccines');
     }
 };

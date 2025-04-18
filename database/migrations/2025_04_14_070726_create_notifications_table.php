@@ -20,6 +20,8 @@ return new class extends Migration
             $table->enum('category', ['klb', 'lab']);
             $table->enum('status', ['confirmed', 'false']);
             $table->timestamps();
+
+            $table->foreign('kode_fasyankes')->references('kode_fasyankes')->on('fasyankes')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 
