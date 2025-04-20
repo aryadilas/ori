@@ -18,6 +18,11 @@ class LabAlert extends Widget
 
     public $lab = [];
 
+    public static function canView(): bool
+    {
+        return false;
+    }
+
     public function getViewData(): array
     {
 
