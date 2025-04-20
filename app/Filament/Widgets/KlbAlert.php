@@ -79,6 +79,7 @@ class KlbAlert extends Widget
                     if ($notification) {
                         
                         $results[] = [
+                            'notification_id' => $notification->id,
                             'kode_fasyankes' => $notification->kode_fasyankes,
                             'fasyankes_name' => $notification->fasyankes->name,
                             'start_week' => $notification->start_week,
@@ -90,6 +91,7 @@ class KlbAlert extends Widget
                     } else {
 
                         $results[] = [
+                            'notification_id' => null,
                             'kode_fasyankes' => $kodeFasyankes,
                             'fasyankes_name' => $fasyankesName,
                             'start_week' => $w1,
@@ -135,6 +137,23 @@ class KlbAlert extends Widget
         ]);
 
         $this->dispatch('$refresh');
+        $this->dispatch('hide-confirm-button');
+
+    }
+
+    public function notification_confirm_edit($notificationId, $status)
+    {
+
+        $notification = Notification::where('id', $notificationId)->first();
+        
+        if ($notification) {
+            $notification->update([
+                'status' => $status,
+            ]);
+        }
+
+        $this->dispatch('$refresh');
+        $this->dispatch('hide-confirm-button');
 
     }
 
