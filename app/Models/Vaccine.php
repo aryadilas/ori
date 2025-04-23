@@ -22,7 +22,7 @@ class Vaccine extends Model
     {
         // Mengambil semua vaksin berdasarkan kode_fasyankes dan tahun
         $vaccines = self::where('kode_fasyankes', $kodeFasyankes)
-            ->where('year', $year)
+            ->whereYear('date', $year)
             ->get();
 
         // Menghitung total stok
