@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\DB;
 
 class VaccineStokAdminResource extends Resource
 {
@@ -58,7 +59,25 @@ class VaccineStokAdminResource extends Resource
                     ->label('Fasyankes'),
                 Tables\Columns\TextColumn::make('stock')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
-                    ->sortable()
+                    ->sortable(query: function ($query, $direction) {
+                        $year = now()->format('Y');
+                
+                        $query->orderByRaw(
+                            "(SELECT 
+                                COALESCE(SUM(
+                                    CASE 
+                                        WHEN v.category = 'penambahan' THEN v.amount
+                                        WHEN v.category = 'pengurangan' THEN -v.amount
+                                        ELSE 0
+                                    END
+                                ), 0)
+                             FROM vaccines v
+                             WHERE v.kode_fasyankes = vaccines.kode_fasyankes
+                             AND YEAR(v.date) = ?
+                            ) {$direction}", 
+                            [$year]
+                        );
+                    })
                     ->getStateUsing(function ($record) {
                         return static::getModel()::getTotalStok($record->kode_fasyankes, now()->format('Y'));
                     })
