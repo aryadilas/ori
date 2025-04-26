@@ -261,7 +261,13 @@ class Form1Resource extends Resource
                     ->label('Tahun')
                     ->options(function () {
                         
-                        $yearExists = static::getModel()::select('year')->where('kode_fasyankes', auth()->user()->kode_fasyankes)->distinct()->get()->pluck('year');
+                        $yearExists = static::getModel()::select('year')
+                            ->when(auth()->user()->kode_fasyankes, function ($query) {
+                                return $query->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+                            })
+                            ->distinct()
+                            ->get()
+                            ->pluck('year');
                         
                         $options = [];
 
