@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->string('kode_fasyankes');
-            $table->string('total_case');
-            $table->string('start_week');
-            $table->string('end_week')->nullable();
+            $table->integer('total_case');
+            $table->integer('start_week');
+            $table->integer('end_week')->nullable();
             $table->enum('category', ['klb', 'lab']);
             $table->enum('status', ['confirmed', 'false']);
             $table->timestamps();
