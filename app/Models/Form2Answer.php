@@ -18,8 +18,11 @@ class Form2Answer extends Model
     protected $fillable = [
         'house_id',
         'kode_fasyankes',
+        'village_name',
         'year',
+        'parent_nik',
         'parent_name',
+        'child_nik',
         'child_name',
         'birthdate',
         'gender',

@@ -76,6 +76,10 @@ class Form2Resource extends Resource
                     })
                     ->inlineLabel()
                     ->required(),
+                Forms\Components\TextInput::make('village_name')
+                    ->label('Desa/Kelurahan')
+                    ->inlineLabel()
+                    ->required(),
 
                 Forms\Components\Select::make('house_id')
                     ->label('Rumah')
@@ -94,9 +98,16 @@ class Form2Resource extends Resource
                     })
                     ->inlineLabel()
                     ->required(),
-
+                Forms\Components\TextInput::make('parent_nik')
+                    ->label('NIK Orang Tua')
+                    ->inlineLabel()
+                    ->required(),
                 Forms\Components\TextInput::make('parent_name')
                     ->label('Nama Orang Tua')
+                    ->inlineLabel()
+                    ->required(),
+                Forms\Components\TextInput::make('child_nik')
+                    ->label('NIK Anak')
                     ->inlineLabel()
                     ->required(),
                 Forms\Components\TextInput::make('child_name')
@@ -206,14 +217,26 @@ class Form2Resource extends Resource
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label("Tahun"),
+                Tables\Columns\TextColumn::make("village_name")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Desa/Kelurahan"),
                 Tables\Columns\TextColumn::make("house_id")
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label("Rumah"),
+                Tables\Columns\TextColumn::make("parent_nik")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("NIK Orang Tua"),
                 Tables\Columns\TextColumn::make("parent_name")
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label("Nama Orang Tua"),
+                Tables\Columns\TextColumn::make("child_nik")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("NIK Anak"),
                 Tables\Columns\TextColumn::make("child_name")
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
@@ -316,6 +339,10 @@ class Form2Resource extends Resource
                 Tables\Actions\EditAction::make()
                     ->visible(auth()->user()->hasRole('Puskesmas'))
                     ->form([
+                        Forms\Components\TextInput::make('village_name')
+                            ->label('Desa/Kelurahan')
+                            ->inlineLabel()
+                            ->required(),
                         Forms\Components\Select::make('house_id')
                             ->label('Rumah')
                             ->options(function ($record) {
@@ -335,8 +362,16 @@ class Form2Resource extends Resource
                             ->inlineLabel()
                             ->required(),
 
+                        Forms\Components\TextInput::make('parent_nik')
+                            ->label('NIK Orang Tua')
+                            ->inlineLabel()
+                            ->required(),
                         Forms\Components\TextInput::make('parent_name')
                             ->label('Nama Orang Tua')
+                            ->inlineLabel()
+                            ->required(),
+                        Forms\Components\TextInput::make('child_nik')
+                            ->label('NIK Anak')
                             ->inlineLabel()
                             ->required(),
                         Forms\Components\TextInput::make('child_name')

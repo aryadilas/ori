@@ -21,7 +21,10 @@ return new class extends Migration
 
             
             $table->integer('house_id');
+            $table->string('village_name');
+            $table->string('parent_nik');
             $table->string('parent_name');
+            $table->string('child_nik');
             $table->string('child_name');
             $table->date('birthdate');
             $table->enum('gender', ['l', 'p']);
