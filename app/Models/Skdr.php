@@ -17,7 +17,7 @@ class Skdr extends Model
         'week',
         'year',
         'case_count',
-        'patient_names',
+        // 'patient_names',
         'kode_fasyankes'
     ];
 

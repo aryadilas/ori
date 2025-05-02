@@ -70,12 +70,12 @@ class SkdrInputResource extends Resource
                     ->live()
                     ->numeric()
                     ->required(),
-                Forms\Components\Repeater::make('patient_names')
-                    ->label('Pasien')
-                    ->schema([
-                        Forms\Components\TextInput::make('name')->required(),
-                    ])
-                    ->columns(1)
+                // Forms\Components\Repeater::make('patient_names')
+                //     ->label('Pasien')
+                //     ->schema([
+                //         Forms\Components\TextInput::make('name')->required(),
+                //     ])
+                //     ->columns(1)
             ]);
     }
 
@@ -113,14 +113,14 @@ class SkdrInputResource extends Resource
                 Tables\Columns\TextColumn::make('case_count')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label('Kasus'),
-                Tables\Columns\TextColumn::make('patient_names')
-                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
-                    ->formatStateUsing(fn ($state) => 
-                        collect(json_decode("[$state]", true))
-                            ->pluck('name')
-                            ->join(', ') ?: '-'
-                    )
-                    ->label('Nama Pasien')
+                // Tables\Columns\TextColumn::make('patient_names')
+                //     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                //     ->formatStateUsing(fn ($state) => 
+                //         collect(json_decode("[$state]", true))
+                //             ->pluck('name')
+                //             ->join(', ') ?: '-'
+                //     )
+                //     ->label('Nama Pasien')
             ])
             ->defaultSort('week', 'desc')
             ->paginated([30, 60, 100, 'all'])

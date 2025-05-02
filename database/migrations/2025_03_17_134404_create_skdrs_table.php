@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('week');
             $table->year('year');
             $table->integer('case_count');
-            $table->text('patient_names');
+            $table->text('patient_names')->nullable();
             $table->string('kode_fasyankes');
             $table->timestamps();
 
