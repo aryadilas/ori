@@ -84,6 +84,10 @@ class Form3Resource extends Resource
                     })
                     ->inlineLabel()
                     ->required(),
+                Forms\Components\TextInput::make('village_name')
+                    ->label('Desa/Kelurahan')
+                    ->inlineLabel()
+                    ->required(),
 
                 Forms\Components\Section::make('Usia 9 - < 18 Bulan')
                     ->description('Usia 9 sampai kurang dari 18 bulan')
@@ -195,6 +199,10 @@ class Form3Resource extends Resource
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label("Tahun"),
+                Tables\Columns\TextColumn::make("village_name")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Desa/Kelurahan"),
                 Tables\Columns\TextColumn::make("age_group")
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
@@ -255,7 +263,10 @@ class Form3Resource extends Resource
 
 
 
-
+                        Forms\Components\TextInput::make('village_name')
+                            ->label('Desa/Kelurahan')
+                            ->inlineLabel()
+                            ->required(),
 
                         Forms\Components\Section::make('Usia 9 - < 18 Bulan')
                             ->description('Usia 9 sampai kurang dari 18 bulan')

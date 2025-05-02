@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('kode_fasyankes');
             $table->year('year');
+            
+            $table->string('village_name');
 
             $table->string('age_group');
             $table->integer('suspect');

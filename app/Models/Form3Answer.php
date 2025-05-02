@@ -13,6 +13,7 @@ class Form3Answer extends Model
         'age_group',
         'suspect',
         'population',
+        'village_name',
     ];
 
     protected $appends = [
