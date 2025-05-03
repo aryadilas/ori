@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Form3Resource\Pages;
 use App\Filament\Resources\Form3Resource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
+use Konnco\FilamentImport\Actions\ImportField;
+use Konnco\FilamentImport\Actions\ImportAction;
 
 class ManageForm3s extends ManageRecords
 {
@@ -85,6 +87,35 @@ class ManageForm3s extends ManageRecords
                     static::getModel()::create($more16year);
 
                     return static::getModel()::create($more16year);
+                }),
+            ImportAction::make()
+                ->visible(auth()->user()->hasRole('Puskesmas'))
+                ->fields([
+
+                    ImportField::make('kelompok_usia')
+                        ->required(),
+                    ImportField::make('tahun')
+                        ->required(),
+                    ImportField::make('nama_kelurahan')
+                        ->required(),
+                    ImportField::make('jumlah_kasus')
+                        ->required(),
+                    ImportField::make('populasi')
+                        ->required(),
+                    
+                    
+                ])
+                ->handleRecordCreation(function(array $data) { 
+
+                    return static::getModel()::create([
+                        'kode_fasyankes' => auth()->user()->kode_fasyankes,
+                        'year' => $data['tahun'],
+                        'age_group' => $data['kelompok_usia'],
+                        'suspect' => $data['jumlah_kasus'],
+                        'population' => $data['populasi'],
+                        'village_name' => $data['nama_kelurahan'],
+                    ]);
+
                 }),
         ];
         // static::getModel()::create($more16year);
