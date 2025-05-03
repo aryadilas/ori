@@ -19,7 +19,7 @@ class VaccineStokResource extends Resource
 {
     protected static ?string $model = Vaccine::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     protected static ?string $navigationLabel = 'Stok Vaksin';
 
