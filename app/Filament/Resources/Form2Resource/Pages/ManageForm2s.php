@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Form2Resource\Pages;
 use App\Filament\Resources\Form2Resource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
+use Konnco\FilamentImport\Actions\ImportField;
+use Konnco\FilamentImport\Actions\ImportAction;
 
 class ManageForm2s extends ManageRecords
 {
@@ -87,6 +89,73 @@ class ManageForm2s extends ManageRecords
 
                     // return $records[0];
                     
+                }),
+            ImportAction::make()
+                ->visible(auth()->user()->hasRole('Puskesmas'))
+                ->fields([
+
+                    ImportField::make('tahun')
+                        ->required(),
+                    ImportField::make('nama_kelurahan')
+                        ->required(),
+                    ImportField::make('id_rumah')
+                        ->required(),
+                    ImportField::make('nik_orangtua')
+                        ->required(),
+                    ImportField::make('nama_orangtua')
+                        ->required(),
+                    ImportField::make('nik_anak')
+                        ->required(),
+                    ImportField::make('nama_anak')
+                        ->required(),
+                    ImportField::make('tgl_lahir_anak')
+                        ->required(),
+                    ImportField::make('jenis_kelamin_anak')
+                        ->required(),
+                    ImportField::make('status_imunisasi_anak_cr1')
+                        ->required(),
+                    ImportField::make('status_imunisasi_anak_cr2')
+                        ->required(),
+                    ImportField::make('status_imunisasi_anak_cr_bias')
+                        ->required(),
+                    ImportField::make('status_imunisasi_anak_cr_tambahan')
+                        ->required(),
+                    ImportField::make('alasan_tidak_imunisasi')
+                        ->required(),
+                    ImportField::make('izin_orangtua_imunisasi')
+                        ->required(),
+                    ImportField::make('asal_informasi')
+                        ->required(),
+                    ImportField::make('demam_ruam_14hari')
+                        ->required(),
+                    ImportField::make('ruam_informasi_nama_alamat')
+                        ->required(),
+                    
+                ])
+                ->handleRecordCreation(function(array $data) { 
+
+                    return static::getModel()::create([
+                        'kode_fasyankes' => auth()->user()->kode_fasyankes,
+                        'house_id' => $data['id_rumah'],
+                        'village_name' => $data['nama_kelurahan'],
+                        'year' => $data['tahun'],
+                        'parent_nik' => $data['nik_orangtua'],
+                        'parent_name' => $data['nama_orangtua'],
+                        'child_nik' => $data['nik_anak'],
+                        'child_name' => $data['nama_anak'],
+                        'birthdate' => $data['tgl_lahir_anak'],
+                        'gender' => $data['jenis_kelamin_anak'],
+                        'q1' => $data['status_imunisasi_anak_cr1'],
+                        'q2' => $data['status_imunisasi_anak_cr2'],
+                        'q3' => $data['status_imunisasi_anak_cr_bias'],
+                        'q4' => $data['status_imunisasi_anak_cr_tambahan'],
+                        'q5' => $data['alasan_tidak_imunisasi'],
+                        'q6' => $data['izin_orangtua_imunisasi'],
+                        'q7' => $data['asal_informasi'],
+                        'q8' => $data['demam_ruam_14hari'],
+                        'q9' => $data['ruam_informasi_nama_alamat'],
+                    ]);
+
                 }),
         ];
     }
