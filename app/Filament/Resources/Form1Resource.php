@@ -31,6 +31,8 @@ class Form1Resource extends Resource
 
     protected static ?string $navigationGroup = 'DATA';
 
+    protected static ?int $navigationSort = 1;
+
     public static function getEloquentQuery(): Builder
     {
         if (auth()->user()->hasRole('Puskesmas')) {

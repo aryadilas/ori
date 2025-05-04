@@ -29,6 +29,8 @@ class SummarySckOriResource extends Resource
 
     protected static ?string $navigationGroup = 'DATA';
 
+    protected static ?int $navigationSort = 3;
+
     public static function canAccess(): bool
     {
         return auth()->user()->hasRole('Puskesmas'); 
