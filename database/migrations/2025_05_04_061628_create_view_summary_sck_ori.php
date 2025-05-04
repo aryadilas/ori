@@ -18,6 +18,7 @@ return new class extends Migration
                 view_summary_sck_ori 
             AS
                 SELECT
+                    vso.id,
                     vso.kode_fasyankes,
                     vso.year,
                     vso.age_group,
