@@ -85,6 +85,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement("DROP VIEW IF EXISTS nama_view");
+        DB::statement("DROP VIEW IF EXISTS view_sck_ori");
     }
 };
