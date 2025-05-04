@@ -44,6 +44,11 @@ class SummarySckOriResource extends Resource
             ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -94,6 +99,7 @@ class SummarySckOriResource extends Resource
                     ->label('% Cakupan Campak Rubela Tambahan'),
             ])
             ->defaultSort('age_group', 'ASC')
+            ->emptyStateHeading('Data Kosong')
             ->filters([
                 //
             ])
