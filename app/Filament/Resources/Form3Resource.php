@@ -189,6 +189,11 @@ class Form3Resource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->header(function () {
+                if (auth()->user()->hasRole('Puskesmas')) {
+                    return view('filament.header.custom-header', ['file_path' => '/template/attack_rate.xlsx']);
+                }
+            })
             ->columns([
                 Tables\Columns\TextColumn::make("fasyankes.name")
                     ->placeholder('-')
