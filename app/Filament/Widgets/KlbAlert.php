@@ -44,7 +44,7 @@ class KlbAlert extends Widget
             $allWeeks = array_keys($weeks);
             sort($allWeeks);
 
-            for ($i = 0; $i < count($allWeeks) - 3; $i++) {
+            for ($i = 0; $i < count($allWeeks); $i++) {
                 $w1 = $allWeeks[$i];
                 $w2 = $w1 + 1;
                 $w3 = $w1 + 2;
@@ -56,8 +56,6 @@ class KlbAlert extends Widget
                 $caseW4 = $weeks[$w4] ?? 0;
 
                 $totalCases = $caseW1 + $caseW2 + $caseW3 + $caseW4;
-
-
 
                 if ($totalCases >= 5) {
 
@@ -113,6 +111,8 @@ class KlbAlert extends Widget
             }
 
         }
+
+        // dd($results);
 
         if ($results) {
             $this->klbStatus = true;
