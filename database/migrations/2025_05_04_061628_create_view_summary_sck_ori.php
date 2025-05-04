@@ -13,7 +13,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::statement("
+        DB::unprepared("DROP VIEW IF EXISTS view_summary_sck_ori");
+        DB::unprepared("
             CREATE VIEW 
                 view_summary_sck_ori 
             AS
@@ -77,6 +78,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement("DROP VIEW IF EXISTS view_summary_sck_ori");
+        DB::unprepared("DROP VIEW IF EXISTS view_summary_sck_ori");
     }
 };
