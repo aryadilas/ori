@@ -835,7 +835,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '13',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200005',
             'year' => '2025',
             'parent_name' => 'Budi',
             'child_name' => 'Tari',
@@ -854,7 +854,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '13',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200005',
             'year' => '2025',
             'parent_name' => 'Wati',
             'child_name' => 'Raka',
@@ -873,7 +873,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '14',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200005',
             'year' => '2025',
             'parent_name' => 'Siti',
             'child_name' => 'Gilang',
@@ -892,7 +892,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '14',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200005',
             'year' => '2025',
             'parent_name' => 'Budi',
             'child_name' => 'Rio',
@@ -911,7 +911,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '14',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200005',
             'year' => '2025',
             'parent_name' => 'Tono',
             'child_name' => 'Dina',
@@ -930,7 +930,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '15',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200005',
             'year' => '2025',
             'parent_name' => 'Ayat',
             'child_name' => 'Lala',
@@ -949,7 +949,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '15',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200005',
             'year' => '2025',
             'parent_name' => 'Wati',
             'child_name' => 'Nina',
@@ -968,7 +968,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '15',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200005',
             'year' => '2025',
             'parent_name' => 'Maya',
             'child_name' => 'Eka',
@@ -987,7 +987,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '16',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Maya',
             'child_name' => 'Gilang',
@@ -1006,7 +1006,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '16',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Desi',
             'child_name' => 'Gilang',
@@ -1025,7 +1025,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '16',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Budi',
             'child_name' => 'Lala',
@@ -1044,7 +1044,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '17',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Maya',
             'child_name' => 'Rio',
@@ -1063,7 +1063,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '17',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Desi',
             'child_name' => 'Tari',
@@ -1082,7 +1082,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '17',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Tono',
             'child_name' => 'Lala',
@@ -1101,7 +1101,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '17',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Budi',
             'child_name' => 'Yoga',
@@ -1120,7 +1120,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '18',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Andi',
             'child_name' => 'Yoga',
@@ -1139,7 +1139,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '18',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Andi',
             'child_name' => 'Gilang',
@@ -1158,7 +1158,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '18',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Desi',
             'child_name' => 'Nina',
@@ -1177,7 +1177,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '18',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Maya',
             'child_name' => 'Raka',
@@ -1196,7 +1196,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '19',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Siti',
             'child_name' => 'Eka',
@@ -1215,7 +1215,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '19',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Siti',
             'child_name' => 'Gilang',
@@ -1234,7 +1234,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '19',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Siti',
             'child_name' => 'Raka',
@@ -1253,7 +1253,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '19',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Desi',
             'child_name' => 'Tari',
@@ -1272,7 +1272,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '20',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Rina',
             'child_name' => 'Tari',
@@ -1291,7 +1291,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '20',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Andi',
             'child_name' => 'Lala',
@@ -1310,7 +1310,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '20',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Siti',
             'child_name' => 'Raka',
@@ -1329,7 +1329,7 @@ class Form2Seeder extends Seeder
         
         Form2Answer::create([
             'house_id' => '20',
-            'kode_fasyankes' => '32760200001',
+            'kode_fasyankes' => '32760200008',
             'year' => '2025',
             'parent_name' => 'Ayat',
             'child_name' => 'Yoga',
