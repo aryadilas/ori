@@ -21,6 +21,7 @@ return new class extends Migration
                 SELECT 
                     f2_helpers.id,
                     f2_helpers.kode_fasyankes,
+                    fasyankes.name,
                     f2_helpers.year,
                     f2_helpers.house_id,
                     f2_helpers.village_name,
@@ -78,6 +79,10 @@ return new class extends Migration
                         FROM 
                             form2_answers f2
                     ) AS f2_helpers
+                    JOIN 
+                        fasyankes 
+                    ON
+                        f2_helpers.kode_fasyankes = fasyankes.kode_fasyankes
         ");
     }
 

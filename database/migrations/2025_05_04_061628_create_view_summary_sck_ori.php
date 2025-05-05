@@ -21,6 +21,7 @@ return new class extends Migration
                 SELECT
                     vso.id,
                     vso.kode_fasyankes,
+                    fasyankes.name,
                     vso.year,
                     vso.age_group,
                     CASE
@@ -62,6 +63,10 @@ return new class extends Migration
                     ROUND(SUM(CASE WHEN vso.q4 = 'y' THEN 1 ELSE 0 END) / COUNT(vso.age_group) * 100) AS crAddition_scope
                 FROM
                     view_sck_ori vso
+                JOIN 
+                    fasyankes 
+                ON
+                    vso.kode_fasyankes = fasyankes.kode_fasyankes
                 GROUP BY
                     vso.kode_fasyankes,
                     vso.year,
