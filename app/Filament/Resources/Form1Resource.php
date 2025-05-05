@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\Form1Resource\Pages;
 use App\Filament\Resources\Form1Resource\RelationManagers;
 use App\Models\Form1Answer;
+use App\Models\Fasyankes;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -296,7 +297,24 @@ class Form1Resource extends Resource
                     })
                     ->default(now()->year)
                     ->selectablePlaceholder(false)
-                    ->attribute('year')
+                    ->attribute('year'),
+
+                    SelectFilter::make('fasyankes')
+                    ->label('Fasyankes')
+                    ->hidden(auth()->user()->hasRole('Puskesmas'))
+                    ->options(function () {
+
+                        $fasyankesExists = Fasyankes::select('name', 'kode_fasyankes')
+                            ->distinct()
+                            ->get()
+                            ->pluck('name', 'kode_fasyankes');
+                        
+                        return $fasyankesExists;
+
+                    })
+                    ->default('32760200005')
+                    ->selectablePlaceholder(false)
+                    ->attribute('kode_fasyankes')
 
             ], layout: FiltersLayout::AboveContent)
             ->actions([

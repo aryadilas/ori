@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SummarySckOriResource\Pages;
 use App\Filament\Resources\SummarySckOriResource\RelationManagers;
 use App\Models\ViewSummarySckOri;
+use App\Models\Fasyankes;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,6 +13,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 
 class SummarySckOriResource extends Resource
 {
@@ -31,9 +34,13 @@ class SummarySckOriResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    public static function canAccess(): bool
+    public static function getEloquentQuery(): Builder
     {
-        return auth()->user()->hasRole('Puskesmas'); 
+        if (auth()->user()->hasRole('Puskesmas')) {
+            return parent::getEloquentQuery()->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+        } else {
+            return parent::getEloquentQuery();
+        }
     }
 
     public static function form(Form $form): Form
@@ -42,11 +49,6 @@ class SummarySckOriResource extends Resource
             ->schema([
                 
             ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->where('kode_fasyankes', auth()->user()->kode_fasyankes);
     }
 
     public static function table(Table $table): Table
@@ -101,8 +103,55 @@ class SummarySckOriResource extends Resource
             ->defaultSort('age_group', 'ASC')
             ->emptyStateHeading('Data Kosong')
             ->filters([
-                //
-            ])
+                
+                SelectFilter::make('year')
+                    ->label('Tahun')
+                    ->options(function () {
+                        
+                        $yearExists = static::getModel()::select('year')
+                            ->when(auth()->user()->kode_fasyankes, function ($query) {
+                                return $query->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+                            })
+                            ->distinct()
+                            ->get()
+                            ->pluck('year');
+                        
+                        $options = [];
+
+                        foreach ($yearExists as $value) {
+                            $options[$value] = $value;
+                        }
+
+                        if (!$yearExists) {
+                            $options[now()->year] = now()->year;
+                            return $options;
+                        }
+
+                        return $options;
+
+                    })
+                    ->default(now()->year)
+                    ->selectablePlaceholder(false)
+                    ->attribute('year'),
+
+                SelectFilter::make('fasyankes')
+                    ->label('Fasyankes')
+                    ->hidden(auth()->user()->hasRole('Puskesmas'))
+                    ->options(function () {
+
+                        $fasyankesExists = Fasyankes::select('name', 'kode_fasyankes')
+                            ->distinct()
+                            ->get()
+                            ->pluck('name', 'kode_fasyankes');
+                        
+                        return $fasyankesExists;
+
+                    })
+                    ->default('32760200005')
+                    ->selectablePlaceholder(false)
+                    ->attribute('kode_fasyankes')
+
+                ], layout: FiltersLayout::AboveContent)
             ->actions([
                 // Tables\Actions\EditAction::make(),
                 // Tables\Actions\DeleteAction::make(),
