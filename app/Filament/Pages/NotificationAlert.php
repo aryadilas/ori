@@ -11,9 +11,11 @@ class NotificationAlert extends Page
 
     protected static string $view = 'filament.pages.notification-alert';
 
-    protected static ?string $title = 'Notification Alert';
+    protected static ?string $title = 'Notifikasi Alert KLB Campak-Rubela';
 
     protected static ?string $navigationIcon = 'heroicon-o-bell-alert';
+
+    protected static ?string $navigationLabel = 'Notification Alert';
 
 
     /**
