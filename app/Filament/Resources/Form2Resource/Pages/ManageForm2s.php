@@ -7,6 +7,9 @@ use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 use Konnco\FilamentImport\Actions\ImportField;
 use Konnco\FilamentImport\Actions\ImportAction;
+use pxlrbt\FilamentExcel\Columns\Column;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
 class ManageForm2s extends ManageRecords
 {
@@ -157,6 +160,15 @@ class ManageForm2s extends ManageRecords
                     ]);
 
                 }),
+
+            ExportAction::make() 
+                ->hidden(auth()->user()->hasRole('Puskesmas'))
+                ->exports([
+                    ExcelExport::make()
+                        ->fromTable()
+                        ->withFilename(fn ($resource) => $resource::getModelLabel() . '-' . date('Y-m-d'))
+                        ->withWriterType(\Maatwebsite\Excel\Excel::XLSX)
+                ]), 
         ];
     }
 }
