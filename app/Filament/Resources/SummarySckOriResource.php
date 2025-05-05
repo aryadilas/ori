@@ -30,7 +30,7 @@ class SummarySckOriResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Summary SCK ORI';
 
-    protected static ?string $navigationGroup = 'DATA';
+    protected static ?string $navigationGroup = 'ORI KLB CAMPAK-RUBELA';
 
     protected static ?int $navigationSort = 3;
 

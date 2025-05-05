@@ -30,7 +30,7 @@ class Form1Resource extends Resource
 
     protected static ?string $pluralModelLabel = 'Luas Wilayah';
 
-    protected static ?string $navigationGroup = 'DATA';
+    protected static ?string $navigationGroup = 'ORI KLB CAMPAK-RUBELA';
 
     protected static ?int $navigationSort = 1;
 

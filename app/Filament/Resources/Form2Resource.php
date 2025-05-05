@@ -33,7 +33,7 @@ class Form2Resource extends Resource
 
     protected static ?string $pluralModelLabel = 'SCK ORI';
 
-    protected static ?string $navigationGroup = 'DATA';
+    protected static ?string $navigationGroup = 'ORI KLB CAMPAK-RUBELA';
 
     protected static ?int $navigationSort = 2;
 

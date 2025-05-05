@@ -28,7 +28,7 @@ class VaccineStokAdminResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Stok Vaksin';
 
-    protected static ?string $navigationGroup = 'Vaksin';
+    protected static ?string $navigationGroup = 'VAKSIN';
 
     public static function canAccess(): bool
     {

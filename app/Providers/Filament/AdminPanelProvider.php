@@ -58,10 +58,12 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 'SKDR',
-                'DATA',
+                'ORI KLB CAMPAK-RUBELA',
+                'VAKSIN',
+                'VISUALISASI DATA',
             ])
             ->defaultThemeMode(ThemeMode::Light)
-            ->sidebarWidth('17rem')
+            ->sidebarWidth('20rem')
             ->viteTheme('resources/css/filament/admin/theme.css');;
     }
 }

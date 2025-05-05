@@ -19,6 +19,8 @@ class DataVisualisation extends Page
 
     protected static ?string $pluralModelLabel = 'Visualisasi Data';
 
+    protected static ?string $navigationGroup = 'VISUALISASI DATA';
+
     
     protected static ?string $title = 'Visualisasi Data';
 
