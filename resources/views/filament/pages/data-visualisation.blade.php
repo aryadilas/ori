@@ -55,9 +55,25 @@
 
             <div x-show="tab === 2" wire:key="immunizationInfo" class="md:w-full" id="immunizationInfo"></div>
             <div x-show="tab === 2" wire:key="notImmunizedReason" class="md:w-full" id="notImmunizedReason"></div>
-            <div x-show="tab === 2"  class="flex gap-2">
+            <div x-show="tab === 2"  class="flex flex-col gap-2 sm:flex-row">
                 <div wire:key="fever14Days" class="w-full max-w-full md:w-1/2" id="fever14Days"></div>
                 <div wire:key="immunizedParentPermission" class="w-full max-w-full md:w-1/2" id="immunizedParentPermission"></div>
+            </div>
+
+            <div x-show="tab === 4" class="flex flex-col gap-2">
+                <h1 class="text-sm font-extrabold text-center">Jumlah Sasaran</h1>
+                <table class="text-sm border border-black">
+                    <tr>
+                        <td class="p-2 border border-black">Kateogri Umur Anak</td>
+                        <td class="p-2 border border-black">Usia Anak</td>
+                    </tr>
+                    @foreach ($this->graphic_4 as $item)
+                        <tr>
+                            <td class="p-2 border border-black">{{ $item->usia }}</td>
+                            <td class="p-2 border border-black">{{ $item->target }}</td>
+                        </tr>
+                    @endforeach
+                </table>
             </div>
 
     </div>

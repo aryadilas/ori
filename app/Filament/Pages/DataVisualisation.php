@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use Filament\Pages\Page;
 use App\Models\Form2Answer;
+use App\Models\ViewSummarySckOri;
 
 class DataVisualisation extends Page
 {
@@ -57,6 +58,8 @@ class DataVisualisation extends Page
     public $notImmunizedReason, $notImmunizedReasonCategories, $notImmunizedReasonValues, $notImmunizedReasonTotal;
     public $fever14Days, $fever14DaysCategories, $fever14DaysValues, $fever14DaysTotal;
     public $immunizedParentPermission, $immunizedParentPermissionCategories, $immunizedParentPermissionValues, $immunizedParentPermissionTotal;
+    
+    public $graphic_4;
     
     public function childGenderData()
     {
@@ -582,8 +585,8 @@ class DataVisualisation extends Page
 
 
 
-
-
+        /* Grafik 4 */
+        $this->graphic_4 = ViewSummarySckOri::where('kode_fasyankes', auth()->user()->kode_fasyankes)->where('year', now()->format('Y'))->get();
 
 
 
