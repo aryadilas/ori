@@ -20,6 +20,7 @@
                                 {{-- <span>Status KLB (≥5 kasus selama 4 minggu berturut-turut).</span> --}}
                                 <span class="text-xs">Terdapat {{ $case['total_cases'] }} kasus pada minggu ke {{ $case['start_week'] }} sampai {{ $case['end_week'] }}.</span>
                             </div>
+                            <span class="px-1 mt-1 text-xs text-black bg-white rounded-sm w-fit">Belum dikonfirmasi</span>
                             @if ($case['status'] === 'unconfirmed' && auth()->user()->hasRole('Puskesmas'))
                                 <div class="z-10 flex gap-2 mt-2">
                                     <button wire:click="notification_confirm('{{ $case['kode_fasyankes'] }}', '{{ $case['total_cases'] }}', '{{ $case['start_week'] }}', '{{ $case['end_week'] }}', 'confirmed')" class="flex items-center gap-1 px-2 py-1 text-black bg-white rounded-md cursor-pointer w-fit focus:outline-none focus:ring-2 focus:ring-gray-300" tabindex="0">
