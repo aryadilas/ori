@@ -52,7 +52,9 @@
                                 class="flex flex-col">
                                 <div class="flex items-center gap-2">
                                     <span class="text-sm font-semibold">Puskesmas {{ $case['fasyankes_name'] }}</span>
-                                    <x-heroicon-o-pencil-square @click="showConfirmButton = ! showConfirmButton" class="z-10 w-4 h-4 cursor-pointer " />
+                                    @if (auth()->user()->hasRole('Puskesmas'))
+                                        <x-heroicon-o-pencil-square @click="showConfirmButton = ! showConfirmButton" class="z-10 w-4 h-4 cursor-pointer " />
+                                    @endif
                                 </div>
                                 <div class="flex flex-col">
                                     <span>Status KLB.</span>
@@ -86,7 +88,9 @@
                                 class="flex flex-col">
                                 <div class="flex items-center gap-2">
                                     <span class="text-sm font-semibold">Puskesmas {{ $case['fasyankes_name'] }}</span>
-                                    <x-heroicon-o-pencil-square @click="showConfirmButton = ! showConfirmButton" class="z-10 w-4 h-4 cursor-pointer " />
+                                    @if (auth()->user()->hasRole('Puskesmas'))
+                                        <x-heroicon-o-pencil-square @click="showConfirmButton = ! showConfirmButton" class="z-10 w-4 h-4 cursor-pointer " />
+                                    @endif
                                 </div>
                                 <div class="flex flex-col">
                                     <span>Bukan KLB.</span>
