@@ -57,7 +57,7 @@
                                     @endif
                                 </div>
                                 <div class="flex flex-col">
-                                    <span>Status KLB.</span>
+                                    <span class="px-1 mt-1 text-xs text-black bg-white rounded-sm w-fit">Terkonfirmasi Status KLB</span>
                                     <span class="text-xs">Terdapat {{ $case['total_cases'] }} kasus pada minggu ke {{ $case['start_week'] }} sampai {{ $case['end_week'] }}.</span>
                                 </div>
                                 <div x-show="showConfirmButton" class="z-10 flex gap-2 mt-2">
@@ -93,7 +93,7 @@
                                     @endif
                                 </div>
                                 <div class="flex flex-col">
-                                    <span>Bukan KLB.</span>
+                                    <span class="px-1 mt-1 text-xs text-black bg-white rounded-sm w-fit">Terkonfirmasi bukan KLB</span>
                                     <span class="text-xs">Terdapat {{ $case['total_cases'] }} kasus pada minggu ke {{ $case['start_week'] }} sampai {{ $case['end_week'] }}.</span>
                                 </div>
                                 <div x-show="showConfirmButton" class="z-10 flex gap-2 mt-2">
