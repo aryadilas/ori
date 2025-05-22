@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('end_week')->nullable();
             $table->enum('category', ['klb', 'lab']);
             $table->enum('status', ['confirmed', 'false']);
+            $table->date('implementation_date')->nullable();
             $table->timestamps();
 
             $table->foreign('kode_fasyankes')->references('kode_fasyankes')->on('fasyankes')->cascadeOnUpdate()->cascadeOnDelete();

@@ -14,6 +14,7 @@ class Notification extends Model
         'end_week',
         'category',
         'status',
+        'implementation_date',
     ];
 
     public function fasyankes()
