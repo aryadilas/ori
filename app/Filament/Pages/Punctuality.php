@@ -30,7 +30,13 @@ class Punctuality extends Page
     public function mount()
     {
 
-        $this->notifications = Notification::with('fasyankes')->where('kode_fasyankes', auth()->user()->kode_fasyankes)->where('status', 'confirmed')->get();
+        $notifications = Notification::with('fasyankes')->where('status', 'confirmed');
+        if (auth()->user()->hasRole('Puskesmas')) {
+            $notifications->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+        }
+
+        $this->notifications = $notifications->get();
+        
         $this->implementation_date = $this->notifications
             ->mapWithKeys(fn ($notif) => [
                 $notif->id => $notif->implementation_date,
