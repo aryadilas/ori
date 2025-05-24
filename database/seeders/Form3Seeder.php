@@ -37,7 +37,7 @@ class Form3Seeder extends Seeder
         Form3Answer::create([
             'kode_fasyankes' => '32760200001',
             'year' => '2025',
-            'age_group' => '7 - <13tahun',
+            'age_group' => '7 - <13 tahun',
             'suspect' => '20',
             'population' => '29074',
         ]);

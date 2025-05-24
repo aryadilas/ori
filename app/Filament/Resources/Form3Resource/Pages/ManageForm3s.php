@@ -63,7 +63,7 @@ class ManageForm3s extends ManageRecords
                         'kode_fasyankes' => auth()->user()->kode_fasyankes,
                         'year' => $data['year'],
                         'village_name' => $data['village_name'],
-                        'age_group' => '7 - <13tahun',
+                        'age_group' => '7 - <13 tahun',
                         'suspect' => $data['suspect_7to13year'],
                         'population' => $data['population_7to13year'],
                     ];

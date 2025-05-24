@@ -37,11 +37,98 @@ class Form3Resource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
+        // view_summary_sck_ori.cr1_scope + view_summary_sck_ori.cr2_scope + view_summary_sck_ori.crBias_scope
+
+        $subquery = \DB::table('form3_answers')
+            ->selectRaw('
+                kode_fasyankes,
+                year,
+                SUM(population) AS total_population,
+                SUM(population * ((suspect / population) * 100)) / SUM(population) AS ar_average
+            ')
+            ->groupBy('kode_fasyankes', 'year');
+
+
         if (auth()->user()->hasRole('Puskesmas')) {
-            return parent::getEloquentQuery()->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+
+            
+
+            return parent::getEloquentQuery()
+                ->selectRaw('
+                    form3_answers.*, 
+                    view_summary_sck_ori.cr1_scope, 
+                    view_summary_sck_ori.cr2_scope, 
+                    view_summary_sck_ori.crBias_scope,
+                    (form3_answers.suspect/form3_answers.population)*100 AS ar,
+                    ROUND((
+                        COALESCE(cr1_scope, 0) + COALESCE(cr2_scope, 0) + COALESCE(crBias_scope, 0)
+                    ) / NULLIF(
+                        (CASE WHEN cr1_scope IS NOT NULL THEN 1 ELSE 0 END) +
+                        (CASE WHEN cr2_scope IS NOT NULL THEN 1 ELSE 0 END) +
+                        (CASE WHEN crBias_scope IS NOT NULL THEN 1 ELSE 0 END), 0
+                    ), 1) AS average,
+                    CASE
+                        WHEN (form3_answers.suspect/form3_answers.population)*100 >= subquery.ar_average THEN "YA"
+                        WHEN (form3_answers.suspect/form3_answers.population)*100 < subquery.ar_average AND 
+                        ROUND((
+                            COALESCE(cr1_scope, 0) + COALESCE(cr2_scope, 0) + COALESCE(crBias_scope, 0)
+                        ) / NULLIF(
+                            (CASE WHEN cr1_scope IS NOT NULL THEN 1 ELSE 0 END) +
+                            (CASE WHEN cr2_scope IS NOT NULL THEN 1 ELSE 0 END) +
+                            (CASE WHEN crBias_scope IS NOT NULL THEN 1 ELSE 0 END), 0
+                        ), 1) < 80 THEN "YA"
+                        ELSE "TIDAK"
+                    END AS sasaran_ori
+                ')
+                ->leftJoin('view_summary_sck_ori', function ($join) {
+                    $join->on('form3_answers.kode_fasyankes', '=', 'view_summary_sck_ori.kode_fasyankes')
+                        ->on('form3_answers.year', '=', 'view_summary_sck_ori.year')
+                        ->on('form3_answers.age_group', '=', 'view_summary_sck_ori.usia');
+                })
+                ->leftJoinSub($subquery, 'subquery', function ($join) {
+                    $join->on('form3_answers.kode_fasyankes', '=', 'subquery.kode_fasyankes')
+                        ->on('form3_answers.year', '=', 'subquery.year');
+                })
+                ->where('form3_answers.kode_fasyankes', auth()->user()->kode_fasyankes);
         } else {
-            return parent::getEloquentQuery();
+            return parent::getEloquentQuery()
+                ->selectRaw('
+                    form3_answers.*, 
+                    view_summary_sck_ori.cr1_scope, 
+                    view_summary_sck_ori.cr2_scope, 
+                    view_summary_sck_ori.crBias_scope,
+                    (form3_answers.suspect/form3_answers.population)*100 AS ar,
+                    ROUND((
+                        COALESCE(cr1_scope, 0) + COALESCE(cr2_scope, 0) + COALESCE(crBias_scope, 0)
+                    ) / NULLIF(
+                        (CASE WHEN cr1_scope IS NOT NULL THEN 1 ELSE 0 END) +
+                        (CASE WHEN cr2_scope IS NOT NULL THEN 1 ELSE 0 END) +
+                        (CASE WHEN crBias_scope IS NOT NULL THEN 1 ELSE 0 END), 0
+                    ), 1) AS average,
+                    CASE
+                        WHEN (form3_answers.suspect/form3_answers.population)*100 >= subquery.ar_average THEN "YA"
+                        WHEN (form3_answers.suspect/form3_answers.population)*100 < subquery.ar_average AND 
+                        ROUND((
+                            COALESCE(cr1_scope, 0) + COALESCE(cr2_scope, 0) + COALESCE(crBias_scope, 0)
+                        ) / NULLIF(
+                            (CASE WHEN cr1_scope IS NOT NULL THEN 1 ELSE 0 END) +
+                            (CASE WHEN cr2_scope IS NOT NULL THEN 1 ELSE 0 END) +
+                            (CASE WHEN crBias_scope IS NOT NULL THEN 1 ELSE 0 END), 0
+                        ), 1) < 80 THEN "YA"
+                        ELSE "TIDAK"
+                    END AS sasaran_ori
+                ')
+                ->leftJoin('view_summary_sck_ori', function ($join) {
+                    $join->on('form3_answers.kode_fasyankes', '=', 'view_summary_sck_ori.kode_fasyankes')
+                        ->on('form3_answers.year', '=', 'view_summary_sck_ori.year')
+                        ->on('form3_answers.age_group', '=', 'view_summary_sck_ori.usia');
+                })
+                ->leftJoinSub($subquery, 'subquery', function ($join) {
+                    $join->on('form3_answers.kode_fasyankes', '=', 'subquery.kode_fasyankes')
+                        ->on('form3_answers.year', '=', 'subquery.year');
+                });
         }
+
     }
 
     public static function form(Form $form): Form
@@ -231,6 +318,26 @@ class Form3Resource extends Resource
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label("Attack Rate (AR)"),
+                Tables\Columns\TextColumn::make("cr1_scope")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Cakupan Campak Rubela 1"),
+                Tables\Columns\TextColumn::make("cr2_scope")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Cakupan Campak Rubela 2"),
+                Tables\Columns\TextColumn::make("crBias_scope")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Cakupan Campak Rubela Bias"),
+                Tables\Columns\TextColumn::make("average")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Rata - Rata"),
+                Tables\Columns\TextColumn::make("sasaran_ori")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Sasaran ORI"),
             ])
             ->filters([
                 
@@ -240,7 +347,7 @@ class Form3Resource extends Resource
                         
                         $yearExists = static::getModel()::select('year')
                         ->when(auth()->user()->kode_fasyankes, function ($query) {
-                            return $query->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+                            return $query->where('form3_answers.kode_fasyankes', auth()->user()->kode_fasyankes);
                         })
                         ->distinct()
                         ->get()
@@ -262,7 +369,7 @@ class Form3Resource extends Resource
                     })
                     ->default(now()->year)
                     ->selectablePlaceholder(false)
-                    ->attribute('year'),
+                    ->attribute('form3_answers.year'),
                     SelectFilter::make('fasyankes')
                     ->label('Fasyankes')
                     ->hidden(auth()->user()->hasRole('Puskesmas'))
@@ -278,7 +385,7 @@ class Form3Resource extends Resource
                     })
                     ->default('32760200005')
                     ->selectablePlaceholder(false)
-                    ->attribute('kode_fasyankes')
+                    ->attribute('form3_answers.kode_fasyankes')
 
             ], layout: FiltersLayout::AboveContent)
             ->actions([

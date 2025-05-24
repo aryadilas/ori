@@ -25,11 +25,11 @@ return new class extends Migration
                     vso.year,
                     vso.age_group,
                     CASE
-                        WHEN vso.age_group = 1 THEN '9-<18 Bulan'
-                        WHEN vso.age_group = 2 THEN '18-59 Bulan'
-                        WHEN vso.age_group = 3 THEN '5-<7 Tahun'
-                        WHEN vso.age_group = 4 THEN '7-<13 Tahun'
-                        WHEN vso.age_group = 5 THEN '13-<16 Tahun'
+                        WHEN vso.age_group = 1 THEN '9 - <18 Bulan'
+                        WHEN vso.age_group = 2 THEN '18 - 59 Bulan'
+                        WHEN vso.age_group = 3 THEN '5 - <7 Tahun'
+                        WHEN vso.age_group = 4 THEN '7 - <13 Tahun'
+                        WHEN vso.age_group = 5 THEN '13 - <16 Tahun'
                     END AS usia,
                     COUNT(vso.age_group) AS target,
                     CASE
