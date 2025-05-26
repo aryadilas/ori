@@ -31,7 +31,7 @@ class Form2Resource extends Resource
 
     protected static ?string $label = 'SCK ORI';
 
-    protected static ?string $pluralModelLabel = 'SCK ORI';
+    protected static ?string $pluralModelLabel = 'Survei Cakupan Komunitas Outbreak Response Immunization (SCK ORI)';
 
     protected static ?string $navigationGroup = 'ORI KLB CAMPAK-RUBELA';
 

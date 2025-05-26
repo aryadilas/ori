@@ -57,7 +57,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->navigationGroups([
-                'SKDR',
+                'INTEGRASI API SKDR CAMPAK-RUBELA',
                 'ORI KLB CAMPAK-RUBELA',
                 'VAKSIN',
                 'VISUALISASI DATA',

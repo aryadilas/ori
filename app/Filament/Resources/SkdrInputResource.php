@@ -19,15 +19,15 @@ class SkdrInputResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationLabel = 'Input SKDR';
+    protected static ?string $navigationLabel = 'Petugas Input Kasus';
 
     protected static ?string $slug = 'input-skdr';
 
-    protected static ?string $label = 'Input SKDR';
+    protected static ?string $label = 'Petugas Input Kasus';
 
-    protected static ?string $pluralModelLabel = 'Input SKDR';
+    protected static ?string $pluralModelLabel = 'Petugas Input Kasus';
 
-    protected static ?string $navigationGroup = 'SKDR';
+    protected static ?string $navigationGroup = 'INTEGRASI API SKDR CAMPAK-RUBELA';
 
     public static function form(Form $form): Form
     {

@@ -22,13 +22,13 @@ class Form1Resource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationLabel = 'Luas Wilayah';
+    protected static ?string $navigationLabel = 'Luas Wilayah ORI';
 
     protected static ?string $slug = 'luas-wilayah';
 
-    protected static ?string $label = 'Luas Wilayah';
+    protected static ?string $label = 'Luas Wilayah ORI';
 
-    protected static ?string $pluralModelLabel = 'Luas Wilayah';
+    protected static ?string $pluralModelLabel = 'Luas Wilayah ORI';
 
     protected static ?string $navigationGroup = 'ORI KLB CAMPAK-RUBELA';
 

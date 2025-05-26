@@ -19,15 +19,15 @@ class SkdrResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationLabel = 'Rekap SKDR';
+    protected static ?string $navigationLabel = 'Rekapitulasi Mingguan';
 
     protected static ?string $slug = 'rekap-skdr';
 
-    protected static ?string $label = 'Rekap SKDR';
+    protected static ?string $label = 'Rekapitulasi Mingguan';
 
-    protected static ?string $pluralModelLabel = 'Rekap SKDR';
+    protected static ?string $pluralModelLabel = 'Rekapitulasi Mingguan Aplikasi Sistem Kewaspadaan Dini dan Respon (SKDR)';
 
-    protected static ?string $navigationGroup = 'SKDR';
+    protected static ?string $navigationGroup = 'INTEGRASI API SKDR CAMPAK-RUBELA';
 
     public static function form(Form $form): Form
     {
