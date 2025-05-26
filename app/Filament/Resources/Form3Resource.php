@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Notifications\Notification;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Columns\Summarizers\Summarizer;
+use Filament\Tables\Columns\Summarizers\Sum;
 
 class Form3Resource extends Resource
 {
@@ -59,6 +61,7 @@ class Form3Resource extends Resource
                     view_summary_sck_ori.cr1_scope, 
                     view_summary_sck_ori.cr2_scope, 
                     view_summary_sck_ori.crBias_scope,
+                    subquery.ar_average,
                     (form3_answers.suspect/form3_answers.population)*100 AS ar,
                     ROUND((
                         COALESCE(cr1_scope, 0) + COALESCE(cr2_scope, 0) + COALESCE(crBias_scope, 0)
@@ -97,6 +100,7 @@ class Form3Resource extends Resource
                     view_summary_sck_ori.cr1_scope, 
                     view_summary_sck_ori.cr2_scope, 
                     view_summary_sck_ori.crBias_scope,
+                    subquery.ar_average,
                     (form3_answers.suspect/form3_answers.population)*100 AS ar,
                     ROUND((
                         COALESCE(cr1_scope, 0) + COALESCE(cr2_scope, 0) + COALESCE(crBias_scope, 0)
@@ -309,13 +313,20 @@ class Form3Resource extends Resource
                 Tables\Columns\TextColumn::make("suspect")
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->summarize(Sum::make()->label(''))
                     ->label("Jumlah suspect atau kasus"),
                 Tables\Columns\TextColumn::make("population")
                     ->placeholder('-')
+                    ->summarize(Sum::make()->label(''))
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label("Total Populasi"),
                 Tables\Columns\TextColumn::make("attackRate")
                     ->placeholder('-')
+                    ->summarize(
+                        Summarizer::make()
+                            ->label('Rata Rata')
+                            ->using(fn ($query) => $query->value('ar_average'))
+                    )
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label("Attack Rate (AR)"),
                 Tables\Columns\TextColumn::make("cr1_scope")
