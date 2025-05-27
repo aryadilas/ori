@@ -50,11 +50,11 @@
     </div>
 
 
-    <div class="flex flex-wrap items-center justify-start w-full max-w-4xl gap-5 text-sm font-medium">
-        <div @click="tab = 1" :class="tab === 1 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] flex-grow flex-shrink hover:text-white">ORI KLB CAMPAK RUBELA I</div>
-        <div @click="tab = 2" :class="tab === 2 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] flex-grow flex-shrink hover:text-white">ORI KLB CAMPAK RUBELA II</div>
-        <div @click="tab = 3" :class="tab === 3 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] flex-grow flex-shrink hover:text-white">KELOMPOK SASARAN</div>
-        {{-- <div @click="tab = 4" :class="tab === 4 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] flex-grow flex-shrink hover:text-white">Grafik 4</div> --}}
+    <div class="flex flex-wrap items-center justify-start w-full gap-5 text-sm font-medium">
+        <div @click="tab = 1" :class="tab === 1 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] hover:text-white">ORI KLB CAMPAK RUBELA I</div>
+        <div @click="tab = 2" :class="tab === 2 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] hover:text-white">ORI KLB CAMPAK RUBELA II</div>
+        <div @click="tab = 3" :class="tab === 3 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] hover:text-white">KELOMPOK SASARAN</div>
+        <div @click="tab = 4" :class="tab === 4 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] hover:text-white">LUAS WILAYAH ORI CAMPAK RUBELA</div>
         {{-- <div @click="tab = 5" :class="tab === 5 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] flex-grow flex-shrink hover:text-white">Grafik 5</div> --}}
     </div>
 
@@ -125,6 +125,15 @@
                         </tr>
                     @endforeach
                 </table>
+            </div>
+
+            <style>
+                #maps { height: 600px; }
+            </style>
+            <div x-show="tab === 4" class="flex flex-col gap-2">
+                
+                <div id="maps"></div>
+
             </div>
 
     </div>
@@ -1877,6 +1886,78 @@
 
     </script>
     @endscript
+
+    {{-- @script --}}
+    <script>
+        // Inisialisasi peta
+        let leafletMap  = L.map('maps').setView([-6.4025, 106.7942], 13); // Depok
+
+        // Tambahkan tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(leafletMap );
+
+        // Ambil GeoJSON dari file atau API
+        fetch('/geojson/depok_ori.geojson')  // Sesuaikan path
+            .then(response => response.json())
+            .then(geojson => {
+                L.geoJSON(geojson, {
+                    style: {
+                        color: "#3388ff",
+                        weight: 1,
+                        fillOpacity: 0.5
+                    },
+                    onEachFeature: function (feature, layer) {
+
+
+                        const center = layer.getBounds().getCenter();
+
+                        // Ambil nama kecamatan dari properti (ubah sesuai key-nya jika beda)
+                        const namaKecamatan = feature.properties['NAMOBJ'] || 'Tanpa Nama';
+
+                        // Tambahkan label menggunakan L.divIcon
+                        const label = L.marker(center, {
+                            icon: L.divIcon({
+                                className: 'label-kecamatan',
+                                html: `${namaKecamatan}`,
+                                iconSize: [100, 20]
+                            })
+                        }).addTo(leafletMap);
+
+                        layer.on({
+                            mouseover: function (e) {
+                                layer.setStyle({
+                                    weight: 3,
+                                    color: '#666',
+                                    fillOpacity: 0.7
+                                });
+
+                                // Ambil nama kecamatan dari properti
+                                const kecamatan = feature.properties['NAMOBJ'];
+
+                                // Ambil data vaksin dari API
+                                // fetch(`/api/vaksin?kecamatan=${encodeURIComponent(kecamatan)}`)
+                                //     .then(res => res.json())
+                                //     .then(data => {
+                                        let html = `<b>${kecamatan}</b><br/>`;
+
+                                        layer.bindTooltip(html).openTooltip();
+                                //     });
+                            },
+                            mouseout: function (e) {
+                                layer.setStyle({
+                                    color: "#3388ff",
+                                    weight: 1,
+                                    fillOpacity: 0.5
+                                });
+                                layer.closeTooltip();
+                            }
+                        });
+                    }
+                }).addTo(leafletMap );
+            });
+    </script>
+    {{-- @endscript --}}
 
 
     
