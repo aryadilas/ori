@@ -34,6 +34,11 @@ class SummarySckOriResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    public static function canAccess(): bool
+    {
+        return false; 
+    }
+
     public static function getEloquentQuery(): Builder
     {
         if (auth()->user()->hasRole('Puskesmas')) {
