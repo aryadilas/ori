@@ -22,6 +22,9 @@ return new class extends Migration
             $table->integer('suspect');
             $table->integer('population');
 
+            $table->integer('vaccine_target')->nullable();
+            $table->integer('coverage_target')->nullable();
+
             $table->timestamps();
 
             $table->foreign('kode_fasyankes')->references('kode_fasyankes')->on('fasyankes')->cascadeOnUpdate()->cascadeOnDelete();
