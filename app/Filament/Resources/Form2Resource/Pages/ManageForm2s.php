@@ -15,7 +15,7 @@ class ManageForm2s extends ManageRecords
 {
     protected static string $resource = Form2Resource::class;
 
-    protected ?string $subheading = 'Halaman untuk mengelola data form luas wilayah.';
+    protected ?string $subheading = 'Halaman untuk menginput data hasil SCK (Survei Cakupan Komunitas) ORI.';
 
     // protected function handleRecordCreation(array $data): Model
     // {

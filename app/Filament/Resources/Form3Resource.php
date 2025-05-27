@@ -332,19 +332,19 @@ class Form3Resource extends Resource
                 Tables\Columns\TextColumn::make("cr1_scope")
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
-                    ->label("Cakupan Campak Rubela 1"),
+                    ->label("SCK:Cakupan Campak Rubela 1"),
                 Tables\Columns\TextColumn::make("cr2_scope")
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
-                    ->label("Cakupan Campak Rubela 2"),
+                    ->label("SCK:Cakupan Campak Rubela 2"),
                 Tables\Columns\TextColumn::make("crBias_scope")
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
-                    ->label("Cakupan Campak Rubela Bias"),
+                    ->label("SCK:Cakupan Campak Rubela Bias"),
                 Tables\Columns\TextColumn::make("average")
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
-                    ->label("Rata - Rata"),
+                    ->label("Rata - Rata Cakupan SCK"),
                 Tables\Columns\TextColumn::make("sasaran_ori")
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)

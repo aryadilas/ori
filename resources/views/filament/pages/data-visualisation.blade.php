@@ -51,9 +51,9 @@
 
 
     <div class="flex flex-wrap items-center justify-start w-full gap-5 text-sm font-medium">
-        <div @click="tab = 1" :class="tab === 1 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] hover:text-white">ORI KLB CAMPAK RUBELA I</div>
-        <div @click="tab = 2" :class="tab === 2 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] hover:text-white">ORI KLB CAMPAK RUBELA II</div>
-        <div @click="tab = 3" :class="tab === 3 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] hover:text-white">KELOMPOK SASARAN</div>
+        <div @click="tab = 1" :class="tab === 1 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] hover:text-white">HASIL SCK I</div>
+        <div @click="tab = 2" :class="tab === 2 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] hover:text-white">HASIL SCK II</div>
+        {{-- <div @click="tab = 3" :class="tab === 3 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] hover:text-white">KELOMPOK SASARAN</div> --}}
         <div @click="tab = 4" :class="tab === 4 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] hover:text-white">LUAS WILAYAH ORI CAMPAK RUBELA</div>
         {{-- <div @click="tab = 5" :class="tab === 5 ? 'bg-[#10DBB9] text-white' : 'bg-white'" class="cursor-pointer rounded-[8px] px-5 py-2 shadow-[0px_4px_7px_2px_#00000040] hover:bg-[#10DBB9] flex-grow flex-shrink hover:text-white">Grafik 5</div> --}}
     </div>
@@ -111,7 +111,7 @@
                 <div wire:key="immunizedParentPermission" class="w-full max-w-full md:w-1/2" id="immunizedParentPermission"></div>
             </div>
 
-            <div x-show="tab === 3" class="flex flex-col gap-2">
+            {{-- <div x-show="tab === 3" class="flex flex-col gap-2">
                 <h1 class="text-sm font-extrabold text-center">Jumlah Sasaran</h1>
                 <table class="text-sm border border-black">
                     <tr>
@@ -125,7 +125,7 @@
                         </tr>
                     @endforeach
                 </table>
-            </div>
+            </div> --}}
 
             <style>
                 #maps { height: 600px; }
@@ -410,7 +410,7 @@
                 },
             },
             title: {
-                text: '9-<18 Tahun',
+                text: '9-<18 Bulan',
                 align: 'center'
             },
             tooltip: {
@@ -657,7 +657,7 @@
                 },
             },
             title: {
-                text: '9-<18 Tahun',
+                text: '9-<18 Bulan',
                 align: 'center'
             },
             tooltip: {
@@ -904,7 +904,7 @@
                 },
             },
             title: {
-                text: '9-<18 Tahun',
+                text: '9-<18 Bulan',
                 align: 'center'
             },
             tooltip: {
@@ -1151,7 +1151,7 @@
                 },
             },
             title: {
-                text: '9-<18 Tahun',
+                text: '9-<18 Bulan',
                 align: 'center'
             },
             tooltip: {

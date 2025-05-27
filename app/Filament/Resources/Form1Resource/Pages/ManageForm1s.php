@@ -15,7 +15,7 @@ class ManageForm1s extends ManageRecords
 {
     protected static string $resource = Form1Resource::class;
 
-    protected ?string $subheading = 'Halaman untuk mengelola data form luas wilayah.';
+    protected ?string $subheading = 'Halaman untuk menentukan luas wilayah ORI';
 
     protected function getHeaderActions(): array
     {
