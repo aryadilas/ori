@@ -66,7 +66,7 @@ class SkdrInputResource extends Resource
                 Forms\Components\TextInput::make('case_count')
                     ->label('Jumlah Kasus')
                     ->inlineLabel()
-                    ->minValue(1)
+                    ->minValue(0)
                     ->live()
                     ->numeric()
                     ->required(),
