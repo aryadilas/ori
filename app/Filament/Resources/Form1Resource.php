@@ -308,11 +308,12 @@ class Form1Resource extends Resource
                             ->distinct()
                             ->get()
                             ->pluck('name', 'kode_fasyankes');
+
+                        return collect(['' => 'SEMUA'])->union($fasyankesExists);
                         
-                        return $fasyankesExists;
 
                     })
-                    ->default('32760200005')
+                    ->default('')
                     ->selectablePlaceholder(false)
                     ->attribute('kode_fasyankes')
 
