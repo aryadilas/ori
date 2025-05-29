@@ -87,9 +87,9 @@ class ManageForm3s extends ManageRecords
                         'suspect' => $data['suspect_more16year'],
                         'population' => $data['population_more16year'],
                     ];
-                    static::getModel()::create($more16year);
+                    $return = static::getModel()::create($more16year);
 
-                    return static::getModel()::create($more16year);
+                    return $return;
                 }),
             ImportAction::make()
                 ->visible(auth()->user()->hasRole('Puskesmas'))
