@@ -10,6 +10,7 @@ use Konnco\FilamentImport\Actions\ImportAction;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
 use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class ManageForm2s extends ManageRecords
 {
@@ -136,6 +137,8 @@ class ManageForm2s extends ManageRecords
                     
                 ])
                 ->handleRecordCreation(function(array $data) { 
+                    
+                    $tgl_lahir_anak = Date::excelToDateTimeObject($data['tgl_lahir_anak'])->format('Y-m-d');
 
                     return static::getModel()::create([
                         'kode_fasyankes' => auth()->user()->kode_fasyankes,
@@ -146,7 +149,7 @@ class ManageForm2s extends ManageRecords
                         'parent_name' => $data['nama_orangtua'],
                         'child_nik' => $data['nik_anak'],
                         'child_name' => $data['nama_anak'],
-                        'birthdate' => $data['tgl_lahir_anak'],
+                        'birthdate' => $tgl_lahir_anak,
                         'gender' => $data['jenis_kelamin_anak'],
                         'q1' => $data['status_imunisasi_anak_cr1'],
                         'q2' => $data['status_imunisasi_anak_cr2'],
