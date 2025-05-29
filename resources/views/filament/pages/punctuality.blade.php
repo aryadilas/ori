@@ -6,7 +6,7 @@
                 <tr class="border">
                     <th class="p-3">No</th>
                     @if (!auth()->user()->hasRole('Puskesmas'))
-                        <td class="p-3 text-center">Fasyankes</td>
+                        <th class="p-3 text-center">Fasyankes</th>
                     @endif
                     <th class="p-3">Tanggal Status KLB</th>
                     <th class="p-3">Tanggal Pelaksanaan</th>
