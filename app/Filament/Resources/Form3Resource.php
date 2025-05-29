@@ -391,10 +391,10 @@ class Form3Resource extends Resource
                             ->get()
                             ->pluck('name', 'kode_fasyankes');
                         
-                        return $fasyankesExists;
+                        return collect(['' => 'SEMUA'])->union($fasyankesExists);
 
                     })
-                    ->default('32760200005')
+                    ->default('')
                     ->selectablePlaceholder(false)
                     ->attribute('form3_answers.kode_fasyankes')
 

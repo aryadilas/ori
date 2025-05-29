@@ -352,10 +352,10 @@ class Form2Resource extends Resource
                             ->get()
                             ->pluck('name', 'kode_fasyankes');
                         
-                        return $fasyankesExists;
+                        return collect(['' => 'SEMUA'])->union($fasyankesExists);
 
                     })
-                    ->default('32760200005')
+                    ->default('')
                     ->selectablePlaceholder(false)
                     ->attribute('kode_fasyankes')
 
