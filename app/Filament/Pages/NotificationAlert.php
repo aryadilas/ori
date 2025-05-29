@@ -60,6 +60,10 @@ class NotificationAlert extends Page
 
                 $totalCases = $caseW1 + $caseW2 + $caseW3 + $caseW4;
 
+                if ($caseW1 == 0 || $caseW2 == 0 || $caseW3 == 0 || $caseW4 == 0) {
+                    continue;                    
+                }
+
                 if ($totalCases >= 5) {
 
                     $notification = Notification::with('fasyankes')

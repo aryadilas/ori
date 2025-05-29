@@ -55,6 +55,10 @@ class KlbAlert extends Widget
                 $caseW3 = $weeks[$w3] ?? 0;
                 $caseW4 = $weeks[$w4] ?? 0;
 
+                if ($caseW1 == 0 || $caseW2 == 0 || $caseW3 == 0 || $caseW4 == 0) {
+                    continue;                    
+                }
+
                 $totalCases = $caseW1 + $caseW2 + $caseW3 + $caseW4;
 
                 if ($totalCases >= 5) {
