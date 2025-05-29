@@ -31,7 +31,7 @@
                                     name="" 
                                     id=""> 
                             @else                       
-                                {{ $this->vaccine_target[$form3Answer->id]->vaccine_target }}                           
+                                {{ $this->vaccine_target[$form3Answer->id]?->vaccine_target ?? '-' }}                           
                             @endif
 
                         </td>
@@ -51,7 +51,7 @@
                                 </select>
 
                             @else                       
-                                {{ $this->coverage_target[$form3Answer->id]->coverage_target }}                           
+                                {{ $this->coverage_target[$form3Answer->id]?->coverage_target ?? '-' }}                           
                             @endif
 
                         </td>
@@ -60,7 +60,7 @@
                             {{ 
                                 isset($this->coverage_target[$form3Answer->id]) && isset($this->vaccine_target[$form3Answer->id])
                                 ? $this->vaccine_target[$form3Answer->id] * $this->coverage_target[$form3Answer->id] / 100
-                                : ''
+                                : '-'
                             }}
                         </td>
                     </tr>
