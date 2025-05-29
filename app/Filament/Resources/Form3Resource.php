@@ -407,8 +407,7 @@ class Form3Resource extends Resource
 
                         Forms\Components\TextInput::make('village_name')
                             ->label('Desa/Kelurahan')
-                            ->inlineLabel()
-                            ->required(),
+                            ->inlineLabel(),
 
                         Forms\Components\Section::make('Usia 9 - < 18 Bulan')
                             ->description('Usia 9 sampai kurang dari 18 bulan')
@@ -457,7 +456,7 @@ class Form3Resource extends Resource
                             ]),
                         Forms\Components\Section::make('Usia 7 - < 13 Tahun')
                             ->description('Usia 7 sampai kurang dari 13')
-                            ->visible(fn ($record) => $record->age_group === '7 - <13tahun')
+                            ->visible(fn ($record) => $record->age_group === '7 - <13 tahun')
                             ->schema([
                                 Forms\Components\TextInput::make('suspect')
                                     ->label('Jumlah suspek atau kasus')
