@@ -1887,77 +1887,95 @@
     </script>
     @endscript
 
-    {{-- @script --}}
+    @script
     <script>
-        // Inisialisasi peta
-        let leafletMap  = L.map('maps').setView([-6.4025, 106.7942], 13); // Depok
 
-        // Tambahkan tile layer
+
+        let leafletMap = L.map('maps').setView([-6.4025, 106.7942], 13); // Depok
+
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap'
-        }).addTo(leafletMap );
+        }).addTo(leafletMap);
 
-        // Ambil GeoJSON dari file atau API
-        fetch('/geojson/depok_ori.geojson')  // Sesuaikan path
+        fetch('/geojson/depok_ori.geojson')
             .then(response => response.json())
             .then(geojson => {
                 L.geoJSON(geojson, {
                     style: {
-                        color: "#3388ff",
+                        color: `#3388ff`,
                         weight: 1,
                         fillOpacity: 0.5
                     },
+                    style: function (feature) {
+                        const nama = feature.properties['NAMOBJ'];
+                        const data = $wire.luas_wilayah.find(item => item.village_name === nama);
+                        const warna = data && data.summary === 'ORI' ? '#b51d1d' : '#3388ff';
+
+                        return {
+                            color: warna,
+                            weight: 1,
+                            fillOpacity: 0.5
+                        };
+                    },
                     onEachFeature: function (feature, layer) {
-
-
                         const center = layer.getBounds().getCenter();
+                        const namaKelurahan = feature.properties['NAMOBJ'] || 'Tanpa Nama';
 
-                        // Ambil nama kecamatan dari properti (ubah sesuai key-nya jika beda)
-                        const namaKecamatan = feature.properties['NAMOBJ'] || 'Tanpa Nama';
-
-                        // Tambahkan label menggunakan L.divIcon
                         const label = L.marker(center, {
                             icon: L.divIcon({
-                                className: 'label-kecamatan',
-                                html: `${namaKecamatan}`,
+                                className: 'label-kelurahan',
+                                html: `${namaKelurahan}`,
                                 iconSize: [100, 20]
                             })
                         }).addTo(leafletMap);
 
                         layer.on({
-                            mouseover: function (e) {
-                                layer.setStyle({
-                                    weight: 3,
-                                    color: '#666',
-                                    fillOpacity: 0.7
-                                });
+                            mouseover: function () {
+                                layer.setStyle(
 
-                                // Ambil nama kecamatan dari properti
-                                const kecamatan = feature.properties['NAMOBJ'];
+                                    function (feature) {
+                                        const nama = feature.properties['NAMOBJ'];
+                                        const data = $wire.luas_wilayah.find(item => item.village_name === nama);
+                                        const warna = data && data.summary === 'ORI' ? '#b51d1d' : '#3388ff';
 
-                                // Ambil data vaksin dari API
-                                // fetch(`/api/vaksin?kecamatan=${encodeURIComponent(kecamatan)}`)
-                                //     .then(res => res.json())
-                                //     .then(data => {
-                                        let html = `<b>${kecamatan}</b><br/>`;
+                                        return {
+                                            color: warna,
+                                            weight: 1,
+                                            fillOpacity: 0.5
+                                        };
+                                    }
 
-                                        layer.bindTooltip(html).openTooltip();
-                                //     });
+                                );
+
+                                const kelurahan = feature.properties['NAMOBJ'];
+                                let html = `<b>${kelurahan}</b><br/>`;
+                                layer.bindTooltip(html).openTooltip();
                             },
-                            mouseout: function (e) {
-                                layer.setStyle({
-                                    color: "#3388ff",
-                                    weight: 1,
-                                    fillOpacity: 0.5
-                                });
+                            mouseout: function () {
+                                layer.setStyle(
+
+                                    function (feature) {
+                                        const nama = feature.properties['NAMOBJ'];
+                                        const data = $wire.luas_wilayah.find(item => item.village_name === nama);
+                                        const warna = data && data.summary === 'ORI' ? '#b51d1d' : '#3388ff';
+
+                                        return {
+                                            color: warna,
+                                            weight: 1,
+                                            fillOpacity: 0.5
+                                        };
+                                    }
+
+                                );
                                 layer.closeTooltip();
                             }
                         });
                     }
-                }).addTo(leafletMap );
+                }).addTo(leafletMap);
             });
     </script>
-    {{-- @endscript --}}
+    @endscript
+
 
 
     

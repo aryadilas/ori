@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use Filament\Pages\Page;
 use App\Models\Form2Answer;
+use App\Models\Form1Answer;
 use App\Models\Fasyankes;
 use App\Models\ViewSummarySckOri;
 
@@ -66,6 +67,8 @@ class DataVisualisation extends Page
 
     public $kode_fasyankes;
     public $year;
+
+    public $luas_wilayah;
     
     public function childGenderData()
     {
@@ -692,6 +695,9 @@ class DataVisualisation extends Page
 
         /* Grafik 4 */
         $this->graphic_4 = ViewSummarySckOri::where('kode_fasyankes', $this->kode_fasyankes)->where('year', $this->year)->get();
+
+        /* Luas Wilayah */
+        $this->luas_wilayah = Form1Answer::get()->toArray();
 
         
 
