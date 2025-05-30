@@ -33,7 +33,7 @@ class VaccineStokResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('Puskesmas'); 
+        return auth()->user()->hasRole(['Puskesmas', 'Kemkes']); 
     }
 
 
@@ -71,13 +71,26 @@ class VaccineStokResource extends Resource
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) use ($table) {
+                
+                $query->join('fasyankes', 'vaccines.kode_fasyankes', '=', 'fasyankes.kode_fasyankes');
 
-                return $query->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+                if (auth()->user()->kode_fasyankes) {
+                    return $query->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+                }
 
+                return $query;
+                
             })
             ->columns([
+                Tables\Columns\TextColumn::make("fasyankes.name")
+                    ->placeholder('-')
+                    ->sortable()
+                    ->hidden(auth()->user()->hasRole('Puskesmas'))
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Puskesmas"),
                 Tables\Columns\TextColumn::make('date')
                     ->dateTime('d-M-Y')
+                    ->sortable()
                     ->label('Tanggal'),
                 Tables\Columns\TextColumn::make('category')
                     ->badge()
@@ -91,7 +104,11 @@ class VaccineStokResource extends Resource
                     ->formatStateUsing(fn ($record, $state) => $record->category == 'penambahan' ? '+'.$state : '-'.$state )
                     ->label('Jumlah'),
             ])
-            ->defaultSort('date', 'desc')
+            ->defaultSort(function (Builder $query): Builder {
+                return $query
+                    ->orderBy('name', 'ASC')
+                    ->orderBy('date', 'DESC');
+            })
             ->paginated([30, 60, 100, 'all'])
             ->defaultPaginationPageOption(60)
             ->emptyStateHeading('Data Kosong')

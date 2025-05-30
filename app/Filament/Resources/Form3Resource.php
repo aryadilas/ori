@@ -401,6 +401,7 @@ class Form3Resource extends Resource
             ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\Action::make('edit')
+                    ->visible(auth()->user()->hasRole('Puskesmas'))
                     ->form([
 
 

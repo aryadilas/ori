@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
         $role_super_admin = Role::create(['name' => 'Super Admin']);
         $role_dinkes = Role::create(['name' => 'Dinkes']);
         $role_puskesmas = Role::create(['name' => 'Puskesmas']);
+        $role_kemkes = Role::create(['name' => 'Kemkes']);
 
         $super_admin = User::factory()->create([
             'name' => 'Super Admin',
@@ -32,6 +33,13 @@ class UserSeeder extends Seeder
             'password' => bcrypt('KwfoaujEra'),
         ]);
         $dinkes->assignRole($role_dinkes);
+
+        $kemkes = User::factory()->create([
+            'name' => 'Admin Kemkes',
+            'email' => 'kemkes@depok.go.id',
+            'password' => bcrypt('KwfoaujEra'),
+        ]);
+        $kemkes->assignRole($role_kemkes);
 
 
 

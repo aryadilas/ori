@@ -29,6 +29,11 @@ class SkdrInputResource extends Resource
 
     protected static ?string $navigationGroup = 'INTEGRASI API SKDR CAMPAK-RUBELA';
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->hasRole(['Super Admin', 'Dinkes', 'Puskesmas']); 
+    }
+
     public static function form(Form $form): Form
     {
         return $form
