@@ -132,7 +132,7 @@
             </style>
             <div x-show="tab === 4" class="flex flex-col gap-2">
                 
-                <div id="maps"></div>
+                <div wire:ignore wire:key="luas_wilayah" id="maps"></div>
 
             </div>
 
@@ -1889,92 +1889,89 @@
 
     @script
     <script>
-
-
-        let leafletMap = L.map('maps').setView([-6.4025, 106.7942], 13); // Depok
+        let leafletMap = L.map('maps').setView([-6.4025, 106.7942], 13); 
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap'
+            attribution: '&copy; OpenStreetMap contributors'
         }).addTo(leafletMap);
 
-        fetch('/geojson/depok_ori.geojson')
-            .then(response => response.json())
-            .then(geojson => {
-                L.geoJSON(geojson, {
-                    style: {
-                        color: `#3388ff`,
+        let geojsonData = null; 
+        let geojsonLayer = null; 
+
+        // Fungsi render ulang GeoJSON
+        function renderGeojson(dataWilayah) {
+            // console.log(dataWilayah);
+            if (geojsonLayer) {
+                leafletMap.removeLayer(geojsonLayer);
+            }
+
+            geojsonLayer = L.geoJSON(geojsonData, {
+                style: function (feature) {
+                    const nama = feature.properties['NAMOBJ'];
+                    const data = dataWilayah.find(item => item.village_name === nama);
+                    const warna = data && data.summary === 'ORI' ? '#b51d1d' : '#3388ff';
+
+                    return {
+                        color: warna,
                         weight: 1,
                         fillOpacity: 0.5
-                    },
-                    style: function (feature) {
-                        const nama = feature.properties['NAMOBJ'];
-                        const data = $wire.luas_wilayah.find(item => item.village_name === nama);
-                        const warna = data && data.summary === 'ORI' ? '#b51d1d' : '#3388ff';
+                    };
+                },
+                onEachFeature: function (feature, layer) {
+                    const center = layer.getBounds().getCenter();
+                    const namaKelurahan = feature.properties['NAMOBJ'] || 'Tanpa Nama';
 
-                        return {
-                            color: warna,
-                            weight: 1,
-                            fillOpacity: 0.5
-                        };
-                    },
-                    onEachFeature: function (feature, layer) {
-                        const center = layer.getBounds().getCenter();
-                        const namaKelurahan = feature.properties['NAMOBJ'] || 'Tanpa Nama';
+                    const label = L.marker(center, {
+                        icon: L.divIcon({
+                            className: 'label-kelurahan',
+                            html: `${namaKelurahan}`,
+                            iconSize: [100, 20]
+                        })
+                    }).addTo(leafletMap);
 
-                        const label = L.marker(center, {
-                            icon: L.divIcon({
-                                className: 'label-kelurahan',
-                                html: `${namaKelurahan}`,
-                                iconSize: [100, 20]
-                            })
-                        }).addTo(leafletMap);
+                    layer.on({
+                        mouseover: function () {
+                            layer.setStyle({
+                                weight: 3,
+                                color: '#666',
+                                fillOpacity: 0.7
+                            });
+                            layer.bindTooltip(`<b>${namaKelurahan}</b>`).openTooltip();
+                        },
+                        mouseout: function () {
+                            const data = dataWilayah.find(item => item.village_name === namaKelurahan);
+                            const warna = data && data.summary === 'ORI' ? '#b51d1d' : '#3388ff';
 
-                        layer.on({
-                            mouseover: function () {
-                                layer.setStyle(
+                            layer.setStyle({
+                                color: warna,
+                                weight: 1,
+                                fillOpacity: 0.5
+                            });
+                            layer.closeTooltip();
+                        }
+                    });
+                }
+            }).addTo(leafletMap);
+        }
 
-                                    function (feature) {
-                                        const nama = feature.properties['NAMOBJ'];
-                                        const data = $wire.luas_wilayah.find(item => item.village_name === nama);
-                                        const warna = data && data.summary === 'ORI' ? '#b51d1d' : '#3388ff';
-
-                                        return {
-                                            color: warna,
-                                            weight: 1,
-                                            fillOpacity: 0.5
-                                        };
-                                    }
-
-                                );
-
-                                const kelurahan = feature.properties['NAMOBJ'];
-                                let html = `<b>${kelurahan}</b><br/>`;
-                                layer.bindTooltip(html).openTooltip();
-                            },
-                            mouseout: function () {
-                                layer.setStyle(
-
-                                    function (feature) {
-                                        const nama = feature.properties['NAMOBJ'];
-                                        const data = $wire.luas_wilayah.find(item => item.village_name === nama);
-                                        const warna = data && data.summary === 'ORI' ? '#b51d1d' : '#3388ff';
-
-                                        return {
-                                            color: warna,
-                                            weight: 1,
-                                            fillOpacity: 0.5
-                                        };
-                                    }
-
-                                );
-                                layer.closeTooltip();
-                            }
-                        });
-                    }
-                }).addTo(leafletMap);
+        // Fetch GeoJSON sekali saja
+        fetch('/geojson/depok_ori.geojson')
+            .then(response => response.json())
+            .then(json => {
+                geojsonData = json;
+                renderGeojson($wire.luas_wilayah);
             });
+
+        $wire.on('changeYear', () => {
+            console.log($wire.luas_wilayah)
+            renderGeojson($wire.luas_wilayah);
+        });
+        $wire.on('changeKodeFasyankes', () => {
+            renderGeojson($wire.luas_wilayah);
+        });
     </script>
     @endscript
+
 
 
 

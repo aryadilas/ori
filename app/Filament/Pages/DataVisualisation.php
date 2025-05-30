@@ -622,6 +622,12 @@ class DataVisualisation extends Page
         /* Grafik 4 */
         $this->graphic_4 = ViewSummarySckOri::where('kode_fasyankes', $this->kode_fasyankes)->where('year', $this->year)->get();
 
+        /* Luas Wilayah */
+        $this->luas_wilayah = Form1Answer::where('kode_fasyankes', $this->kode_fasyankes)
+            ->where('year', $this->year)
+            ->get()
+            ->toArray();
+
         $this->dispatch('changeKodeFasyankes');
 
     }
@@ -655,6 +661,14 @@ class DataVisualisation extends Page
 
         /* Grafik 4 */
         $this->graphic_4 = ViewSummarySckOri::where('kode_fasyankes', $this->kode_fasyankes)->where('year', $this->year)->get();
+
+        /* Luas Wilayah */
+        $this->luas_wilayah = Form1Answer::where('kode_fasyankes', $this->kode_fasyankes)
+            ->where('year', $this->year)
+            ->get()
+            ->toArray();
+
+
 
         $this->dispatch('changeYear');
 
@@ -697,8 +711,10 @@ class DataVisualisation extends Page
         $this->graphic_4 = ViewSummarySckOri::where('kode_fasyankes', $this->kode_fasyankes)->where('year', $this->year)->get();
 
         /* Luas Wilayah */
-        $this->luas_wilayah = Form1Answer::get()->toArray();
-
+        $this->luas_wilayah = Form1Answer::where('kode_fasyankes', $this->kode_fasyankes)
+            ->where('year', $this->year)
+            ->get()
+            ->toArray();
         
 
     }
