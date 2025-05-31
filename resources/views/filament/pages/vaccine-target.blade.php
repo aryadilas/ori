@@ -56,10 +56,9 @@
 
                         </td>
                         <td class="p-3 text-center">
-
                             {{ 
                                 isset($this->coverage_target[$form3Answer->id]) && isset($this->vaccine_target[$form3Answer->id])
-                                ? $this->vaccine_target[$form3Answer->id] * $this->coverage_target[$form3Answer->id] / 100
+                                ? (int) $this->vaccine_target[$form3Answer->id] * (int) $this->coverage_target[$form3Answer->id] / 100
                                 : '-'
                             }}
                         </td>
