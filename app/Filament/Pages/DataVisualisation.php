@@ -74,7 +74,7 @@ class DataVisualisation extends Page
     {
         /* childGender */
         $this->childGender = Form2Answer::selectRaw('gender, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->groupBy('year', 'kode_fasyankes', 'gender')
             ->pluck('total', 'gender');
@@ -96,7 +96,7 @@ class DataVisualisation extends Page
     {
         /* cr1ImunizationAge13_16 */
         $this->cr1ImunizationAge13_16 = \DB::table('view_sck_ori')->selectRaw('q1, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '5')
             ->groupBy('year', 'kode_fasyankes', 'q1')
@@ -116,7 +116,7 @@ class DataVisualisation extends Page
 
         /* cr1ImunizationAge18_59 */
         $this->cr1ImunizationAge18_59 = \DB::table('view_sck_ori')->selectRaw('q1, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '2')
             ->groupBy('year', 'kode_fasyankes', 'q1')
@@ -136,7 +136,7 @@ class DataVisualisation extends Page
 
         /* cr1ImunizationAge5_7 */
         $this->cr1ImunizationAge5_7 = \DB::table('view_sck_ori')->selectRaw('q1, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '3')
             ->groupBy('year', 'kode_fasyankes', 'q1')
@@ -156,7 +156,7 @@ class DataVisualisation extends Page
 
         /* cr1ImunizationAge7_13 */
         $this->cr1ImunizationAge7_13 = \DB::table('view_sck_ori')->selectRaw('q1, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '4')
             ->groupBy('year', 'kode_fasyankes', 'q1')
@@ -176,7 +176,7 @@ class DataVisualisation extends Page
 
         /* cr1ImunizationAge9_18 */
         $this->cr1ImunizationAge9_18 = \DB::table('view_sck_ori')->selectRaw('q1, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '4')
             ->groupBy('year', 'kode_fasyankes', 'q1')
@@ -199,7 +199,7 @@ class DataVisualisation extends Page
     {
         /* cr2ImunizationAge13_16 */
         $this->cr2ImunizationAge13_16 = \DB::table('view_sck_ori')->selectRaw('q2, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '5')
             ->groupBy('year', 'kode_fasyankes', 'q2')
@@ -219,7 +219,7 @@ class DataVisualisation extends Page
 
         /* cr2ImunizationAge18_59 */
         $this->cr2ImunizationAge18_59 = \DB::table('view_sck_ori')->selectRaw('q2, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '2')
             ->groupBy('year', 'kode_fasyankes', 'q2')
@@ -239,7 +239,7 @@ class DataVisualisation extends Page
 
         /* cr2ImunizationAge5_7 */
         $this->cr2ImunizationAge5_7 = \DB::table('view_sck_ori')->selectRaw('q2, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '3')
             ->groupBy('year', 'kode_fasyankes', 'q2')
@@ -259,7 +259,7 @@ class DataVisualisation extends Page
 
         /* cr2ImunizationAge7_13 */
         $this->cr2ImunizationAge7_13 = \DB::table('view_sck_ori')->selectRaw('q2, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '4')
             ->groupBy('year', 'kode_fasyankes', 'q2')
@@ -279,7 +279,7 @@ class DataVisualisation extends Page
 
         /* cr2ImunizationAge9_18 */
         $this->cr2ImunizationAge9_18 = \DB::table('view_sck_ori')->selectRaw('q2, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '4')
             ->groupBy('year', 'kode_fasyankes', 'q2')
@@ -302,7 +302,7 @@ class DataVisualisation extends Page
     {
         /* crBiasImunizationAge13_16 */
         $this->crBiasImunizationAge13_16 = \DB::table('view_sck_ori')->selectRaw('q3, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '5')
             ->groupBy('year', 'kode_fasyankes', 'q3')
@@ -322,7 +322,7 @@ class DataVisualisation extends Page
 
         /* crBiasImunizationAge18_59 */
         $this->crBiasImunizationAge18_59 = \DB::table('view_sck_ori')->selectRaw('q3, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '2')
             ->groupBy('year', 'kode_fasyankes', 'q3')
@@ -342,7 +342,7 @@ class DataVisualisation extends Page
 
         /* crBiasImunizationAge5_7 */
         $this->crBiasImunizationAge5_7 = \DB::table('view_sck_ori')->selectRaw('q3, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '3')
             ->groupBy('year', 'kode_fasyankes', 'q3')
@@ -362,7 +362,7 @@ class DataVisualisation extends Page
 
         /* crBiasImunizationAge7_13 */
         $this->crBiasImunizationAge7_13 = \DB::table('view_sck_ori')->selectRaw('q3, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '4')
             ->groupBy('year', 'kode_fasyankes', 'q3')
@@ -382,7 +382,7 @@ class DataVisualisation extends Page
 
         /* crBiasImunizationAge9_18 */
         $this->crBiasImunizationAge9_18 = \DB::table('view_sck_ori')->selectRaw('q3, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '4')
             ->groupBy('year', 'kode_fasyankes', 'q3')
@@ -405,7 +405,7 @@ class DataVisualisation extends Page
     {
         /* crTambahanImunizationAge13_16 */
         $this->crTambahanImunizationAge13_16 = \DB::table('view_sck_ori')->selectRaw('q4, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '5')
             ->groupBy('year', 'kode_fasyankes', 'q4')
@@ -425,7 +425,7 @@ class DataVisualisation extends Page
 
         /* crTambahanImunizationAge18_59 */
         $this->crTambahanImunizationAge18_59 = \DB::table('view_sck_ori')->selectRaw('q4, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '2')
             ->groupBy('year', 'kode_fasyankes', 'q4')
@@ -445,7 +445,7 @@ class DataVisualisation extends Page
 
         /* crTambahanImunizationAge5_7 */
         $this->crTambahanImunizationAge5_7 = \DB::table('view_sck_ori')->selectRaw('q4, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '3')
             ->groupBy('year', 'kode_fasyankes', 'q4')
@@ -465,7 +465,7 @@ class DataVisualisation extends Page
 
         /* crTambahanImunizationAge7_13 */
         $this->crTambahanImunizationAge7_13 = \DB::table('view_sck_ori')->selectRaw('q4, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '4')
             ->groupBy('year', 'kode_fasyankes', 'q4')
@@ -485,7 +485,7 @@ class DataVisualisation extends Page
 
         /* crTambahanImunizationAge9_18 */
         $this->crTambahanImunizationAge9_18 = \DB::table('view_sck_ori')->selectRaw('q4, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->where('age_group', '4')
             ->groupBy('year', 'kode_fasyankes', 'q4')
@@ -508,7 +508,7 @@ class DataVisualisation extends Page
     {
         /* immunizedInfo */
         $this->immunizedInfo = Form2Answer::selectRaw('q7, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->groupBy('year', 'kode_fasyankes', 'q7')
             ->pluck('total', 'q7');
@@ -530,7 +530,7 @@ class DataVisualisation extends Page
     {
         /* notImmunizedReason */
         $this->notImmunizedReason = Form2Answer::selectRaw('q5, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->groupBy('year', 'kode_fasyankes', 'q5')
             ->pluck('total', 'q5');
@@ -552,7 +552,7 @@ class DataVisualisation extends Page
     {
         /* fever14Days */
         $this->fever14Days = Form2Answer::selectRaw('q8, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->groupBy('year', 'kode_fasyankes', 'q8')
             ->pluck('total', 'q8');
@@ -574,7 +574,7 @@ class DataVisualisation extends Page
     {
         /* immunizedParentPermission */
         $this->immunizedParentPermission = Form2Answer::selectRaw('q6, COUNT(*) as total')
-            ->where('kode_fasyankes', $this->kode_fasyankes)
+            ->when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->groupBy('year', 'kode_fasyankes', 'q6')
             ->pluck('total', 'q6');
@@ -620,10 +620,10 @@ class DataVisualisation extends Page
 
 
         /* Grafik 4 */
-        $this->graphic_4 = ViewSummarySckOri::where('kode_fasyankes', $this->kode_fasyankes)->where('year', $this->year)->get();
+        $this->graphic_4 = ViewSummarySckOri::when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))->where('year', $this->year)->get();
 
         /* Luas Wilayah */
-        $this->luas_wilayah = Form1Answer::where('kode_fasyankes', $this->kode_fasyankes)
+        $this->luas_wilayah = Form1Answer::when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->get()
             ->toArray();
@@ -660,10 +660,10 @@ class DataVisualisation extends Page
 
 
         /* Grafik 4 */
-        $this->graphic_4 = ViewSummarySckOri::where('kode_fasyankes', $this->kode_fasyankes)->where('year', $this->year)->get();
+        $this->graphic_4 = ViewSummarySckOri::when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))->where('year', $this->year)->get();
 
         /* Luas Wilayah */
-        $this->luas_wilayah = Form1Answer::where('kode_fasyankes', $this->kode_fasyankes)
+        $this->luas_wilayah = Form1Answer::when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->get()
             ->toArray();
@@ -680,7 +680,7 @@ class DataVisualisation extends Page
         $this->reference_fasyankes = Fasyankes::select('kode_fasyankes', 'name')->pluck('name', 'kode_fasyankes');
 
 
-        $this->kode_fasyankes = auth()->user()->kode_fasyankes ?? '32760200001';
+        $this->kode_fasyankes = auth()->user()->kode_fasyankes;
         $this->year = now()->format('Y');
 
         /* childGender */
@@ -708,10 +708,10 @@ class DataVisualisation extends Page
 
 
         /* Grafik 4 */
-        $this->graphic_4 = ViewSummarySckOri::where('kode_fasyankes', $this->kode_fasyankes)->where('year', $this->year)->get();
+        $this->graphic_4 = ViewSummarySckOri::when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))->where('year', $this->year)->get();
 
         /* Luas Wilayah */
-        $this->luas_wilayah = Form1Answer::where('kode_fasyankes', $this->kode_fasyankes)
+        $this->luas_wilayah = Form1Answer::when($this->kode_fasyankes, fn($q, $kode) => $q->where('kode_fasyankes', $kode))
             ->where('year', $this->year)
             ->get()
             ->toArray();
