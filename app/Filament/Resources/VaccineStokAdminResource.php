@@ -32,7 +32,7 @@ class VaccineStokAdminResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('Dinkes'); 
+        return auth()->user()->hasRole(['Dinkes', 'Kemkes']); 
     }
 
     public static function form(Form $form): Form

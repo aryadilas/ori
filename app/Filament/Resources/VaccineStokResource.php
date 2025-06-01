@@ -33,7 +33,7 @@ class VaccineStokResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole(['Puskesmas', 'Kemkes']); 
+        return auth()->user()->hasRole('Puskesmas'); 
     }
 
 
