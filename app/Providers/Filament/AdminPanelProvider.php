@@ -60,7 +60,7 @@ class AdminPanelProvider extends PanelProvider
                 'INTEGRASI API SKDR CAMPAK-RUBELA',
                 'ORI KLB CAMPAK-RUBELA',
                 'VAKSIN',
-                'VISUALISASI DATA',
+                'LAPORAN',
             ])
             ->defaultThemeMode(ThemeMode::Light)
             ->sidebarWidth('20rem')
