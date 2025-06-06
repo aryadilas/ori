@@ -24,6 +24,8 @@ return new class extends Migration
 
             $table->integer('vaccine_target')->nullable();
             $table->integer('coverage_target')->nullable();
+            $table->integer('village_target')->nullable();
+            $table->integer('subdistrict_target')->nullable();
 
             $table->timestamps();
 

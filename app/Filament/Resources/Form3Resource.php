@@ -197,6 +197,16 @@ class Form3Resource extends Resource
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
+                        Forms\Components\TextInput::make('village_target_9to18month')
+                            ->label('Sasaran Kelurahan')
+                            ->numeric()
+                            ->inlineLabel()
+                            ->required(),
+                        Forms\Components\TextInput::make('subdistrict_target_9to18month')
+                            ->label('Sasaran Kecamatan')
+                            ->numeric()
+                            ->inlineLabel()
+                            ->required(),
                     ]),
                 Forms\Components\Section::make('Usia 18 - 59 Bulan')
                     ->description('Usia 18 sampai 59 Bulan')
@@ -209,6 +219,16 @@ class Form3Resource extends Resource
                             ->required(),
                         Forms\Components\TextInput::make('population_18to59month')
                             ->label('Total Populasi')
+                            ->numeric()
+                            ->inlineLabel()
+                            ->required(),
+                        Forms\Components\TextInput::make('village_target_18to59month')
+                            ->label('Sasaran Kelurahan')
+                            ->numeric()
+                            ->inlineLabel()
+                            ->required(),
+                        Forms\Components\TextInput::make('subdistrict_target_18to59month')
+                            ->label('Sasaran Kecamatan')
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
@@ -227,6 +247,16 @@ class Form3Resource extends Resource
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
+                        Forms\Components\TextInput::make('village_target_5to7year')
+                            ->label('Sasaran Kelurahan')
+                            ->numeric()
+                            ->inlineLabel()
+                            ->required(),
+                        Forms\Components\TextInput::make('subdistrict_target_5to7year')
+                            ->label('Sasaran Kecamatan')
+                            ->numeric()
+                            ->inlineLabel()
+                            ->required(),
                     ]),
                 Forms\Components\Section::make('Usia 7 - < 13 Tahun')
                     ->description('Usia 7 sampai kurang dari 13')
@@ -239,6 +269,16 @@ class Form3Resource extends Resource
                             ->required(),
                         Forms\Components\TextInput::make('population_7to13year')
                             ->label('Total Populasi')
+                            ->numeric()
+                            ->inlineLabel()
+                            ->required(),
+                        Forms\Components\TextInput::make('village_target_7to13year')
+                            ->label('Sasaran Kelurahan')
+                            ->numeric()
+                            ->inlineLabel()
+                            ->required(),
+                        Forms\Components\TextInput::make('subdistrict_target_7to13year')
+                            ->label('Sasaran Kecamatan')
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
@@ -257,6 +297,16 @@ class Form3Resource extends Resource
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
+                        Forms\Components\TextInput::make('village_target_13to16year')
+                            ->label('Sasaran Kelurahan')
+                            ->numeric()
+                            ->inlineLabel()
+                            ->required(),
+                        Forms\Components\TextInput::make('subdistrict_target_13to16year')
+                            ->label('Sasaran Kecamatan')
+                            ->numeric()
+                            ->inlineLabel()
+                            ->required(),
                     ]),
                 Forms\Components\Section::make('Usia ≥ 16 tahun')
                     ->description('Usia lebih dari sama dengan 16 tahun')
@@ -269,6 +319,16 @@ class Form3Resource extends Resource
                             ->required(),
                         Forms\Components\TextInput::make('population_more16year')
                             ->label('Total Populasi')
+                            ->numeric()
+                            ->inlineLabel()
+                            ->required(),
+                        Forms\Components\TextInput::make('village_target_more16year')
+                            ->label('Sasaran Kelurahan')
+                            ->numeric()
+                            ->inlineLabel()
+                            ->required(),
+                        Forms\Components\TextInput::make('subdistrict_target_more16year')
+                            ->label('Sasaran Kecamatan')
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
@@ -320,6 +380,14 @@ class Form3Resource extends Resource
                     ->summarize(Sum::make()->label(''))
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label("Total Populasi"),
+                Tables\Columns\TextColumn::make("village_target")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Sasaran Kelurahan"),
+                Tables\Columns\TextColumn::make("subdistrict_target")
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Sasaran Kecamatan"),
                 Tables\Columns\TextColumn::make("attackRate")
                     ->placeholder('-')
                     ->summarize(

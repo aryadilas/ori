@@ -16,6 +16,8 @@ class Form3Answer extends Model
         'village_name',
         'vaccine_target',
         'coverage_target',
+        'village_target',
+        'subdistrict_target',
     ];
 
     protected $appends = [
