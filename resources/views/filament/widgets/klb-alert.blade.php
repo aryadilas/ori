@@ -21,7 +21,7 @@
                                 <span class="text-xs">Terdapat {{ $case['total_cases'] }} kasus pada minggu ke {{ $case['start_week'] }} sampai {{ $case['end_week'] }}.</span>
                             </div>
                             <span class="px-1 mt-1 text-xs text-black bg-white rounded-sm w-fit">Belum dikonfirmasi</span>
-                            @if ($case['status'] === 'unconfirmed' && auth()->user()->hasRole('Puskesmas'))
+                            {{-- @if ($case['status'] === 'unconfirmed' && auth()->user()->hasRole('Puskesmas'))
                                 <div class="z-10 flex gap-2 mt-2">
                                     <button wire:click="notification_confirm('{{ $case['kode_fasyankes'] }}', '{{ $case['total_cases'] }}', '{{ $case['start_week'] }}', '{{ $case['end_week'] }}', 'confirmed')" class="flex items-center gap-1 px-2 py-1 text-black bg-white rounded-md cursor-pointer w-fit focus:outline-none focus:ring-2 focus:ring-gray-300" tabindex="0">
                                         <div class="hidden" wire:loading.class="inline" wire:loading.class.remove="hidden" wire:target="notification_confirm('{{ $case['kode_fasyankes'] }}', '{{ $case['total_cases'] }}', '{{ $case['start_week'] }}', '{{ $case['end_week'] }}', 'confirmed')">
@@ -36,7 +36,7 @@
                                         <span class="text-xs font-semibold">Bukan KLB</span>
                                     </button>
                                 </div>
-                            @endif
+                            @endif --}}
                         </div>
                     </div>
 
@@ -52,15 +52,15 @@
                                 class="flex flex-col">
                                 <div class="flex items-center gap-2">
                                     <span class="text-sm font-semibold">Puskesmas {{ $case['fasyankes_name'] }}</span>
-                                    @if (auth()->user()->hasRole('Puskesmas'))
+                                    {{-- @if (auth()->user()->hasRole('Puskesmas'))
                                         <x-heroicon-o-pencil-square @click="showConfirmButton = ! showConfirmButton" class="z-10 w-4 h-4 cursor-pointer " />
-                                    @endif
+                                    @endif --}}
                                 </div>
                                 <div class="flex flex-col">
                                     <span class="px-1 mt-1 text-xs text-black bg-white rounded-sm w-fit">Terkonfirmasi Status KLB</span>
                                     <span class="text-xs">Terdapat {{ $case['total_cases'] }} kasus pada minggu ke {{ $case['start_week'] }} sampai {{ $case['end_week'] }}.</span>
                                 </div>
-                                <div x-show="showConfirmButton" class="z-10 flex gap-2 mt-2">
+                                {{-- <div x-show="showConfirmButton" class="z-10 flex gap-2 mt-2">
                                     <button wire:click="notification_confirm_edit('{{ $case['notification_id'] }}', 'confirmed')" class="flex items-center gap-1 px-2 py-1 text-black bg-white rounded-md cursor-pointer w-fit focus:outline-none focus:ring-2 focus:ring-gray-300" tabindex="0">
                                         <div class="hidden" wire:loading.class="inline" wire:loading.class.remove="hidden" wire:target="notification_confirm_edit('{{ $case['notification_id'] }}', 'confirmed')">
                                             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a7" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FF156D"></stop><stop offset=".3" stop-color="#FF156D" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FF156D" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FF156D" stop-opacity=".3"></stop><stop offset="1" stop-color="#FF156D" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a7)" stroke-width="30" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FF156D" stroke-width="30" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
@@ -73,7 +73,7 @@
                                         </div>
                                         <span class="text-xs font-semibold">Bukan KLB</span>
                                     </button>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     
@@ -88,15 +88,15 @@
                                 class="flex flex-col">
                                 <div class="flex items-center gap-2">
                                     <span class="text-sm font-semibold">Puskesmas {{ $case['fasyankes_name'] }}</span>
-                                    @if (auth()->user()->hasRole('Puskesmas'))
+                                    {{-- @if (auth()->user()->hasRole('Puskesmas'))
                                         <x-heroicon-o-pencil-square @click="showConfirmButton = ! showConfirmButton" class="z-10 w-4 h-4 cursor-pointer " />
-                                    @endif
+                                    @endif --}}
                                 </div>
                                 <div class="flex flex-col">
                                     <span class="px-1 mt-1 text-xs text-black bg-white rounded-sm w-fit">Terkonfirmasi bukan KLB</span>
                                     <span class="text-xs">Terdapat {{ $case['total_cases'] }} kasus pada minggu ke {{ $case['start_week'] }} sampai {{ $case['end_week'] }}.</span>
                                 </div>
-                                <div x-show="showConfirmButton" class="z-10 flex gap-2 mt-2">
+                                {{-- <div x-show="showConfirmButton" class="z-10 flex gap-2 mt-2">
                                     <button wire:click="notification_confirm_edit('{{ $case['notification_id'] }}', 'confirmed')" class="flex items-center gap-1 px-2 py-1 text-black bg-white rounded-md cursor-pointer w-fit focus:outline-none focus:ring-2 focus:ring-gray-300" tabindex="0">
                                         <div class="hidden" wire:loading.class="inline" wire:loading.class.remove="hidden" wire:target="notification_confirm_edit('{{ $case['notification_id'] }}', 'confirmed')">
                                             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a7" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FF156D"></stop><stop offset=".3" stop-color="#FF156D" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FF156D" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FF156D" stop-opacity=".3"></stop><stop offset="1" stop-color="#FF156D" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a7)" stroke-width="30" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FF156D" stroke-width="30" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
@@ -109,7 +109,7 @@
                                         </div>
                                         <span class="text-xs font-semibold">Bukan KLB</span>
                                     </button>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 
