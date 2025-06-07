@@ -118,6 +118,11 @@ class SkdrInputResource extends Resource
                 Tables\Columns\TextColumn::make('case_count')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label('Kasus'),
+                Tables\Columns\SelectColumn::make('status')
+                    ->options([
+                        'KLB' => 'KLB',
+                        'Bukan KLB' => 'Bukan KLB',
+                    ])
                 // Tables\Columns\TextColumn::make('patient_names')
                 //     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                 //     ->formatStateUsing(fn ($state) => 
