@@ -5,6 +5,7 @@
             <table class="w-full text-sm">
                 <tr class="border">
                     <th class="p-3">No</th>
+                    <th class="p-3">Tahun</th>
                     @if (!auth()->user()->hasRole('Puskesmas'))
                         <th class="p-3 text-center">Fasyankes</th>
                     @endif
@@ -13,16 +14,22 @@
                     <th class="p-3">Target Cakupan</th>
                     <th class="p-3">Kebutuhan Vaksin (Dosis)</th>
                 </tr>
+                @php
+                    $total = 0;
+                @endphp
                 @foreach($this->form3Answers as $form3Answer)
                     <tr class="border">
                         <td class="p-3 text-center">{{ $loop->iteration }}</td>
+                        <td class="p-3 text-center">{{ $form3Answer->year }}</td>
                         @if (!auth()->user()->hasRole('Puskesmas'))
                             <td class="p-3 text-center">{{ $form3Answer->fasyankes->name }}</td>
                         @endif
                         <td class="p-3 text-center">{{ $form3Answer->age_group }}</td>
                         <td class="p-3 text-center">
 
-                            @if (auth()->user()->hasRole('Puskesmas'))
+                            {{ $form3Answer->village_target ?? '-' }}
+
+                            {{-- @if (auth()->user()->hasRole('Puskesmas'))
                                 <input 
                                     wire:model.defer="vaccine_target.{{ $form3Answer->id }}"
                                     wire:change="updateVaccineTarget('{{ $form3Answer->id }}', $event.target.value)" 
@@ -32,7 +39,7 @@
                                     id=""> 
                             @else                       
                                 {{ $this->vaccine_target[$form3Answer->id]?->vaccine_target ?? '-' }}                           
-                            @endif
+                            @endif --}}
 
                         </td>
                         <td class="p-3 text-center">
@@ -56,14 +63,24 @@
 
                         </td>
                         <td class="p-3 text-center">
+                            @php
+                                $subtotal = isset($this->coverage_target[$form3Answer->id]) && isset($form3Answer->village_target)
+                                ? (int) $form3Answer->village_target * (int) $this->coverage_target[$form3Answer->id] / 100
+                                : '0'
+                            @endphp
                             {{ 
-                                isset($this->coverage_target[$form3Answer->id]) && isset($this->vaccine_target[$form3Answer->id])
-                                ? (int) $this->vaccine_target[$form3Answer->id] * (int) $this->coverage_target[$form3Answer->id] / 100
-                                : '-'
+                                $subtotal > 0 ? $subtotal : 0
                             }}
                         </td>
                     </tr>
+                    @php
+                        $total += $subtotal > 0 ? $subtotal : 0;
+                    @endphp
                 @endforeach
+                <tr class="border">
+                    <td colspan="{{ !auth()->user()->hasRole('Puskesmas') ? 6 : 5 }}" class="p-3 text-center">Total</td>
+                    <td class="p-3 text-center">{{ $total }}</td>
+                </tr>
 
             </table>
         </div>

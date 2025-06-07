@@ -33,6 +33,7 @@ class VaccineStokResource extends Resource
 
     public static function canAccess(): bool
     {
+        return false;
         return auth()->user()->hasRole('Puskesmas'); 
     }
 
@@ -75,7 +76,7 @@ class VaccineStokResource extends Resource
                 $query->join('fasyankes', 'vaccines.kode_fasyankes', '=', 'fasyankes.kode_fasyankes');
 
                 if (auth()->user()->kode_fasyankes) {
-                    return $query->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+                    return $query->where('vaccines.kode_fasyankes', auth()->user()->kode_fasyankes);
                 }
 
                 return $query;
