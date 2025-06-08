@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('case_count');
             $table->text('patient_names')->nullable();
             $table->string('kode_fasyankes');
+            $table->string('status');
             $table->timestamps();
 
             $table->foreign('kode_fasyankes')->references('kode_fasyankes')->on('fasyankes')->cascadeOnUpdate()->cascadeOnDelete();
