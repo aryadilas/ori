@@ -18,7 +18,8 @@ class Skdr extends Model
         'year',
         'case_count',
         // 'patient_names',
-        'kode_fasyankes'
+        'kode_fasyankes',
+        'status',
     ];
 
     public function fasyankes()

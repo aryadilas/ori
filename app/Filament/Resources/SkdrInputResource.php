@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SkdrInputResource\Pages;
 use App\Filament\Resources\SkdrInputResource\RelationManagers;
 use App\Models\Skdr;
+use App\Models\Notification;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -119,6 +120,93 @@ class SkdrInputResource extends Resource
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label('Kasus'),
                 Tables\Columns\SelectColumn::make('status')
+                    ->label('Status')
+                    ->afterStateUpdated(function ($record, $state) {
+                        
+                        $tahun = now()->format('Y'); 
+
+                        $data = Skdr::where('year', $tahun)
+                            ->orderBy('kode_fasyankes')
+                            ->where('status', 'KLB')
+                            ->with('fasyankes')
+                            ->orderBy('week');
+                        
+                        if (auth()->user()->hasRole('Puskesmas')) {
+                            $data->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+                        }
+
+                        $data = $data->get()->groupBy('kode_fasyankes');
+
+                        
+                        $results = [];
+                        
+                        foreach ($data as $kodeFasyankes => $records) {
+                            $weeks = $records->pluck('case_count', 'week')->toArray(); 
+
+                            $fasyankesName = $records->first()->fasyankes->name;
+
+                            $allWeeks = array_keys($weeks);
+                            sort($allWeeks);
+
+                            for ($i = 0; $i < count($allWeeks); $i++) {
+                                $w1 = $allWeeks[$i];
+                                $w2 = $w1 + 1;
+                                $w3 = $w1 + 2;
+                                $w4 = $w1 + 3;
+
+                                $caseW1 = $weeks[$w1] ?? 0;
+                                $caseW2 = $weeks[$w2] ?? 0;
+                                $caseW3 = $weeks[$w3] ?? 0;
+                                $caseW4 = $weeks[$w4] ?? 0;
+
+                                if ($caseW1 == 0 || $caseW2 == 0 || $caseW3 == 0 || $caseW4 == 0) {
+                                    continue;                    
+                                }
+
+                                $totalCases = $caseW1 + $caseW2 + $caseW3 + $caseW4;
+
+                                if ($totalCases >= 5) {
+
+                                    $notification = Notification::with('fasyankes')
+                                        ->where('kode_fasyankes', $kodeFasyankes)
+                                        ->where('start_week', $w1)
+                                        ->where('category', 'klb')
+                                        ->where('end_week', $caseW4 
+                                                            ? $w4 
+                                                            : ($caseW3 
+                                                                ? $w3 
+                                                                : ($caseW2 
+                                                                    ? $w2 
+                                                                    : $w1))
+                                        )
+                                        ->where('total_case', $totalCases)
+                                        ->first();
+
+                                    if (!$notification) {
+                                        
+                                        Notification::create([
+                                            'kode_fasyankes' => $record->kode_fasyankes,
+                                            'total_case' => $totalCases,
+                                            'start_week' => $w1,
+                                            'end_week' => $w4,
+                                            'category' => 'klb',
+                                            'status' => 'confirmed',
+                                        ]);
+
+                                    } 
+
+                                }
+
+                            }
+
+                        }
+
+
+                        // algoritma cek KLB di notif
+                        // create notif kalo KLB atau tidak
+
+
+                    })
                     ->options([
                         'KLB' => 'KLB',
                         'Bukan KLB' => 'Bukan KLB',

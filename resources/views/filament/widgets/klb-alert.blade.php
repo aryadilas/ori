@@ -9,18 +9,17 @@
             
             @foreach ($klb as $case)
                 
-                @if ($case['status'] === 'unconfirmed')
+                {{-- @if ($case['status'] === 'unconfirmed') --}}
 
-                    <div class="flex relative w-fit items-center gap-4 rounded-md bg-[#B00020] px-4 py-2 text-slate-100">
+                    {{-- <div class="flex relative w-fit items-center gap-4 rounded-md bg-[#B00020] px-4 py-2 text-slate-100">
                         <div class="absolute inset-0 rounded-md ring-4 ring-[#b00020b8] animate-pulse"></div>
                         <x-heroicon-o-arrow-trending-up class="w-5 fill-[#b00020b8] h-5 animate-pulse" />
                         <div class="flex flex-col">
                             <span class="text-sm font-semibold">Puskesmas {{ $case['fasyankes_name'] }}</span>
                             <div class="flex flex-col">
-                                {{-- <span>Status KLB (≥5 kasus selama 4 minggu berturut-turut).</span> --}}
                                 <span class="text-xs">Terdapat {{ $case['total_cases'] }} kasus pada minggu ke {{ $case['start_week'] }} sampai {{ $case['end_week'] }}.</span>
                             </div>
-                            <span class="px-1 mt-1 text-xs text-black bg-white rounded-sm w-fit">Belum dikonfirmasi</span>
+                            <span class="px-1 mt-1 text-xs text-black bg-white rounded-sm w-fit">Belum dikonfirmasi</span> --}}
                             {{-- @if ($case['status'] === 'unconfirmed' && auth()->user()->hasRole('Puskesmas'))
                                 <div class="z-10 flex gap-2 mt-2">
                                     <button wire:click="notification_confirm('{{ $case['kode_fasyankes'] }}', '{{ $case['total_cases'] }}', '{{ $case['start_week'] }}', '{{ $case['end_week'] }}', 'confirmed')" class="flex items-center gap-1 px-2 py-1 text-black bg-white rounded-md cursor-pointer w-fit focus:outline-none focus:ring-2 focus:ring-gray-300" tabindex="0">
@@ -37,10 +36,10 @@
                                     </button>
                                 </div>
                             @endif --}}
-                        </div>
-                    </div>
+                        {{-- </div>
+                    </div> --}}
 
-                @else
+                {{-- @else --}}
                     @if ($case['status'] === 'confirmed')
                         
                         <div class="flex relative w-fit items-center gap-4 rounded-md bg-[#B00020] px-4 py-2 text-slate-100">
@@ -51,14 +50,14 @@
                                 x-init="window.addEventListener('hide-confirm-button', () => showConfirmButton = false)"
                                 class="flex flex-col">
                                 <div class="flex items-center gap-2">
-                                    <span class="text-sm font-semibold">Puskesmas {{ $case['fasyankes_name'] }}</span>
+                                    <span class="text-sm font-semibold">Puskesmas {{ $case->fasyankes->name }}</span>
                                     {{-- @if (auth()->user()->hasRole('Puskesmas'))
                                         <x-heroicon-o-pencil-square @click="showConfirmButton = ! showConfirmButton" class="z-10 w-4 h-4 cursor-pointer " />
                                     @endif --}}
                                 </div>
                                 <div class="flex flex-col">
                                     <span class="px-1 mt-1 text-xs text-black bg-white rounded-sm w-fit">Terkonfirmasi Status KLB</span>
-                                    <span class="text-xs">Terdapat {{ $case['total_cases'] }} kasus pada minggu ke {{ $case['start_week'] }} sampai {{ $case['end_week'] }}.</span>
+                                    <span class="text-xs">Terdapat {{ $case['total_case'] }} kasus pada minggu ke {{ $case['start_week'] }} sampai {{ $case['end_week'] }}.</span>
                                 </div>
                                 {{-- <div x-show="showConfirmButton" class="z-10 flex gap-2 mt-2">
                                     <button wire:click="notification_confirm_edit('{{ $case['notification_id'] }}', 'confirmed')" class="flex items-center gap-1 px-2 py-1 text-black bg-white rounded-md cursor-pointer w-fit focus:outline-none focus:ring-2 focus:ring-gray-300" tabindex="0">
@@ -87,14 +86,14 @@
                                 x-init="window.addEventListener('hide-confirm-button', () => showConfirmButton = false)"
                                 class="flex flex-col">
                                 <div class="flex items-center gap-2">
-                                    <span class="text-sm font-semibold">Puskesmas {{ $case['fasyankes_name'] }}</span>
+                                    <span class="text-sm font-semibold">Puskesmas {{ $case->fasyankes->name }}</span>
                                     {{-- @if (auth()->user()->hasRole('Puskesmas'))
                                         <x-heroicon-o-pencil-square @click="showConfirmButton = ! showConfirmButton" class="z-10 w-4 h-4 cursor-pointer " />
                                     @endif --}}
                                 </div>
                                 <div class="flex flex-col">
                                     <span class="px-1 mt-1 text-xs text-black bg-white rounded-sm w-fit">Terkonfirmasi bukan KLB</span>
-                                    <span class="text-xs">Terdapat {{ $case['total_cases'] }} kasus pada minggu ke {{ $case['start_week'] }} sampai {{ $case['end_week'] }}.</span>
+                                    <span class="text-xs">Terdapat {{ $case['total_case'] }} kasus pada minggu ke {{ $case['start_week'] }} sampai {{ $case['end_week'] }}.</span>
                                 </div>
                                 {{-- <div x-show="showConfirmButton" class="z-10 flex gap-2 mt-2">
                                     <button wire:click="notification_confirm_edit('{{ $case['notification_id'] }}', 'confirmed')" class="flex items-center gap-1 px-2 py-1 text-black bg-white rounded-md cursor-pointer w-fit focus:outline-none focus:ring-2 focus:ring-gray-300" tabindex="0">
@@ -114,7 +113,7 @@
                         </div>
 
                     @endif
-                @endif
+                {{-- @endif --}}
             @endforeach
 
         @else

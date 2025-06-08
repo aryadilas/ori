@@ -17,103 +17,103 @@ class NotificationAlert extends Page
 
     protected static ?string $navigationIcon = 'heroicon-o-bell-alert';
 
-    protected static ?string $navigationLabel = 'Notification Alert';
+    protected static ?string $navigationLabel = 'Status KLB';
 
-    public static function getNavigationBadge(): ?string
-    {
+    // public static function getNavigationBadge(): ?string
+    // {
 
 
 
-        $tahun = now()->format('Y'); 
+    //     $tahun = now()->format('Y'); 
 
-        $data = Skdr::where('year', $tahun)
-            ->orderBy('kode_fasyankes')
-            ->with('fasyankes')
-            ->orderBy('week');
+    //     $data = Skdr::where('year', $tahun)
+    //         ->orderBy('kode_fasyankes')
+    //         ->with('fasyankes')
+    //         ->orderBy('week');
         
-        if (auth()->user()->hasRole('Puskesmas')) {
-            $data->where('kode_fasyankes', auth()->user()->kode_fasyankes);
-        }
+    //     if (auth()->user()->hasRole('Puskesmas')) {
+    //         $data->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+    //     }
 
-        $data = $data->get()->groupBy('kode_fasyankes');
+    //     $data = $data->get()->groupBy('kode_fasyankes');
 
-        $results = [];
+    //     $results = [];
 
-        foreach ($data as $kodeFasyankes => $records) {
-            $weeks = $records->pluck('case_count', 'week')->toArray(); 
+    //     foreach ($data as $kodeFasyankes => $records) {
+    //         $weeks = $records->pluck('case_count', 'week')->toArray(); 
 
-            $fasyankesName = $records->first()->fasyankes->name;
+    //         $fasyankesName = $records->first()->fasyankes->name;
 
-            $allWeeks = array_keys($weeks);
-            sort($allWeeks);
+    //         $allWeeks = array_keys($weeks);
+    //         sort($allWeeks);
 
-            for ($i = 0; $i < count($allWeeks); $i++) {
-                $w1 = $allWeeks[$i];
-                $w2 = $w1 + 1;
-                $w3 = $w1 + 2;
-                $w4 = $w1 + 3;
+    //         for ($i = 0; $i < count($allWeeks); $i++) {
+    //             $w1 = $allWeeks[$i];
+    //             $w2 = $w1 + 1;
+    //             $w3 = $w1 + 2;
+    //             $w4 = $w1 + 3;
 
-                $caseW1 = $weeks[$w1] ?? 0;
-                $caseW2 = $weeks[$w2] ?? 0;
-                $caseW3 = $weeks[$w3] ?? 0;
-                $caseW4 = $weeks[$w4] ?? 0;
+    //             $caseW1 = $weeks[$w1] ?? 0;
+    //             $caseW2 = $weeks[$w2] ?? 0;
+    //             $caseW3 = $weeks[$w3] ?? 0;
+    //             $caseW4 = $weeks[$w4] ?? 0;
 
-                $totalCases = $caseW1 + $caseW2 + $caseW3 + $caseW4;
+    //             $totalCases = $caseW1 + $caseW2 + $caseW3 + $caseW4;
 
-                if ($caseW1 == 0 || $caseW2 == 0 || $caseW3 == 0 || $caseW4 == 0) {
-                    continue;                    
-                }
+    //             if ($caseW1 == 0 || $caseW2 == 0 || $caseW3 == 0 || $caseW4 == 0) {
+    //                 continue;                    
+    //             }
 
-                if ($totalCases >= 5) {
+    //             if ($totalCases >= 5) {
 
-                    $notification = Notification::with('fasyankes')
-                        ->where('kode_fasyankes', $kodeFasyankes)
-                        ->where('start_week', $w1)
-                        ->where('category', 'klb')
-                        ->where('end_week', $caseW4 
-                                            ? $w4 
-                                            : ($caseW3 
-                                                ? $w3 
-                                                : ($caseW2 
-                                                    ? $w2 
-                                                    : $w1))
-                        )
-                        ->where('total_case', $totalCases)
-                        ->first();
+    //                 $notification = Notification::with('fasyankes')
+    //                     ->where('kode_fasyankes', $kodeFasyankes)
+    //                     ->where('start_week', $w1)
+    //                     ->where('category', 'klb')
+    //                     ->where('end_week', $caseW4 
+    //                                         ? $w4 
+    //                                         : ($caseW3 
+    //                                             ? $w3 
+    //                                             : ($caseW2 
+    //                                                 ? $w2 
+    //                                                 : $w1))
+    //                     )
+    //                     ->where('total_case', $totalCases)
+    //                     ->first();
 
-                    if (!$notification) {
+    //                 if (!$notification) {
 
-                        $results[] = [
-                            'notification_id' => null,
-                            'kode_fasyankes' => $kodeFasyankes,
-                            'fasyankes_name' => $fasyankesName,
-                            'start_week' => $w1,
-                            'end_week' => $caseW4 
-                                            ? $w4 
-                                            : ($caseW3 
-                                                ? $w3 
-                                                : ($caseW2 
-                                                    ? $w2 
-                                                    : $w1)),
-                            'total_cases' => $totalCases,
-                            'status' => 'unconfirmed',
-                        ];
+    //                     $results[] = [
+    //                         'notification_id' => null,
+    //                         'kode_fasyankes' => $kodeFasyankes,
+    //                         'fasyankes_name' => $fasyankesName,
+    //                         'start_week' => $w1,
+    //                         'end_week' => $caseW4 
+    //                                         ? $w4 
+    //                                         : ($caseW3 
+    //                                             ? $w3 
+    //                                             : ($caseW2 
+    //                                                 ? $w2 
+    //                                                 : $w1)),
+    //                         'total_cases' => $totalCases,
+    //                         'status' => 'unconfirmed',
+    //                     ];
 
-                    } 
+    //                 } 
 
-                }
+    //             }
 
-            }
+    //         }
 
-        }
+    //     }
 
-        if ($results) {
-            return 'NEW';
-        }
+    //     if ($results) {
+    //         return 'NEW';
+    //     }
 
-        return '';
+    //     return '';
 
-    }
+    // }
 
     public static function getNavigationBadgeColor(): ?string
     {
