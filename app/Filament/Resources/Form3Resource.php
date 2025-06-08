@@ -645,10 +645,10 @@ class Form3Resource extends Resource
                             ->title('Berhasil Disimpan')
                             ->send(); 
                         // dd($data, $record);
-                    })
+                    }),
                 // Tables\Actions\EditAction::make()
                 //     ->visible(auth()->user()->hasRole('Puskesmas')),
-                // Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->emptyStateHeading('Data Kosong')
             ->bulkActions([

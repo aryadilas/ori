@@ -15,7 +15,7 @@ class ManageForm3s extends ManageRecords
 {
     protected static string $resource = Form3Resource::class;
 
-    protected ?string $subheading = 'Halaman untuk mengelola data form kelompok usia.';
+    protected ?string $subheading = 'Halaman untuk menentukan kelompok usia ORI.';
 
     protected function getHeaderActions(): array
     {
