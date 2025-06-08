@@ -15,7 +15,7 @@
                 @foreach($this->notifications as $notif)
                 @php
                     \Carbon\Carbon::setLocale('id');
-                    $date_klb = \Carbon\Carbon::parse($notif->created_at);
+                    $date_klb = \Carbon\Carbon::parse($notif->created_at)->startOfDay();
 
                     if (isset($this->implementation_date[$notif->id])) {
                         $date_implementation = \Carbon\Carbon::parse($this->implementation_date[$notif->id]); 
