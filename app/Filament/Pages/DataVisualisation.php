@@ -14,22 +14,22 @@ class DataVisualisation extends Page
 
     protected static string $view = 'filament.pages.data-visualisation';
 
-    protected static ?string $navigationLabel = 'Laporan Pelaksanaan ORI';
+    protected static ?string $navigationLabel = 'Peta Wilayah ORI';
 
-    protected static ?string $slug = 'laporan-ori';
+    protected static ?string $slug = 'peta-wilayah-ori';
 
-    protected static ?string $label = 'Laporan Pelaksanaan ORI';
+    protected static ?string $label = 'Peta Wilayah ORI';
 
-    protected static ?string $pluralModelLabel = 'Laporan Pelaksanaan ORI';
+    protected static ?string $pluralModelLabel = 'Peta Wilayah ORI';
 
     protected static ?string $navigationGroup = 'PELAPORAN';
 
     
-    protected static ?string $title = 'Laporan Pelaksanaan ORI';
+    protected static ?string $title = 'Peta Wilayah ORI';
 
-    protected ?string $heading = 'Laporan Pelaksanaan ORI';
+    protected ?string $heading = 'Peta Wilayah ORI';
 
-    protected ?string $subheading = 'Halaman untuk melihat laporan pelaksanaan ORI.';
+    protected ?string $subheading = 'Halaman untuk melihat peta wilayah ORI.';
 
     public $childGender, $childGenderCategories, $childGenderValues, $childGenderTotal;
     public $cr1ImunizationAge13_16, $cr1ImunizationAge13_16Categories, $cr1ImunizationAge13_16Values, $cr1ImunizationAge13_16Total;
