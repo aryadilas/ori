@@ -28,7 +28,7 @@ class SkdrInputResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Petugas Input Kasus';
 
-    protected static ?string $navigationGroup = 'INTEGRASI API SKDR CAMPAK-RUBELA';
+    protected static ?string $navigationGroup = 'PEMANTAUAN KASUS';
 
     public static function canAccess(): bool
     {

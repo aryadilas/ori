@@ -57,10 +57,10 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->navigationGroups([
-                'INTEGRASI API SKDR CAMPAK-RUBELA',
-                'ORI KLB CAMPAK-RUBELA',
+                'PEMANTAUAN KASUS',
+                'INPUT KAJIAN EPIDEMIOLOGI',
                 'VAKSIN',
-                'LAPORAN',
+                'PELAPORAN',
             ])
             ->defaultThemeMode(ThemeMode::Light)
             ->sidebarWidth('20rem')

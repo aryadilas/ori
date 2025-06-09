@@ -33,7 +33,7 @@ class Form3Resource extends Resource
 
     protected static ?string $pluralModelLabel = 'Kelompok Usia';
 
-    protected static ?string $navigationGroup = 'ORI KLB CAMPAK-RUBELA';
+    protected static ?string $navigationGroup = 'INPUT KAJIAN EPIDEMIOLOGI';
 
     protected static ?int $navigationSort = 4;
 

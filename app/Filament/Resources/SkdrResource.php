@@ -27,7 +27,7 @@ class SkdrResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Rekapitulasi Mingguan Aplikasi Sistem Kewaspadaan Dini dan Respon (SKDR)';
 
-    protected static ?string $navigationGroup = 'INTEGRASI API SKDR CAMPAK-RUBELA';
+    protected static ?string $navigationGroup = 'PEMANTAUAN KASUS';
 
     public static function canAccess(): bool
     {

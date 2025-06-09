@@ -20,7 +20,7 @@ class Punctuality extends Page
 
     protected ?string $subheading = 'Halaman untuk mengetahui ketepatan waktu Pelaksanaan ORI Campak-Rubela.';
 
-    protected static ?string $navigationGroup = 'ORI KLB CAMPAK-RUBELA';
+    protected static ?string $navigationGroup = 'INPUT KAJIAN EPIDEMIOLOGI';
 
     protected static ?int $navigationSort = 5;
 

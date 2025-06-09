@@ -22,7 +22,7 @@ class DataVisualisation extends Page
 
     protected static ?string $pluralModelLabel = 'Laporan Pelaksanaan ORI';
 
-    protected static ?string $navigationGroup = 'LAPORAN';
+    protected static ?string $navigationGroup = 'PELAPORAN';
 
     
     protected static ?string $title = 'Laporan Pelaksanaan ORI';
