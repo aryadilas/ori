@@ -12,7 +12,7 @@ class Punctuality extends Page
 
     protected static ?string $title = 'Ketepatan Waktu';
 
-    protected static ?string $navigationIcon = 'heroicon-o-clock';
+    protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-bar';
 
     protected static ?string $navigationLabel = 'Ketepatan Waktu';
 
