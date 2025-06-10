@@ -14,10 +14,7 @@ class Fasyankes extends Model
     protected $fillable = [
         'kode_fasyankes',
         'name',
-        'type',
         'regency',
-        'longitude',
-        'latitude',
     ];
 
 }
