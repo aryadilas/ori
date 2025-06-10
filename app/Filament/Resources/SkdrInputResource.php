@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\DB;
 
 class SkdrInputResource extends Resource
 {
@@ -32,7 +33,7 @@ class SkdrInputResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole(['Super Admin', 'Dinkes', 'Puskesmas']); 
+        return auth()->user()->hasRole(['Super Admin', 'Dinkes', 'Puskesmas']);
     }
 
     public static function form(Form $form): Form
@@ -47,9 +48,9 @@ class SkdrInputResource extends Resource
                 Forms\Components\Select::make('week')
                     ->label('Minggu Ke')
                     ->native(false)
-                    ->options(function (){
+                    ->options(function () {
                         $options = [];
-                        for ($i = 1; $i <= 52; $i++) { 
+                        for ($i = 1; $i <= 52; $i++) {
                             $options[$i] = $i;
                         }
                         return $options;
@@ -59,9 +60,9 @@ class SkdrInputResource extends Resource
                 Forms\Components\Select::make('year')
                     ->label('Tahun')
                     ->native(false)
-                    ->options(function (){
+                    ->options(function () {
                         $options = [];
-                        for ($i = 2018; $i <= now()->format('Y')+5; $i++) { 
+                        for ($i = 2018; $i <= now()->format('Y') + 5; $i++) {
                             $options[$i] = $i;
                         }
                         return $options;
@@ -76,33 +77,53 @@ class SkdrInputResource extends Resource
                     ->live()
                     ->numeric()
                     ->required(),
-                // Forms\Components\Repeater::make('patient_names')
-                //     ->label('Pasien')
-                //     ->schema([
-                //         Forms\Components\TextInput::make('name')->required(),
-                //     ])
-                //     ->columns(1)
             ]);
+    }
+
+    // Helper method untuk mengecek apakah record adalah minggu terakhir dari 4 minggu berturut-turut
+    private static function isLastWeekOfFourConsecutiveWeeks($record): bool
+    {
+        $tahun = $record->year;
+        $kodeFasyankes = $record->kode_fasyankes;
+        $currentWeek = $record->week;
+
+        // Ambil data 4 minggu berturut-turut yang berakhir di minggu ini
+        $weeks = [$currentWeek - 3, $currentWeek - 2, $currentWeek - 1, $currentWeek];
+
+        // Pastikan semua minggu valid (tidak negatif)
+        if (min($weeks) < 1) {
+            return false;
+        }
+
+        // Ambil data kasus untuk 4 minggu berturut-turut
+        $cases = Skdr::where('year', $tahun)
+            ->where('kode_fasyankes', $kodeFasyankes)
+            ->whereIn('week', $weeks)
+            ->pluck('case_count', 'week')
+            ->toArray();
+
+        // Cek apakah semua 4 minggu memiliki data dan tidak ada yang 0
+        $totalCases = 0;
+        foreach ($weeks as $week) {
+            if (!isset($cases[$week]) || $cases[$week] == 0) {
+                return false;
+            }
+            $totalCases += $cases[$week];
+        }
+
+        // Cek apakah total kasus minimal 5
+        return $totalCases >= 5;
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) use ($table) {
-
-                // dump($table);
-
                 if (auth()->user()->hasRole('Puskesmas')) {
                     return $query->where('kode_fasyankes', auth()->user()->kode_fasyankes);
                 }
-                
-                // if (! $this->getTableSortColumn()) {
-                //     return $query->orderBy('kode_fasyankes')
-                //         ->orderBy('week', 'desc');
-                // }
 
                 return $query->orderBy('kode_fasyankes');
-
             })
             ->columns([
                 Tables\Columns\TextColumn::make('fasyankes.name')
@@ -121,127 +142,83 @@ class SkdrInputResource extends Resource
                     ->label('Kasus'),
                 Tables\Columns\SelectColumn::make('status')
                     ->label('Status')
-                    ->afterStateUpdated(function ($record, $state) {
-                        
-                        $tahun = now()->format('Y'); 
-
-                        $data = Skdr::where('year', $tahun)
-                            ->orderBy('kode_fasyankes')
-                            ->where(function ($query) {
-                                $query->where('status', 'KLB')
-                                    ->orWhere('status', 'Bukan KLB');
-                            })
-                            ->with('fasyankes')
-                            ->orderBy('week');
-                        
-                        if (auth()->user()->hasRole('Puskesmas')) {
-                            $data->where('kode_fasyankes', auth()->user()->kode_fasyankes);
-                        }
-
-                        $data = $data->get()->groupBy('kode_fasyankes');
-                        
-                        $results = [];
-                        
-                        foreach ($data as $kodeFasyankes => $records) {
-                            $weeks = $records->pluck('case_count', 'week')->toArray(); 
-
-                            $fasyankesName = $records->first()->fasyankes->name;
-
-                            $allWeeks = array_keys($weeks);
-                            sort($allWeeks);
-
-                            for ($i = 0; $i < count($allWeeks); $i++) {
-                                $w1 = $allWeeks[$i];
-                                $w2 = $w1 + 1;
-                                $w3 = $w1 + 2;
-                                $w4 = $w1 + 3;
-
-                                $caseW1 = $weeks[$w1] ?? 0;
-                                $caseW2 = $weeks[$w2] ?? 0;
-                                $caseW3 = $weeks[$w3] ?? 0;
-                                $caseW4 = $weeks[$w4] ?? 0;
-
-                                if ($caseW1 == 0 || $caseW2 == 0 || $caseW3 == 0 || $caseW4 == 0) {
-                                    continue;                    
-                                }
-
-                                $totalCases = $caseW1 + $caseW2 + $caseW3 + $caseW4;
-
-                                $statusW1 = $records->where('week', $w1)->first()?->status;
-                                $statusW2 = $records->where('week', $w2)->first()?->status;
-                                $statusW3 = $records->where('week', $w3)->first()?->status;
-                                $statusW4 = $records->where('week', $w4)->first()?->status;
-
-                                $statusAll = null;
-                                if ($statusW1 == 'KLB' && $statusW2 == 'KLB' && $statusW3 == 'KLB' && $statusW4 == 'KLB') {
-                                    $statusAll = 'KLB';
-                                }
-                                if ($statusW1 == 'Bukan KLB' && $statusW2 == 'Bukan KLB' && $statusW3 == 'Bukan KLB' && $statusW4 == 'Bukan KLB') {
-                                    $statusAll = 'Bukan KLB';
-                                }
-
-                                if ($totalCases >= 5) {
-
-                                    $notification = Notification::with('fasyankes')
-                                        ->where('kode_fasyankes', $kodeFasyankes)
-                                        ->where('start_week', $w1)
-                                        ->where('category', 'klb')
-                                        ->where('end_week', $caseW4 
-                                                            ? $w4 
-                                                            : ($caseW3 
-                                                                ? $w3 
-                                                                : ($caseW2 
-                                                                    ? $w2 
-                                                                    : $w1))
-                                        )
-                                        ->where('total_case', $totalCases)
-                                        ->first();
-
-                                    if (!$notification && $statusAll) {
-                                        
-                                        Notification::create([
-                                            'kode_fasyankes' => $record->kode_fasyankes,
-                                            'total_case' => $totalCases,
-                                            'start_week' => $w1,
-                                            'end_week' => $w4,
-                                            'category' => 'klb',
-                                            'status' => $statusAll == 'KLB' ? 'confirmed' : 'false',
-                                        ]);
-
-                                    } 
-
-                                    if ($notification && $statusAll) {
-
-                                        $notification->update([
-                                            'status' => $statusAll == 'KLB' ? 'confirmed' : 'false',
-                                        ]);
-
-                                    }
-
-                                }
-
-                            }
-
-                        }
-
-
-                        // algoritma cek KLB di notif
-                        // create notif kalo KLB atau tidak
-
-
+                    ->disabled(function ($record) {
+                        // Disable jika bukan minggu terakhir dari 4 minggu berturut-turut dengan minimal 5 kasus
+                        return !self::isLastWeekOfFourConsecutiveWeeks($record);
                     })
                     ->options([
                         'KLB' => 'KLB',
                         'Bukan KLB' => 'Bukan KLB',
                     ])
-                // Tables\Columns\TextColumn::make('patient_names')
-                //     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
-                //     ->formatStateUsing(fn ($state) => 
-                //         collect(json_decode("[$state]", true))
-                //             ->pluck('name')
-                //             ->join(', ') ?: '-'
-                //     )
-                //     ->label('Nama Pasien')
+                    ->afterStateUpdated(function ($record, $state) {
+                        $tahun = $record->year;
+                        $kodeFasyankes = $record->kode_fasyankes;
+                        $currentWeek = $record->week;
+
+                        // Ambil data 3 minggu sebelumnya
+                        $weeksToUpdate = [$currentWeek - 3, $currentWeek - 2, $currentWeek - 1];
+
+                        // Hapus status sebelumnya untuk 3 minggu sebelumnya
+                        Skdr::where('year', $tahun)
+                            ->where('kode_fasyankes', $kodeFasyankes)
+                            ->whereIn('week', $weeksToUpdate)
+                            ->update(['status' => null]);
+
+                        // Hapus status sebelumnya untuk minggu saat ini
+                        Skdr::where('year', $tahun)
+                            ->where('kode_fasyankes', $kodeFasyankes)
+                            ->where('week', $currentWeek)
+                            ->update(['status' => null]);
+
+                        // Update status untuk 3 minggu sebelumnya
+                        Skdr::where('year', $tahun)
+                            ->where('kode_fasyankes', $kodeFasyankes)
+                            ->whereIn('week', $weeksToUpdate)
+                            ->update(['status' => $state]);
+
+                        // Update status untuk minggu saat ini
+                        Skdr::where('year', $tahun)
+                            ->where('kode_fasyankes', $kodeFasyankes)
+                            ->where('week', $currentWeek)
+                            ->update(['status' => $state]);
+
+                        // Ambil data 4 minggu berturut-turut
+                        $weeksData = Skdr::where('year', $tahun)
+                            ->where('kode_fasyankes', $kodeFasyankes)
+                            ->whereIn('week', [$currentWeek - 3, $currentWeek - 2, $currentWeek - 1, $currentWeek])
+                            ->get();
+
+                        // Pastikan ada data untuk semua 4 minggu
+                        if ($weeksData->count() == 4) {
+                            $totalCases = $weeksData->sum('case_count');
+
+                            if ($totalCases >= 5) {
+                                // Periksa apakah notifikasi sudah ada
+                                $notification = Notification::where('kode_fasyankes', $kodeFasyankes)
+                                    ->where('start_week', $currentWeek - 3)
+                                    ->where('end_week', $currentWeek)
+                                    ->where('category', 'klb')
+                                    ->first();
+
+                                // Jika notifikasi sudah ada, update statusnya
+                                if ($notification) {
+                                    $notification->update([
+                                        'status' => $state == 'KLB' ? 'confirmed' : 'false',
+                                    ]);
+                                } else {
+                                    // Jika notifikasi belum ada, buat notifikasi baru
+                                    Notification::create([
+                                        'kode_fasyankes' => $kodeFasyankes,
+                                        'total_case' => $totalCases,
+                                        'start_week' => $currentWeek - 3,
+                                        'end_week' => $currentWeek,
+                                        'category' => 'klb',
+                                        'status' => $state == 'KLB' ? 'confirmed' : 'false',
+                                    ]);
+                                }
+                            }
+                        }
+                    })
             ])
             ->defaultSort('week', 'desc')
             ->paginated([30, 60, 100, 'all'])
