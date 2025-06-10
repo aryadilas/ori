@@ -210,6 +210,14 @@ class SkdrInputResource extends Resource
 
                                     } 
 
+                                    if ($notification && $statusAll) {
+
+                                        $notification->update([
+                                            'status' => $statusAll == 'KLB' ? 'confirmed' : 'false',
+                                        ]);
+
+                                    }
+
                                 }
 
                             }
