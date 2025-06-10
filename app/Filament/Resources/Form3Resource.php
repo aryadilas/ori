@@ -39,8 +39,6 @@ class Form3Resource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        // view_summary_sck_ori.cr1_scope + view_summary_sck_ori.cr2_scope + view_summary_sck_ori.crBias_scope
-
         $subquery = \DB::table('form3_answers')
             ->selectRaw('
                 kode_fasyankes,
@@ -50,11 +48,7 @@ class Form3Resource extends Resource
             ')
             ->groupBy('kode_fasyankes', 'year');
 
-
         if (auth()->user()->hasRole('Puskesmas')) {
-
-            
-
             return parent::getEloquentQuery()
                 ->selectRaw('
                     form3_answers.*, 
@@ -132,28 +126,12 @@ class Form3Resource extends Resource
                         ->on('form3_answers.year', '=', 'subquery.year');
                 });
         }
-
     }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                // 'kode_fasyankes',
-                // 'year',
-                // 'age_group',
-                // 'suspect',
-                // 'population',
-			
-
-
-                // 9to18month
-                // 18to59month
-                // 5to7year
-                // 7to13year
-                // 13to16year
-                // more16year
-
                 Forms\Components\Select::make('year')
                     ->label('Tahun')
                     ->live()
@@ -164,17 +142,12 @@ class Form3Resource extends Resource
 
                         $options = [];
                         for ($i = $startYear; $i <= $endYear; $i++) { 
-                            
                             $dataCheck = static::getModel()::where('year', $i)->where('kode_fasyankes', auth()->user()->kode_fasyankes)->exists();
-                        
                             if(!$dataCheck){
                                 $options[$i] = $i;
                             }
-
                         }
-
                         return $options;
-
                     })
                     ->inlineLabel()
                     ->required(),
@@ -192,17 +165,12 @@ class Form3Resource extends Resource
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
-                        Forms\Components\TextInput::make('population_9to18month')
-                            ->label('Total Populasi')
-                            ->numeric()
-                            ->inlineLabel()
-                            ->required(),
                         Forms\Components\TextInput::make('village_target_9to18month')
                             ->label('Sasaran Kelurahan')
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
-                        Forms\Components\TextInput::make('subdistrict_target_9to18month')
+                        Forms\Components\TextInput::make('population_9to18month')
                             ->label('Sasaran Kecamatan')
                             ->numeric()
                             ->inlineLabel()
@@ -217,17 +185,12 @@ class Form3Resource extends Resource
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
-                        Forms\Components\TextInput::make('population_18to59month')
-                            ->label('Total Populasi')
-                            ->numeric()
-                            ->inlineLabel()
-                            ->required(),
                         Forms\Components\TextInput::make('village_target_18to59month')
                             ->label('Sasaran Kelurahan')
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
-                        Forms\Components\TextInput::make('subdistrict_target_18to59month')
+                        Forms\Components\TextInput::make('population_18to59month')
                             ->label('Sasaran Kecamatan')
                             ->numeric()
                             ->inlineLabel()
@@ -242,17 +205,12 @@ class Form3Resource extends Resource
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
-                        Forms\Components\TextInput::make('population_5to7year')
-                            ->label('Total Populasi')
-                            ->numeric()
-                            ->inlineLabel()
-                            ->required(),
                         Forms\Components\TextInput::make('village_target_5to7year')
                             ->label('Sasaran Kelurahan')
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
-                        Forms\Components\TextInput::make('subdistrict_target_5to7year')
+                        Forms\Components\TextInput::make('population_5to7year')
                             ->label('Sasaran Kecamatan')
                             ->numeric()
                             ->inlineLabel()
@@ -267,17 +225,12 @@ class Form3Resource extends Resource
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
-                        Forms\Components\TextInput::make('population_7to13year')
-                            ->label('Total Populasi')
-                            ->numeric()
-                            ->inlineLabel()
-                            ->required(),
                         Forms\Components\TextInput::make('village_target_7to13year')
                             ->label('Sasaran Kelurahan')
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
-                        Forms\Components\TextInput::make('subdistrict_target_7to13year')
+                        Forms\Components\TextInput::make('population_7to13year')
                             ->label('Sasaran Kecamatan')
                             ->numeric()
                             ->inlineLabel()
@@ -292,17 +245,12 @@ class Form3Resource extends Resource
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
-                        Forms\Components\TextInput::make('population_13to16year')
-                            ->label('Total Populasi')
-                            ->numeric()
-                            ->inlineLabel()
-                            ->required(),
                         Forms\Components\TextInput::make('village_target_13to16year')
                             ->label('Sasaran Kelurahan')
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
-                        Forms\Components\TextInput::make('subdistrict_target_13to16year')
+                        Forms\Components\TextInput::make('population_13to16year')
                             ->label('Sasaran Kecamatan')
                             ->numeric()
                             ->inlineLabel()
@@ -317,26 +265,17 @@ class Form3Resource extends Resource
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
-                        Forms\Components\TextInput::make('population_more16year')
-                            ->label('Total Populasi')
-                            ->numeric()
-                            ->inlineLabel()
-                            ->required(),
                         Forms\Components\TextInput::make('village_target_more16year')
                             ->label('Sasaran Kelurahan')
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
-                        Forms\Components\TextInput::make('subdistrict_target_more16year')
+                        Forms\Components\TextInput::make('population_more16year')
                             ->label('Sasaran Kecamatan')
                             ->numeric()
                             ->inlineLabel()
                             ->required(),
                     ]),
-
-          
-
-
             ]);
     }
 
@@ -375,17 +314,13 @@ class Form3Resource extends Resource
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->summarize(Sum::make()->label(''))
                     ->label("Jumlah suspect atau kasus"),
-                Tables\Columns\TextColumn::make("population")
-                    ->placeholder('-')
-                    ->summarize(Sum::make()->label(''))
-                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
-                    ->label("Total Populasi"),
                 Tables\Columns\TextColumn::make("village_target")
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label("Sasaran Kelurahan"),
-                Tables\Columns\TextColumn::make("subdistrict_target")
+                Tables\Columns\TextColumn::make("population")
                     ->placeholder('-')
+                    ->summarize(Sum::make()->label(''))
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label("Sasaran Kecamatan"),
                 Tables\Columns\TextColumn::make("attackRate")
@@ -396,7 +331,7 @@ class Form3Resource extends Resource
                             ->using(fn ($query) => $query->value('ar_average'))
                     )
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
-                    ->label("Attack Rate (AR)"),
+                    ->label("Attack Rate (AR) Kecamatan"),
                 Tables\Columns\TextColumn::make("cr1_scope")
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
@@ -419,11 +354,9 @@ class Form3Resource extends Resource
                     ->label("Sasaran ORI"),
             ])
             ->filters([
-                
                 SelectFilter::make('year')
                     ->label('Tahun')
                     ->options(function () {
-                        
                         $yearExists = static::getModel()::select('year')
                         ->when(auth()->user()->kode_fasyankes, function ($query) {
                             return $query->where('form3_answers.kode_fasyankes', auth()->user()->kode_fasyankes);
@@ -444,36 +377,29 @@ class Form3Resource extends Resource
                         }
 
                         return $options;
-
                     })
                     ->default(now()->year)
                     ->selectablePlaceholder(false)
                     ->attribute('form3_answers.year'),
-                    SelectFilter::make('fasyankes')
+                SelectFilter::make('fasyankes')
                     ->label('Fasyankes')
                     ->hidden(auth()->user()->hasRole('Puskesmas'))
                     ->options(function () {
-
                         $fasyankesExists = Fasyankes::select('name', 'kode_fasyankes')
                             ->distinct()
                             ->get()
                             ->pluck('name', 'kode_fasyankes');
                         
                         return collect(['' => 'SEMUA'])->union($fasyankesExists);
-
                     })
                     ->default('')
                     ->selectablePlaceholder(false)
                     ->attribute('form3_answers.kode_fasyankes')
-
             ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\Action::make('edit')
                     ->visible(auth()->user()->hasRole('Puskesmas'))
                     ->form([
-
-
-
                         Forms\Components\TextInput::make('village_name')
                             ->label('Desa/Kelurahan')
                             ->inlineLabel(),
@@ -487,8 +413,13 @@ class Form3Resource extends Resource
                                     ->numeric()
                                     ->inlineLabel()
                                     ->required(),
+                                Forms\Components\TextInput::make('village_target')
+                                    ->label('Sasaran Kelurahan')
+                                    ->numeric()
+                                    ->inlineLabel()
+                                    ->required(),
                                 Forms\Components\TextInput::make('population')
-                                    ->label('Total Populasi')
+                                    ->label('Sasaran Kecamatan')
                                     ->numeric()
                                     ->inlineLabel()
                                     ->required(),
@@ -502,8 +433,13 @@ class Form3Resource extends Resource
                                     ->numeric()
                                     ->inlineLabel()
                                     ->required(),
+                                Forms\Components\TextInput::make('village_target')
+                                    ->label('Sasaran Kelurahan')
+                                    ->numeric()
+                                    ->inlineLabel()
+                                    ->required(),
                                 Forms\Components\TextInput::make('population')
-                                    ->label('Total Populasi')
+                                    ->label('Sasaran Kecamatan')
                                     ->numeric()
                                     ->inlineLabel()
                                     ->required(),
@@ -517,8 +453,13 @@ class Form3Resource extends Resource
                                     ->numeric()
                                     ->inlineLabel()
                                     ->required(),
+                                Forms\Components\TextInput::make('village_target')
+                                    ->label('Sasaran Kelurahan')
+                                    ->numeric()
+                                    ->inlineLabel()
+                                    ->required(),
                                 Forms\Components\TextInput::make('population')
-                                    ->label('Total Populasi')
+                                    ->label('Sasaran Kecamatan')
                                     ->numeric()
                                     ->inlineLabel()
                                     ->required(),
@@ -532,8 +473,13 @@ class Form3Resource extends Resource
                                     ->numeric()
                                     ->inlineLabel()
                                     ->required(),
+                                Forms\Components\TextInput::make('village_target')
+                                    ->label('Sasaran Kelurahan')
+                                    ->numeric()
+                                    ->inlineLabel()
+                                    ->required(),
                                 Forms\Components\TextInput::make('population')
-                                    ->label('Total Populasi')
+                                    ->label('Sasaran Kecamatan')
                                     ->numeric()
                                     ->inlineLabel()
                                     ->required(),
@@ -547,8 +493,13 @@ class Form3Resource extends Resource
                                     ->numeric()
                                     ->inlineLabel()
                                     ->required(),
+                                Forms\Components\TextInput::make('village_target')
+                                    ->label('Sasaran Kelurahan')
+                                    ->numeric()
+                                    ->inlineLabel()
+                                    ->required(),
                                 Forms\Components\TextInput::make('population')
-                                    ->label('Total Populasi')
+                                    ->label('Sasaran Kecamatan')
                                     ->numeric()
                                     ->inlineLabel()
                                     ->required(),
@@ -562,100 +513,44 @@ class Form3Resource extends Resource
                                     ->numeric()
                                     ->inlineLabel()
                                     ->required(),
+                                Forms\Components\TextInput::make('village_target')
+                                    ->label('Sasaran Kelurahan')
+                                    ->numeric()
+                                    ->inlineLabel()
+                                    ->required(),
                                 Forms\Components\TextInput::make('population')
-                                    ->label('Total Populasi')
+                                    ->label('Sasaran Kecamatan')
                                     ->numeric()
                                     ->inlineLabel()
                                     ->required(),
                             ]),
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        // Forms\Components\Section::make(function ($record) {
-
-                        //         if ($record->age_group === '9 - <18 bulan' ) {
-                        //             return 'Usia 9 - < 18 Bulan';
-                        //         } elseif ($record->age_group === '18 - 59 bulan' ) {
-                        //             return 'Usia 18 - 59 Bulan';
-                        //         } elseif ($record->age_group === '5 - <7 tahun' ) {
-                        //             return 'Usia 5 - < 7 Tahun';
-                        //         } elseif ($record->age_group === '7 - <13tahun' ) {
-                        //             return 'Usia 7 - < 13 Tahun';
-                        //         } elseif ($record->age_group === '13 - <16 tahun' ) {
-                        //             return 'Usia 13 - < 16 Tahun';
-                        //         } elseif ($record->age_group === '≥ 16 tahun' ) {
-                        //             return 'Usia ≥ 16 tahun';
-                        //         } else {
-                        //             return '';
-                        //         }
-
-                        //     })
-                        //     ->description(function ($record) {
-
-                        //         if ($record->age_group === '9 - <18 bulan' ) {
-                        //             return 'Usia 9 sampai kurang dari 18 bulan';
-                        //         } elseif ($record->age_group === '18 - 59 bulan' ) {
-                        //             return 'Usia 18 sampai 59 Bulan';
-                        //         } elseif ($record->age_group === '5 - <7 tahun' ) {
-                        //             return 'Usia 5 sampai kurang dari 7 tahun';
-                        //         } elseif ($record->age_group === '7 - <13tahun' ) {
-                        //             return 'Usia 7 sampai kurang dari 13';
-                        //         } elseif ($record->age_group === '13 - <16 tahun' ) {
-                        //             return 'Usia 13 sampai kurang dari 16 tahun';
-                        //         } elseif ($record->age_group === '≥ 16 tahun' ) {
-                        //             return 'Usia lebih dari sama dengan 16 tahun';
-                        //         } else {
-                        //             return '';
-                        //         }
-
-                                
-                        //     })
-                        //     ->schema([
-                        //         Forms\Components\TextInput::make('suspect_9to18month')
-                        //             ->label('Jumlah suspek atau kasus')
-                        //             ->numeric()
-                        //             ->inlineLabel()
-                        //             ->required(),
-                        //         Forms\Components\TextInput::make('population_9to18month')
-                        //             ->label('Total Populasi')
-                        //             ->numeric()
-                        //             ->inlineLabel()
-                        //             ->required(),
-                        //     ]),
                     ])
-                    ->mountUsing( function ($form, $record) {
-                        // dd($record);
-                        $form->fill($record->attributesToArray()); 
+                    ->mountUsing(function ($form, $record) {
+                        $form->fill($record->attributesToArray());
                     })
                     ->action(function ($data, $record) {
                         $record->update($data);
 
-                        Notification::make() 
+                        Notification::make()
                             ->success()
                             ->title('Berhasil Disimpan')
-                            ->send(); 
-                        // dd($data, $record);
+                            ->send();
                     }),
-                // Tables\Actions\EditAction::make()
-                //     ->visible(auth()->user()->hasRole('Puskesmas')),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('delete')
+                    ->visible(auth()->user()->hasRole('Puskesmas'))
+                    ->action(function ($record) {
+                        $record->delete();
+
+                        Notification::make()
+                            ->success()
+                            ->title('Data Berhasil Dihapus')
+                            ->send();
+                    })
+                    ->requiresConfirmation()
+                    ->color('danger'),
             ])
             ->emptyStateHeading('Data Kosong')
-            ->bulkActions([
-                // Tables\Actions\BulkActionGroup::make([
-                //     Tables\Actions\DeleteBulkAction::make(),
-                // ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getPages(): array
@@ -665,3 +560,4 @@ class Form3Resource extends Resource
         ];
     }
 }
+

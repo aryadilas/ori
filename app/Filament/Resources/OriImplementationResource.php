@@ -24,15 +24,15 @@ class OriImplementationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationLabel = 'Input Pelaksanaan ORI';
+    protected static ?string $navigationLabel = 'Hasil Pelaksanaan ORI';
 
     protected static ?string $slug = 'input-pelaksanaan-ori';
 
-    protected static ?string $label = 'Input Pelaksanaan ORI';
+    protected static ?string $label = 'Hasil Pelaksanaan ORI';
 
-    protected static ?string $pluralModelLabel = 'Input Pelaksanaan ORI';
+    protected static ?string $pluralModelLabel = 'Hasil Pelaksanaan ORI';
 
-    protected static ?string $navigationGroup = 'INPUT KAJIAN EPIDEMIOLOGI';
+    protected static ?string $navigationGroup = 'PELAPORAN';
 
     protected static ?int $navigationSort = 4;
 
