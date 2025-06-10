@@ -127,7 +127,10 @@ class SkdrInputResource extends Resource
 
                         $data = Skdr::where('year', $tahun)
                             ->orderBy('kode_fasyankes')
-                            ->where('status', 'KLB')
+                            ->where(function ($query) {
+                                $query->where('status', 'KLB')
+                                    ->orWhere('status', 'Bukan KLB');
+                            })
                             ->with('fasyankes')
                             ->orderBy('week');
                         
@@ -136,7 +139,6 @@ class SkdrInputResource extends Resource
                         }
 
                         $data = $data->get()->groupBy('kode_fasyankes');
-
                         
                         $results = [];
                         
@@ -165,6 +167,19 @@ class SkdrInputResource extends Resource
 
                                 $totalCases = $caseW1 + $caseW2 + $caseW3 + $caseW4;
 
+                                $statusW1 = $records->where('week', $w1)->first()?->status;
+                                $statusW2 = $records->where('week', $w2)->first()?->status;
+                                $statusW3 = $records->where('week', $w3)->first()?->status;
+                                $statusW4 = $records->where('week', $w4)->first()?->status;
+
+                                $statusAll = null;
+                                if ($statusW1 == 'KLB' && $statusW2 == 'KLB' && $statusW3 == 'KLB' && $statusW4 == 'KLB') {
+                                    $statusAll = 'KLB';
+                                }
+                                if ($statusW1 == 'Bukan KLB' && $statusW2 == 'Bukan KLB' && $statusW3 == 'Bukan KLB' && $statusW4 == 'Bukan KLB') {
+                                    $statusAll = 'Bukan KLB';
+                                }
+
                                 if ($totalCases >= 5) {
 
                                     $notification = Notification::with('fasyankes')
@@ -182,7 +197,7 @@ class SkdrInputResource extends Resource
                                         ->where('total_case', $totalCases)
                                         ->first();
 
-                                    if (!$notification) {
+                                    if (!$notification && $statusAll) {
                                         
                                         Notification::create([
                                             'kode_fasyankes' => $record->kode_fasyankes,
@@ -190,7 +205,7 @@ class SkdrInputResource extends Resource
                                             'start_week' => $w1,
                                             'end_week' => $w4,
                                             'category' => 'klb',
-                                            'status' => 'confirmed',
+                                            'status' => $statusAll == 'KLB' ? 'confirmed' : 'false',
                                         ]);
 
                                     } 

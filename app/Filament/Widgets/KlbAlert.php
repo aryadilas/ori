@@ -35,7 +35,7 @@ class KlbAlert extends Widget
         // $data = $data->get()->groupBy('kode_fasyankes');
 
         // $results = [];
-        $results = Notification::with('fasyankes')->where('status', 'confirmed')->where('category', 'klb');
+        $results = Notification::with('fasyankes')->where('category', 'klb');
         if (auth()->user()->hasRole('Puskesmas')) {
             $results->where('kode_fasyankes', auth()->user()->kode_fasyankes);
         }
