@@ -37,8 +37,11 @@ class OriImplementationResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
-
-
+    
+    public static function canAccess(): bool
+    {
+        return auth()->user()->hasRole('Puskesmas'); 
+    }
 
     public static function getEloquentQuery(): Builder
     {
