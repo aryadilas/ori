@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ProvinceSeeder::class,
             RegencySeeder::class,
+            SubdistrictSeeder::class,
             FasyankesSeeder::class,
             UserSeeder::class,
             SkdrSeeder::class,
