@@ -38,4 +38,9 @@ class OriImplementation extends Model
 
     }
 
+    public function fasyankes()
+    {
+        return $this->belongsTo(Fasyankes::class, 'kode_fasyankes', 'kode_fasyankes');
+    }
+
 }
