@@ -2,7 +2,8 @@
 
 
     <x-filament-widgets::widgets
-        :columns="$this->getColumns()"
+        {{-- :columns="$this->getColumns()" --}}
+        :columns="1"
         :data="
             [
                 ...(property_exists($this, 'filters') ? ['filters' => $this->filters] : []),
