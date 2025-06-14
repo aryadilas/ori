@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fasyankes', function (Blueprint $table) {
+        Schema::create('subdistricts', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_fasyankes')->unique();
-            $table->string('name');
-            $table->string('type');
+            $table->string('subdistrict_id')->unique();
+            $table->string('province_id');
             $table->string('regency_id');
-            $table->string('subdistrict_id');
-            $table->string('longitude')->nullable();
-            $table->string('latitude')->nullable();
+            $table->string('name');
             $table->timestamps();
 
+            $table->foreign('province_id')->references('province_id')->on('provinces')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('regency_id')->references('regency_id')->on('regencies')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fasyankes');
+        Schema::dropIfExists('subdistricts');
     }
 };
