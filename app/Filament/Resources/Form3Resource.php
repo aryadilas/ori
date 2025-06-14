@@ -142,10 +142,10 @@ class Form3Resource extends Resource
 
                         $options = [];
                         for ($i = $startYear; $i <= $endYear; $i++) { 
-                            $dataCheck = static::getModel()::where('year', $i)->where('kode_fasyankes', auth()->user()->kode_fasyankes)->exists();
-                            if(!$dataCheck){
+                            // $dataCheck = static::getModel()::where('year', $i)->where('kode_fasyankes', auth()->user()->kode_fasyankes)->exists();
+                            // if(!$dataCheck){
                                 $options[$i] = $i;
-                            }
+                            // }
                         }
                         return $options;
                     })
@@ -153,6 +153,7 @@ class Form3Resource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('village_name')
                     ->label('Desa/Kelurahan')
+                    ->unique()
                     ->inlineLabel()
                     ->required(),
 

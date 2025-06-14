@@ -37,7 +37,7 @@ class ManageForm3s extends ManageRecords
                         'suspect' => $data['suspect_9to18month'],
                         'population' => $data['population_9to18month'],
                         'village_target' => $data['village_target_9to18month'],
-                        'subdistrict_target' => $data['subdistrict_target_9to18month'],
+                        // 'subdistrict_target' => $data['subdistrict_target_9to18month'],
                     ];
                     static::getModel()::create($age9to18month);
 
@@ -49,7 +49,7 @@ class ManageForm3s extends ManageRecords
                         'suspect' => $data['suspect_18to59month'],
                         'population' => $data['population_18to59month'],
                         'village_target' => $data['village_target_18to59month'],
-                        'subdistrict_target' => $data['subdistrict_target_18to59month'],
+                        // 'subdistrict_target' => $data['subdistrict_target_18to59month'],
                     ];
                     static::getModel()::create($age18to59month);
 
@@ -61,7 +61,7 @@ class ManageForm3s extends ManageRecords
                         'suspect' => $data['suspect_5to7year'],
                         'population' => $data['population_5to7year'],
                         'village_target' => $data['village_target_5to7year'],
-                        'subdistrict_target' => $data['subdistrict_target_5to7year'],
+                        // 'subdistrict_target' => $data['subdistrict_target_5to7year'],
                     ];
                     static::getModel()::create($age5to7year);
 
@@ -73,7 +73,7 @@ class ManageForm3s extends ManageRecords
                         'suspect' => $data['suspect_7to13year'],
                         'population' => $data['population_7to13year'],
                         'village_target' => $data['village_target_7to13year'],
-                        'subdistrict_target' => $data['subdistrict_target_7to13year'],
+                        // 'subdistrict_target' => $data['subdistrict_target_7to13year'],
                     ];
                     static::getModel()::create($age7to13year);
 
@@ -85,7 +85,7 @@ class ManageForm3s extends ManageRecords
                         'suspect' => $data['suspect_13to16year'],
                         'population' => $data['population_13to16year'],
                         'village_target' => $data['village_target_13to16year'],
-                        'subdistrict_target' => $data['subdistrict_target_13to16year'],
+                        // 'subdistrict_target' => $data['subdistrict_target_13to16year'],
                     ];
                     static::getModel()::create($age13to16year);
 
@@ -97,7 +97,7 @@ class ManageForm3s extends ManageRecords
                         'suspect' => $data['suspect_more16year'],
                         'population' => $data['population_more16year'],
                         'village_target' => $data['village_target_more16year'],
-                        'subdistrict_target' => $data['subdistrict_target_more16year'],
+                        // 'subdistrict_target' => $data['subdistrict_target_more16year'],
                     ];
                     $return = static::getModel()::create($more16year);
 
