@@ -18,6 +18,11 @@ class KlbAlertPuskesmas extends Widget
 
     public $klb = [];
 
+    public static function canView(): bool
+    {
+        return auth()->user()->hasRole('Puskesmas');
+    }
+
     public function getViewData(): array
     {
 
