@@ -54,6 +54,9 @@ class OriImplementationAdmin extends Page
         if ($this->fasyankes && $this->fasyankes !== 'all') {
             $targetBasedCoverage->where('kode_fasyankes', $this->fasyankes);
         }
+        if ($this->village && $this->village !== 'all') {
+            $targetBasedCoverage->where('village_name', $this->village);
+        }
         $targetBasedCoverage->groupBy('status');
 
         
@@ -95,6 +98,9 @@ class OriImplementationAdmin extends Page
             // ->where('status', 'Hadir')
         if ($this->fasyankes && $this->fasyankes !== 'all') {
             $genderBasedCoverage->where('kode_fasyankes', $this->fasyankes);
+        }
+        if ($this->village && $this->village !== 'all') {
+            $genderBasedCoverage->where('village_name', $this->village);
         }
         $genderBasedCoverage->groupBy('gender');
 
