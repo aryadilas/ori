@@ -11,17 +11,38 @@
             <div class="grid auto-cols-fr gap-y-2">
                 <div class="fi-input-wrp flex rounded-lg shadow-sm ring-1 transition duration-75 bg-white dark:bg-white/5 [&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-2 ring-gray-950/10 dark:ring-white/20 [&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-primary-600 dark:[&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-primary-500 fi-fo-select">
                     <div class="flex-1 min-w-0 fi-input-wrp-input">
-                        <select wire:change="ChangeKodeFasyankes" wire:model="fasyankes" class="fi-select-input block w-full border-none bg-transparent py-1.5 pe-8 text-base text-gray-950 transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&amp;_optgroup]:bg-white [&amp;_optgroup]:dark:bg-gray-900 [&amp;_option]:bg-white [&amp;_option]:dark:bg-gray-900 ps-3" id="tableFilters.year.value">
-                            <option value="">SEMUA</option>
+                        <select wire:change="ChangeKodeFasyankes" wire:model="fasyankes" class="fi-select-input block w-full border-none bg-transparent py-1.5 pe-8 text-base text-gray-950 transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&amp;_optgroup]:bg-white [&amp;_optgroup]:dark:bg-gray-900 [&amp;_option]:bg-white [&amp;_option]:dark:bg-gray-900 ps-3" >
+                            <option value="all">SEMUA</option>
                             @foreach($this->reference_fasyankes as $kode => $name)
                                 <option value="{{ $kode }}">{{ $name }}</option>
                             @endforeach
                         </select>
                     </div>
+                    
                 </div>
             </div>
         </div>
 
+        <div class="grid col-span-2 gap-y-2">
+            <div class="flex items-center justify-between gap-x-3 ">
+                <label class="inline-flex items-center fi-fo-field-wrp-label gap-x-3" for="tableFilters.year.value">
+                    <span class="text-sm font-medium leading-6 text-gray-950 dark:text-white">Desa/Kelurahan</span>
+                </label>
+            </div>
+            <div class="grid auto-cols-fr gap-y-2">
+                <div class="fi-input-wrp flex rounded-lg shadow-sm ring-1 transition duration-75 bg-white dark:bg-white/5 [&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-2 ring-gray-950/10 dark:ring-white/20 [&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-primary-600 dark:[&amp;:not(:has(.fi-ac-action:focus))]:focus-within:ring-primary-500 fi-fo-select">
+                    <div class="flex-1 min-w-0 fi-input-wrp-input">
+                        <select wire:change="ChangeVillage" wire:model="village" class="fi-select-input block w-full border-none bg-transparent py-1.5 pe-8 text-base text-gray-950 transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&amp;_optgroup]:bg-white [&amp;_optgroup]:dark:bg-gray-900 [&amp;_option]:bg-white [&amp;_option]:dark:bg-gray-900 ps-3" >
+                            <option value="all">SEMUA</option>
+                            @foreach($this->reference_village as $kode => $name)
+                                <option value="{{ $kode }}">{{ $name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
         
 
     </div>

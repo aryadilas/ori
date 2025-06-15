@@ -29,9 +29,10 @@ class OriImplementationAdmin extends Page
 
     protected ?string $heading = 'Hasil Pelaksanaan ORI';
 
-    public $reference_fasyankes;
+    public $reference_fasyankes, $reference_village;
 
     public $fasyankes = 'all';
+    public $village = 'all';
 
     public $target_all, $target_male, $target_female, $immunized_child, $unimmunized_child;
 
@@ -126,12 +127,18 @@ class OriImplementationAdmin extends Page
     public function mount()
     {
         $this->reference_fasyankes = Fasyankes::select('kode_fasyankes', 'name')->pluck('name', 'kode_fasyankes');
+        
 
         $data = OriImplementation::query();
         if ($this->fasyankes !== 'all') {
             $data->where('kode_fasyankes', $this->fasyankes);
         }
+        if ($this->village !== 'all') {
+            $data->where('village_name', $this->village);
+        }
         $data = $data->get();
+
+        $this->reference_village = $data->pluck('village_name', 'village_name');
 
         $this->target_all = $data->count();
         $this->target_male = $data->where('gender', 'L')->count();
@@ -150,6 +157,34 @@ class OriImplementationAdmin extends Page
         $data = OriImplementation::query();
         if ($this->fasyankes !== 'all') {
             $data->where('kode_fasyankes', $this->fasyankes);
+        }
+        $data = $data->get();
+
+
+        $this->reference_village = $data->pluck('village_name', 'village_name');
+
+        $this->target_all = $data->count();
+        $this->target_male = $data->where('gender', 'L')->count();
+        $this->target_female = $data->where('gender', 'P')->count();
+        $this->immunized_child = $data->where('status', 'Hadir')->count();
+        $this->unimmunized_child = $data->where('status', 'Tidak Hadir')->count();
+
+        $this->targetBasedCoverageData();
+        $this->genderBasedCoverageData();
+
+        $this->dispatch('changeKodeFasyankes');
+
+    }
+
+    public function ChangeVillage()
+    {
+
+        $data = OriImplementation::query();
+        if ($this->fasyankes !== 'all') {
+            $data->where('kode_fasyankes', $this->fasyankes);
+        }
+        if ($this->village !== 'all') {
+            $data->where('village_name', $this->village);
         }
         $data = $data->get();
 
