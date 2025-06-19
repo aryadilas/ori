@@ -30,7 +30,16 @@ class SummarySckOriResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Summary SCK ORI';
 
-    protected static ?string $navigationGroup = 'INPUT KAJIAN EPIDEMIOLOGI';
+    // protected static ?string $navigationGroup = 'INPUT KAJIAN EPIDEMIOLOGI';
+
+    public static function getNavigationGroup(): ?string
+    {
+        if (auth()->user()->hasRole('Puskesmas')) {
+            return 'INPUT KAJIAN EPIDEMIOLOGI';
+        } else {
+            return 'HASIL KAJIAN EPIDEMIOLOGI';
+        }
+    }
 
     protected static ?int $navigationSort = 3;
 

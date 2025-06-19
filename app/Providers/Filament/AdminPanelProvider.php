@@ -58,6 +58,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 'PEMANTAUAN KASUS',
+                'HASIL KAJIAN EPIDEMIOLOGI',
                 'INPUT KAJIAN EPIDEMIOLOGI',
                 'VAKSIN',
                 'PELAPORAN',

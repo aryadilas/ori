@@ -33,7 +33,16 @@ class Form3Resource extends Resource
 
     protected static ?string $pluralModelLabel = 'Kelompok Usia';
 
-    protected static ?string $navigationGroup = 'INPUT KAJIAN EPIDEMIOLOGI';
+    // protected static ?string $navigationGroup = 'INPUT KAJIAN EPIDEMIOLOGI';
+
+    public static function getNavigationGroup(): ?string
+    {
+        if (auth()->user()->hasRole('Puskesmas')) {
+            return 'INPUT KAJIAN EPIDEMIOLOGI';
+        } else {
+            return 'HASIL KAJIAN EPIDEMIOLOGI';
+        }
+    }
 
     protected static ?int $navigationSort = 4;
 
