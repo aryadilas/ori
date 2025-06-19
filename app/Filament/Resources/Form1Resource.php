@@ -34,6 +34,11 @@ class Form1Resource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->hasRole(['Super Admin', 'Dinkes', 'Puskesmas']); 
+    }
+
     public static function getEloquentQuery(): Builder
     {
         if (auth()->user()->hasRole('Puskesmas')) {

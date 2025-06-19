@@ -11,7 +11,7 @@ class Dashboard extends \Filament\Pages\Dashboard
 
     protected static ?string $title = '';
 
-    protected static ?string $navigationLabel = 'Dashboard';
+    protected static ?string $navigationLabel = 'Halaman Utama';
     
 
     public function getColumns(): int | string | array

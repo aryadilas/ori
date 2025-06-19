@@ -33,6 +33,11 @@ class VaccineTarget extends Page
     public $vaccine_target;
     public $coverage_target;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->hasRole(['Super Admin', 'Dinkes', 'Puskesmas']); 
+    }
+
     public function mount()
     {
         

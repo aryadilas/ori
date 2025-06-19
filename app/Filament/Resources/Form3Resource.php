@@ -37,6 +37,11 @@ class Form3Resource extends Resource
 
     protected static ?int $navigationSort = 4;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->hasRole(['Super Admin', 'Dinkes', 'Puskesmas']); 
+    }
+
     public static function getEloquentQuery(): Builder
     {
         $subquery = \DB::table('form3_answers')
