@@ -96,7 +96,7 @@ class VaccineTarget extends Page
         }
 
 
-        $this->form3Answers = $form3Answers->get();
+        $this->form3Answers = $form3Answers->orderBy('kode_fasyankes')->get();
         $this->vaccine_target = $this->form3Answers->mapWithKeys(fn ($answer) => [
                 $answer->id => $answer->vaccine_target,
             ])
@@ -105,6 +105,8 @@ class VaccineTarget extends Page
                 $answer->id => $answer->coverage_target,
             ])
             ->toArray();  
+
+            // dd($this->coverage_target);
 
     }
 
