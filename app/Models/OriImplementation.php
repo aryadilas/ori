@@ -21,6 +21,8 @@ class OriImplementation extends Model
         'address',
         'telp',
         'status',
+        'immunized_date',
+        'batch_number',
     ];
 
     protected $appends = [

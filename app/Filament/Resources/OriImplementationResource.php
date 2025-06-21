@@ -94,6 +94,17 @@ class OriImplementationResource extends Resource
                     ->required()
                     ->label('No HP')
                     ->inlineLabel(),
+                Forms\Components\DatePicker::make('immunized_date')
+                    ->required()
+                    ->label('Tanggal Imunisasi')
+                    ->inlineLabel(),
+                Forms\Components\TextInput::make('batch_number')
+                    ->required()
+                    ->numeric()
+                    ->minLength(8)
+                    ->maxLength(8)
+                    ->label('Nomor Batch')
+                    ->inlineLabel(),
                 Forms\Components\Select::make('status')
                     ->options([
                         'Hadir' => 'Hadir',
@@ -153,10 +164,18 @@ class OriImplementationResource extends Resource
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label("No HP"),
-                Tables\Columns\TextColumn::make('status')
+                Tables\Columns\TextColumn::make('immunized_date')
                     ->placeholder('-')
                     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
-                    ->label("Status Kehadiran"),
+                    ->label("Tanggal Imunisasi"),
+                Tables\Columns\TextColumn::make('batch_number')
+                    ->placeholder('-')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->label("Nomor Batch"),
+                // Tables\Columns\TextColumn::make('status')
+                //     ->placeholder('-')
+                //     ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                //     ->label("Status Kehadiran"),
             ])
             ->filters([
 
