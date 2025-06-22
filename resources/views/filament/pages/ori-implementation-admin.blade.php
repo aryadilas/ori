@@ -222,7 +222,7 @@
             },
             colors: ['#C8D561', '#3FD6C8'],
             title: {
-                text: '% Cakupan Usia 9 - <18 bulan',
+                text: '% Cakupan Usia 18 - 59 bulan',
                 align: 'center'
             },
             tooltip: {
@@ -261,7 +261,7 @@
             },
             colors: ['#C8D561', '#3FD6C8'],
             title: {
-                text: '% Cakupan Usia 9 - <18 bulan',
+                text: '% Cakupan Usia 5 - <7 tahun',
                 align: 'center'
             },
             tooltip: {
@@ -300,7 +300,7 @@
             },
             colors: ['#C8D561', '#3FD6C8'],
             title: {
-                text: '% Cakupan Usia 9 - <18 bulan',
+                text: '% Cakupan Usia 7 - <13 tahun',
                 align: 'center'
             },
             tooltip: {
@@ -339,7 +339,7 @@
             },
             colors: ['#C8D561', '#3FD6C8'],
             title: {
-                text: '% Cakupan Usia 9 - <18 bulan',
+                text: '% Cakupan Usia 13 - <16 tahun',
                 align: 'center'
             },
             tooltip: {
