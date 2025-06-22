@@ -35,7 +35,7 @@ class OriImplementationAdmin extends Page
 
     // public $fasyankes = 'all';
     // public $village = 'all';
-    public $fasyankes = '32760200008';
+    public $fasyankes = 'all';
     public $village = 'all';
 
     public $target_all, $target_male, $target_female, $immunized_child, $unimmunized_child;
