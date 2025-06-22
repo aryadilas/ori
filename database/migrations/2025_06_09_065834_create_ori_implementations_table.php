@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('telp');
             $table->date('immunized_date');
             $table->string('batch_number');
-            $table->enum('status', ['Hadir', 'Tidak Hadir']);
+            $table->enum('status', ['Hadir', 'Tidak Hadir'])->nullable(); //hidden
             $table->timestamps();
         });
     }

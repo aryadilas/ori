@@ -58,8 +58,8 @@ class ManageOriImplementations extends ManageRecords
                         ->required(),
                     ImportField::make('nomor_batch')
                         ->required(),
-                    ImportField::make('status_kehadiran')
-                        ->required(),
+                    // ImportField::make('status_kehadiran')
+                    //     ->required(),
                     
                     
                 ])
@@ -79,7 +79,7 @@ class ManageOriImplementations extends ManageRecords
                         'telp' => $data['no_hp'],
                         'immunized_date' => $data['tanggal_imunisasi'],
                         'batch_number' => $data['nomor_batch'],
-                        'status' => $data['status_kehadiran'],
+                        // 'status' => $data['status_kehadiran'],
                     ]);
 
                 }),

@@ -105,14 +105,14 @@ class OriImplementationResource extends Resource
                     ->maxLength(8)
                     ->label('Nomor Batch')
                     ->inlineLabel(),
-                Forms\Components\Select::make('status')
-                    ->options([
-                        'Hadir' => 'Hadir',
-                        'Tidak Hadir' => 'Tidak Hadir',
-                    ])
-                    ->required()
-                    ->label('Status Kehadiran')
-                    ->inlineLabel(),
+                // Forms\Components\Select::make('status')
+                //     ->options([
+                //         'Hadir' => 'Hadir',
+                //         'Tidak Hadir' => 'Tidak Hadir',
+                //     ])
+                //     ->required()
+                //     ->label('Status Kehadiran')
+                //     ->inlineLabel(),
             ]);
     }
 
