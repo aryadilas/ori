@@ -46,12 +46,24 @@
         
 
     </div>
-    <div class="flex flex-col gap-4 sm:flex-row">
+    <div class="flex flex-col gap-6 sm:flex-row">
 
-        <div class="flex bg-white flex-col border w-full sm:max-w-[15rem] justify-center items-center gap-2 shadow-lg rounded-lg p-3">
+        <div class="flex bg-white flex-col border w-full sm:w-[30%] justify-center items-center gap-2 shadow-lg rounded-lg p-3">
             <h1 class="text-lg font-semibold text-[#05C7C7] text-center leading-5">Sasaran Imunisasi ORI Campak Rubela</h1>
-            <span class="text-4xl font-semibold">{{ $this->target_all }}</span>
+            <span class="text-4xl font-semibold">{{ $this->sasaran_imunisasi }}</span>
         </div>
+
+        <div class="flex bg-white flex-col border w-full sm:w-[30%] justify-center items-center gap-2 shadow-lg rounded-lg p-3">
+            <h1 class="text-lg font-semibold text-[#05C7C7] text-center leading-5">Jumlah Anak Diimunisasi ORI Campak Rubela</h1>
+            <span class="text-4xl font-semibold">{{ $this->anak_imunisasi }}</span>
+        </div>
+
+        <div class="flex bg-white flex-col border w-full sm:w-[30%] justify-center items-center gap-2 shadow-lg rounded-lg p-3">
+            <h1 class="text-lg font-semibold text-[#05C7C7] text-center leading-5">% Persentase Cakupan ORI Campak Rubela</h1>
+            <span class="text-4xl font-semibold">{{ $this->persen_cakupan_ori }}</span>
+        </div>
+
+        {{-- 
         <div class="flex bg-white flex-col border w-full sm:max-w-[15rem] justify-center items-center gap-2 shadow-lg rounded-lg p-3">
             <h1 class="text-lg font-semibold text-[#05C7C7] text-center leading-5">Sasaran Imunisasi ORI Campak Rubela Laki-Laki</h1>
             <span class="text-4xl font-semibold">{{ $this->target_male }}</span>
@@ -73,34 +85,57 @@
             <div class="w-full ">
                 <span class="block text-lg font-semibold text-right">{{ $this->target_all ? number_format( ($this->unimmunized_child / $this->target_all) * 100, 1 ) : '-' }}%</span>
             </div>
-        </div>
+        </div> --}}
 
 
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <div class="flex flex-col gap-4 sm:flex-row">
-        <div class="p-3 bg-white border rounded-lg shadow-lg md:w-1/2">
-            <div wire:ignore wire:key="targetBasedCoverage" class="w-full" id="targetBasedCoverage"></div>
+    <div class="flex flex-col flex-wrap gap-6 sm:flex-row">
+        <div class="p-3 bg-white border rounded-lg shadow-lg md:w-[30%]">
+            <div wire:ignore wire:key="cakupanSasaran" class="w-full" id="cakupanSasaran"></div>
         </div>
+        <div class="p-3 bg-white border rounded-lg shadow-lg md:w-[30%]">
+            <div wire:ignore wire:key="cakupanUsia_9_18" class="w-full" id="cakupanUsia_9_18"></div>
+        </div>
+        <div class="p-3 bg-white border rounded-lg shadow-lg md:w-[30%]">
+            <div wire:ignore wire:key="cakupanUsia_18_59" class="w-full" id="cakupanUsia_18_59"></div>
+        </div>
+        <div class="p-3 bg-white border rounded-lg shadow-lg md:w-[30%]">
+            <div wire:ignore wire:key="cakupanUsia_5_7" class="w-full" id="cakupanUsia_5_7"></div>
+        </div>
+        <div class="p-3 bg-white border rounded-lg shadow-lg md:w-[30%]">
+            <div wire:ignore wire:key="cakupanUsia_7_13" class="w-full" id="cakupanUsia_7_13"></div>
+        </div>
+        <div class="p-3 bg-white border rounded-lg shadow-lg md:w-[30%]">
+            <div wire:ignore wire:key="cakupanUsia_13_16" class="w-full" id="cakupanUsia_13_16"></div>
+        </div>
+        {{-- 
         <div class="p-3 bg-white border rounded-lg shadow-lg md:w-1/2">
             <div wire:ignore wire:key="genderBasedCoverage" class="w-full" id="genderBasedCoverage"></div>
-        </div>
+        </div> --}}
     </div>
 
 
     @script
     <script>
-        let targetBasedCoverage = {
+        let cakupanSasaran = {
             chart: { 
                 type: 'bar', 
                 height: 300,
                 stacked: true,
                 stackType: '100%',
             },
-            series: @json($this->targetBasedCoverageValues),
+            series: @json($this->cakupan_sasaran),
             xaxis: {
                 categories: ['']
+            },
+            yaxis: {
+                labels: {
+                    formatter: function(value) {
+                        return value.toFixed(0) + "%";
+                    }
+                }
             },
             plotOptions: {
                 bar: {
@@ -120,17 +155,26 @@
                 }
             },
         };
+        let cakupanSasaranChart = new ApexCharts(document.querySelector("#cakupanSasaran"), cakupanSasaran);
+        cakupanSasaranChart.render();
 
-        let genderBasedCoverage = {
+        let cakupanUsia_9_18 = {
             chart: { 
                 type: 'bar', 
                 height: 300,
                 stacked: true,
                 stackType: '100%',
             },
-            series: @json($this->genderBasedCoverageValues),
+            series: @json($this->cakupan_usia_9_18),
             xaxis: {
                 categories: ['']
+            },
+            yaxis: {
+                labels: {
+                    formatter: function(value) {
+                        return value.toFixed(0) + "%";
+                    }
+                }
             },
             plotOptions: {
                 bar: {
@@ -139,7 +183,7 @@
             },
             colors: ['#C8D561', '#3FD6C8'],
             title: {
-                text: '% Cakupan Berdasarkan Jenis Kelamin',
+                text: '% Cakupan Usia 9 - <18 bulan',
                 align: 'center'
             },
             tooltip: {
@@ -150,22 +194,188 @@
                 }
             },
         };
+        let cakupanUsia_9_18Chart = new ApexCharts(document.querySelector("#cakupanUsia_9_18"), cakupanUsia_9_18);
+        cakupanUsia_9_18Chart.render();
 
-        let targetBasedCoverageChart = new ApexCharts(document.querySelector("#targetBasedCoverage"), targetBasedCoverage);
-        targetBasedCoverageChart.render();
+        let cakupanUsia_18_59 = {
+            chart: { 
+                type: 'bar', 
+                height: 300,
+                stacked: true,
+                stackType: '100%',
+            },
+            series: @json($this->cakupan_usia_18_59),
+            xaxis: {
+                categories: ['']
+            },
+            yaxis: {
+                labels: {
+                    formatter: function(value) {
+                        return value.toFixed(0) + "%";
+                    }
+                }
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '100px',
+                }
+            },
+            colors: ['#C8D561', '#3FD6C8'],
+            title: {
+                text: '% Cakupan Usia 9 - <18 bulan',
+                align: 'center'
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return `${val}%`;  
+                    }
+                }
+            },
+        };
+        let cakupanUsia_18_59Chart = new ApexCharts(document.querySelector("#cakupanUsia_18_59"), cakupanUsia_18_59);
+        cakupanUsia_18_59Chart.render();
 
-        let genderBasedCoverageChart = new ApexCharts(document.querySelector("#genderBasedCoverage"), genderBasedCoverage);
-        genderBasedCoverageChart.render();
+        let cakupanUsia_5_7 = {
+            chart: { 
+                type: 'bar', 
+                height: 300,
+                stacked: true,
+                stackType: '100%',
+            },
+            series: @json($this->cakupan_usia_5_7),
+            xaxis: {
+                categories: ['']
+            },
+            yaxis: {
+                labels: {
+                    formatter: function(value) {
+                        return value.toFixed(0) + "%";
+                    }
+                }
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '100px',
+                }
+            },
+            colors: ['#C8D561', '#3FD6C8'],
+            title: {
+                text: '% Cakupan Usia 9 - <18 bulan',
+                align: 'center'
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return `${val}%`;  
+                    }
+                }
+            },
+        };
+        let cakupanUsia_5_7Chart = new ApexCharts(document.querySelector("#cakupanUsia_5_7"), cakupanUsia_5_7);
+        cakupanUsia_5_7Chart.render();
+
+        let cakupanUsia_7_13 = {
+            chart: { 
+                type: 'bar', 
+                height: 300,
+                stacked: true,
+                stackType: '100%',
+            },
+            series: @json($this->cakupan_usia_7_13),
+            xaxis: {
+                categories: ['']
+            },
+            yaxis: {
+                labels: {
+                    formatter: function(value) {
+                        return value.toFixed(0) + "%";
+                    }
+                }
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '100px',
+                }
+            },
+            colors: ['#C8D561', '#3FD6C8'],
+            title: {
+                text: '% Cakupan Usia 9 - <18 bulan',
+                align: 'center'
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return `${val}%`;  
+                    }
+                }
+            },
+        };
+        let cakupanUsia_7_13Chart = new ApexCharts(document.querySelector("#cakupanUsia_7_13"), cakupanUsia_7_13);
+        cakupanUsia_7_13Chart.render();
+
+        let cakupanUsia_13_16 = {
+            chart: { 
+                type: 'bar', 
+                height: 300,
+                stacked: true,
+                stackType: '100%',
+            },
+            series: @json($this->cakupan_usia_13_16),
+            xaxis: {
+                categories: ['']
+            },
+            yaxis: {
+                labels: {
+                    formatter: function(value) {
+                        return value.toFixed(0) + "%";
+                    }
+                }
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '100px',
+                }
+            },
+            colors: ['#C8D561', '#3FD6C8'],
+            title: {
+                text: '% Cakupan Usia 9 - <18 bulan',
+                align: 'center'
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return `${val}%`;  
+                    }
+                }
+            },
+        };
+        let cakupanUsia_13_16Chart = new ApexCharts(document.querySelector("#cakupanUsia_13_16"), cakupanUsia_13_16);
+        cakupanUsia_13_16Chart.render();
+
+
 
         let UpdateChart = () => {
             
-            targetBasedCoverageChart.updateOptions({
-                series: $wire.targetBasedCoverageValues
+            cakupanSasaranChart.updateOptions({
+                series: $wire.cakupan_sasaran
+            });
+            cakupanUsia_9_18Chart.updateOptions({
+                series: $wire.cakupan_usia_9_18
+            });
+            cakupanUsia_18_59Chart.updateOptions({
+                series: $wire.cakupan_usia_18_59
+            });
+            cakupanUsia_5_7Chart.updateOptions({
+                series: $wire.cakupan_usia_5_7
+            });
+            cakupanUsia_7_13Chart.updateOptions({
+                series: $wire.cakupan_usia_7_13
+            });
+            cakupanUsia_13_16Chart.updateOptions({
+                series: $wire.cakupan_usia_13_16
             });
 
-            genderBasedCoverageChart.updateOptions({
-                series: $wire.genderBasedCoverageValues
-            });
         }
 
         $wire.on('changeKodeFasyankes', UpdateChart)

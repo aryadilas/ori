@@ -5,6 +5,8 @@ namespace App\Filament\Pages;
 use Filament\Pages\Page;
 use App\Models\Fasyankes;
 use App\Models\OriImplementation;
+use App\Models\ViewOriImplementation;
+use App\Models\Form3Answer;
 
 class OriImplementationAdmin extends Page
 {
@@ -31,13 +33,17 @@ class OriImplementationAdmin extends Page
 
     public $reference_fasyankes, $reference_village;
 
-    public $fasyankes = 'all';
+    // public $fasyankes = 'all';
+    // public $village = 'all';
+    public $fasyankes = '32760200008';
     public $village = 'all';
 
     public $target_all, $target_male, $target_female, $immunized_child, $unimmunized_child;
 
     public $targetBasedCoverage, $targetBasedCoverageCategories, $targetBasedCoverageTotal, $targetBasedCoverageValues;
     public $genderBasedCoverage, $genderBasedCoverageCategories, $genderBasedCoverageTotal, $genderBasedCoverageValues;
+
+    public $sasaran_imunisasi, $anak_imunisasi, $persen_cakupan_ori, $cakupan_sasaran, $cakupan_usia_9_18, $cakupan_usia_18_59, $cakupan_usia_5_7, $cakupan_usia_7_13, $cakupan_usia_13_16;
 
     public static function canAccess(): bool
     {
@@ -130,54 +136,217 @@ class OriImplementationAdmin extends Page
 
     }
 
-    public function mount()
+    public function preparingData()
     {
+
+
         $this->reference_fasyankes = Fasyankes::select('kode_fasyankes', 'name')->pluck('name', 'kode_fasyankes');
         
-
-        $data = OriImplementation::query();
+        $form3_data = Form3Answer::query();
         if ($this->fasyankes !== 'all') {
-            $data->where('kode_fasyankes', $this->fasyankes);
+            $form3_data->where('kode_fasyankes', $this->fasyankes);
         }
         if ($this->village !== 'all') {
-            $data->where('village_name', $this->village);
+            $form3_data->where('village_name', $this->village);
         }
-        $data = $data->get();
+        $form3_data = $form3_data->get();
 
-        $this->reference_village = $data->pluck('village_name', 'village_name');
+        $implement_data = ViewOriImplementation::query();
+        if ($this->fasyankes !== 'all') {
+            $implement_data->where('kode_fasyankes', $this->fasyankes);
+        }
+        if ($this->village !== 'all') {
+            $implement_data->where('village_name', $this->village);
+        }
+        $implement_data = $implement_data->get();
 
-        $this->target_all = $data->count();
-        $this->target_male = $data->where('gender', 'L')->count();
-        $this->target_female = $data->where('gender', 'P')->count();
-        $this->immunized_child = $data->where('status', 'Hadir')->count();
-        $this->unimmunized_child = $data->where('status', 'Tidak Hadir')->count();
+        $this->reference_village = $implement_data->pluck('village_name', 'village_name');
 
-        $this->targetBasedCoverageData();
-        $this->genderBasedCoverageData();
+        
+        $this->sasaran_imunisasi = $form3_data->where('age_group', '!=', '≥ 16 tahun')->sum('village_target');
+        $this->anak_imunisasi = $implement_data->where('age_group', '!=', '≥ 16 tahun')->count();
+
+        if ($this->sasaran_imunisasi == 0) {
+            $this->persen_cakupan_ori = 0;
+            $this->cakupan_sasaran = [
+                [
+                    'name' => '',
+                    'data' => [],
+                ]
+            ];
+        } else {
+            
+            $this->persen_cakupan_ori = round(($this->anak_imunisasi/$this->sasaran_imunisasi) * 100, 1);
+            $this->cakupan_sasaran = [
+                [
+                    'name' => 'Imunisasi',
+                    'data' => [$this->persen_cakupan_ori]
+                ],
+                [
+                    'name' => 'Tidak Imunisasi',
+                    'data' => [100-$this->persen_cakupan_ori]
+                ]
+            ];
+
+        }
+
+        if ($form3_data->where('age_group', '9 - <18 bulan')->sum('village_target') == 0) {
+            $this->cakupan_usia_9_18 = [
+                [
+                    'name' => '',
+                    'data' => [],
+                ]
+            ];
+        } else {
+            $persen_cakupan_usia_9_18 = round(($implement_data->where('age_group', '9 - <18 bulan')->count() / $form3_data->where('age_group', '9 - <18 bulan')->sum('village_target')) * 100, 1);
+            $this->cakupan_usia_9_18 = [
+                [
+                    'name' => 'Imunisasi 9 - <18 bulan',
+                    'data' => [$persen_cakupan_usia_9_18]
+                ],
+                [
+                    'name' => 'Tidak Imunisasi 9 - <18 bulan',
+                    'data' => [100-$persen_cakupan_usia_9_18]
+                ]
+            ];
+        }
+
+        if ($form3_data->where('age_group', '18 - 59 bulan')->sum('village_target') == 0) {
+            $this->cakupan_usia_18_59 = [
+                [
+                    'name' => '',
+                    'data' => [],
+                ]
+            ];
+        } else {
+            $persen_cakupan_usia_18_59 = round(($implement_data->where('age_group', '18 - 59 bulan')->count() / $form3_data->where('age_group', '18 - 59 bulan')->sum('village_target')) * 100, 1);
+            $this->cakupan_usia_18_59 = [
+                [
+                    'name' => 'Imunisasi 18 - 59 bulan',
+                    'data' => [$persen_cakupan_usia_18_59]
+                ],
+                [
+                    'name' => 'Tidak Imunisasi 18 - 59 bulan',
+                    'data' => [100-$persen_cakupan_usia_18_59]
+                ]
+            ];
+        }
+
+        if ($form3_data->where('age_group', '5 - <7 tahun')->sum('village_target') == 0) {
+            $this->cakupan_usia_5_7 = [
+                [
+                    'name' => '',
+                    'data' => [],
+                ]
+            ];
+        } else {
+            $persen_cakupan_usia_5_7 = round(($implement_data->where('age_group', '5 - <7 tahun')->count() / $form3_data->where('age_group', '5 - <7 tahun')->sum('village_target')) * 100, 1);
+            $this->cakupan_usia_5_7 = [
+                [
+                    'name' => 'Imunisasi 5 - <7 tahun',
+                    'data' => [$persen_cakupan_usia_5_7]
+                ],
+                [
+                    'name' => 'Tidak Imunisasi 5 - <7 tahun',
+                    'data' => [100-$persen_cakupan_usia_5_7]
+                ]
+            ];
+        }
+
+        if ($form3_data->where('age_group', '7 - <13 tahun')->sum('village_target') == 0) {
+            $this->cakupan_usia_7_13 = [
+                [
+                    'name' => '',
+                    'data' => [],
+                ]
+            ];
+        } else {
+            $persen_cakupan_usia_7_13 = round(($implement_data->where('age_group', '7 - <13 tahun')->count() / $form3_data->where('age_group', '7 - <13 tahun')->sum('village_target')) * 100, 1);
+            $this->cakupan_usia_7_13 = [
+                [
+                    'name' => 'Imunisasi 7 - <13 tahun',
+                    'data' => [$persen_cakupan_usia_7_13]
+                ],
+                [
+                    'name' => 'Tidak Imunisasi 7 - <13 tahun',
+                    'data' => [100-$persen_cakupan_usia_7_13]
+                ]
+            ];
+        }
+
+        if ($form3_data->where('age_group', '13 - <16 tahun')->sum('village_target') == 0) {
+            $this->cakupan_usia_13_16 = [
+                [
+                    'name' => '',
+                    'data' => [],
+                ]
+            ];
+        } else {
+            $persen_cakupan_usia_13_16 = round(($implement_data->where('age_group', '13 - <16 tahun')->count() / $form3_data->where('age_group', '13 - <16 tahun')->sum('village_target')) * 100, 1);
+            $this->cakupan_usia_13_16 = [
+                [
+                    'name' => 'Imunisasi 13 - <16 tahun',
+                    'data' => [$persen_cakupan_usia_13_16]
+                ],
+                [
+                    'name' => 'Tidak Imunisasi 13 - <16 tahun',
+                    'data' => [100-$persen_cakupan_usia_13_16]
+                ]
+            ];
+        }
+
+    }
+
+    public function mount()
+    {
+        
+        $this->preparingData();
+
+
+
+        // $data = OriImplementation::query();
+        // if ($this->fasyankes !== 'all') {
+        //     $data->where('kode_fasyankes', $this->fasyankes);
+        // }
+        // if ($this->village !== 'all') {
+        //     $data->where('village_name', $this->village);
+        // }
+        // $data = $data->get();
+
+        
+
+        // $this->target_all = $data->count();
+        // $this->target_male = $data->where('gender', 'L')->count();
+        // $this->target_female = $data->where('gender', 'P')->count();
+        // $this->immunized_child = $data->where('status', 'Hadir')->count();
+        // $this->unimmunized_child = $data->where('status', 'Tidak Hadir')->count();
+
+        // $this->targetBasedCoverageData();
+        // $this->genderBasedCoverageData();
 
     }
 
     public function ChangeKodeFasyankes()
     {
 
-        $data = OriImplementation::query();
-        if ($this->fasyankes !== 'all') {
-            $data->where('kode_fasyankes', $this->fasyankes);
-        }
-        $data = $data->get();
+        // $data = OriImplementation::query();
+        // if ($this->fasyankes !== 'all') {
+        //     $data->where('kode_fasyankes', $this->fasyankes);
+        // }
+        // $data = $data->get();
 
 
-        $this->reference_village = $data->pluck('village_name', 'village_name');
+        // $this->reference_village = $data->pluck('village_name', 'village_name');
 
-        $this->target_all = $data->count();
-        $this->target_male = $data->where('gender', 'L')->count();
-        $this->target_female = $data->where('gender', 'P')->count();
-        $this->immunized_child = $data->where('status', 'Hadir')->count();
-        $this->unimmunized_child = $data->where('status', 'Tidak Hadir')->count();
+        // $this->target_all = $data->count();
+        // $this->target_male = $data->where('gender', 'L')->count();
+        // $this->target_female = $data->where('gender', 'P')->count();
+        // $this->immunized_child = $data->where('status', 'Hadir')->count();
+        // $this->unimmunized_child = $data->where('status', 'Tidak Hadir')->count();
 
-        $this->targetBasedCoverageData();
-        $this->genderBasedCoverageData();
-
+        // $this->targetBasedCoverageData();
+        // $this->genderBasedCoverageData();
+        $this->preparingData();
         $this->dispatch('changeKodeFasyankes');
 
     }
@@ -185,24 +354,24 @@ class OriImplementationAdmin extends Page
     public function ChangeVillage()
     {
 
-        $data = OriImplementation::query();
-        if ($this->fasyankes !== 'all') {
-            $data->where('kode_fasyankes', $this->fasyankes);
-        }
-        if ($this->village !== 'all') {
-            $data->where('village_name', $this->village);
-        }
-        $data = $data->get();
+        // $data = OriImplementation::query();
+        // if ($this->fasyankes !== 'all') {
+        //     $data->where('kode_fasyankes', $this->fasyankes);
+        // }
+        // if ($this->village !== 'all') {
+        //     $data->where('village_name', $this->village);
+        // }
+        // $data = $data->get();
 
-        $this->target_all = $data->count();
-        $this->target_male = $data->where('gender', 'L')->count();
-        $this->target_female = $data->where('gender', 'P')->count();
-        $this->immunized_child = $data->where('status', 'Hadir')->count();
-        $this->unimmunized_child = $data->where('status', 'Tidak Hadir')->count();
+        // $this->target_all = $data->count();
+        // $this->target_male = $data->where('gender', 'L')->count();
+        // $this->target_female = $data->where('gender', 'P')->count();
+        // $this->immunized_child = $data->where('status', 'Hadir')->count();
+        // $this->unimmunized_child = $data->where('status', 'Tidak Hadir')->count();
 
-        $this->targetBasedCoverageData();
-        $this->genderBasedCoverageData();
-
+        // $this->targetBasedCoverageData();
+        // $this->genderBasedCoverageData();
+        $this->preparingData();
         $this->dispatch('changeKodeFasyankes');
 
     }
