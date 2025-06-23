@@ -14,7 +14,7 @@
         @if (auth()->user()->hasRole('Kemkes'))
             <div class="flex flex-col">
                 <label class="font-medium" for="province">Provinsi</label>
-                <select class="rounded-lg" wire:model.live="province_value" name="province" id="">
+                <select class="rounded-lg" wire:change="province_change" wire:model.live="province_value" name="province" id="">
                     @foreach ($this->provinces as $key => $province)
                         <option value="{{ $key }}">{{ $province }}</option>
                     @endforeach

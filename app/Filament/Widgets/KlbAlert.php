@@ -93,6 +93,14 @@ class KlbAlert extends Widget
 
     }
 
+    public function province_change()
+    {
+        $this->regencies = Regency::where('province_id', $this->province_value)->get()->pluck('name', 'regency_id');
+        $this->regency_value = $this->regencies->keys()->first();
+    }
+
+
+
     // public function getViewData(): array
     // {
 
