@@ -26,7 +26,7 @@
         <div class="grid col-span-2 gap-y-2">
             <div class="flex items-center justify-between gap-x-3 ">
                 <label class="inline-flex items-center fi-fo-field-wrp-label gap-x-3" for="tableFilters.year.value">
-                    <span class="text-sm font-medium leading-6 text-gray-950 dark:text-white">Desa/Kelurahan</span>
+                    <span class="text-sm font-medium leading-6 text-gray-950 dark:text-white">Desa/Kelurahan ORI</span>
                 </label>
             </div>
             <div class="grid auto-cols-fr gap-y-2">
