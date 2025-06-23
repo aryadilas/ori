@@ -22,7 +22,7 @@ class NotificationAlert extends Page
     public static function getNavigationBadge(): ?string
     {
 
-        $results = Notification::with('fasyankes')->where('category', 'klb');
+        $results = Notification::with('fasyankes')->where('category', 'klb')->where('status', 'confirmed');
         if (auth()->user()->hasRole('Puskesmas')) {
             $results->where('kode_fasyankes', auth()->user()->kode_fasyankes);
         }
