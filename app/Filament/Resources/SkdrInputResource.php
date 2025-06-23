@@ -14,6 +14,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\DB;
+use Filament\Tables\Actions\Action;
 
 class SkdrInputResource extends Resource
 {
@@ -118,6 +119,15 @@ class SkdrInputResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->headerActions([
+                Action::make('reset')
+                    ->label('Reset Notifikasi')
+                    ->icon('heroicon-o-bell-slash')
+                    ->color('danger')
+                    ->action(function () {
+                        
+                    }),
+            ])
             ->modifyQueryUsing(function (Builder $query) use ($table) {
                 if (auth()->user()->hasRole('Puskesmas')) {
                     return $query->where('kode_fasyankes', auth()->user()->kode_fasyankes);
