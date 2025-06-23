@@ -125,7 +125,24 @@ class SkdrInputResource extends Resource
                     ->icon('heroicon-o-bell-slash')
                     ->color('danger')
                     ->action(function () {
-                        
+                        $skdr = Skdr::query();
+                        if (auth()->user()->hasRole('Puskesmas')) {
+                            $skdr->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+                        }
+                        $skdr = $skdr->get()->each(function ($item){
+                            $item->update([
+                                'status' => null,
+                            ]);
+                        });
+
+                        $notification = Notification::query();
+                        if (auth()->user()->hasRole('Puskesmas')) {
+                            $notification->where('kode_fasyankes', auth()->user()->kode_fasyankes);
+                        }
+                        $notification = $notification->get()->each(function ($item){
+                            $item->delete();
+                        });
+
                     }),
             ])
             ->modifyQueryUsing(function (Builder $query) use ($table) {
