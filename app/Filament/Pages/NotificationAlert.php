@@ -29,7 +29,7 @@ class NotificationAlert extends Page
 
         $results = $results->get();
 
-        if ($results) {
+        if (count($results)) {
             return '*';
         }
 
